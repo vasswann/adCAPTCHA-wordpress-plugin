@@ -26,6 +26,19 @@ class Settings {
     }
      
     public function render_adcaptcha_options_page() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Verify the nonce
+            if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'adcaptcha_form_action')) {
+                die('Invalid nonce');
+            }
+
+            $api_key = $_POST['adcaptcha_option_name']['api_key'];
+            $placement_id = $_POST['adcaptcha_option_name']['placement_id'];
+
+            // var_dump($api_key);
+            // var_dump($placement_id);
+        }
+
         ?>
         <div>
             <div class="header container">
@@ -37,9 +50,10 @@ class Settings {
                 <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link" href="https://app.adcaptcha.com/login" target="_blank">Dashboard &rarr;</a></p>
             </div>
             </div>
-            <form method="post" class="form" action="options.php">
+            <form method="post" class="form">
                 <input type="text" id="api_key" class="api-key-input" name="adcaptcha_option_name[api_key]" value="" placeholder="API key">
                 <input type="text" id="placement_id" class="placement-id" name="adcaptcha_option_name[placement_id]" value="" placeholder="Placement ID">
+                <?php wp_nonce_field('adcaptcha_form_action'); ?>
                 <button type="submit" class="save-button">Save</button>
             </form>
         </div>
