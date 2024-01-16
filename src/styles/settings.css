@@ -1,5 +1,6 @@
 .header {
     padding: 35px 20px 35px 20px;
+    margin: 0 20px 0 0;
     display: grid;
     grid-auto-flow: column;
     justify-content: space-between;
@@ -11,6 +12,11 @@
     margin: 0 -20px 0;
 }
 
-.admin {
-    margin: 0 20px 0 0;
+.logo {
+    height: 40px;
+    padding-left: 25px;
+}
+
+.api-key-input {
+    margin-top: 50px;
 }

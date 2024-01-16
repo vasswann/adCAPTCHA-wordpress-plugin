@@ -25,13 +25,13 @@ class Settings {
      
     public function render_adcaptcha_options_page() {
         ?>
-        <div class="admin">
+        <div>
             <div class="header container">
-                <?php printf('<img src="%s" height="40px"/>', esc_url('https://assets.adcaptcha.com/mail/logo_gradient.png')); ?>
+                <?php printf('<img src="%s" class="logo"/>', esc_url('https://assets.adcaptcha.com/mail/logo_gradient.png')); ?>
                 <hr>
             </div>
             <form method="post" action="options.php">
-                <input type="text" id="api_key" name="adcaptcha_option_name[api_key]" value="" placeholder="API key">
+                <input type="text" id="api_key" class="api-key-input" name="adcaptcha_option_name[api_key]" value="" placeholder="API key">
             </form>
         </div>
 		<?php
