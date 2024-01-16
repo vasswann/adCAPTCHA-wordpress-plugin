@@ -1,0 +1,16 @@
+.header {
+    padding: 35px 20px 35px 20px;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    background: #fff;
+    margin: 0 -20px 0;
+}
+
+.admin {
+    margin: 0 20px 0 0;
+}
