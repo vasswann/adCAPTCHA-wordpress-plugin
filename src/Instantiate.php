@@ -2,12 +2,11 @@
 
 namespace AdCaptcha;
 
-require_once plugin_dir_path(__FILE__) . 'Settings/Settings.php';
 use AdCaptcha\Settings\Settings;
-
-
-require_once plugin_dir_path(__FILE__) . 'Plugin/Login.php';
 use AdCaptcha\Plugin\Login\Login;
+use AdCaptcha\Plugin\Registration\Registration;
+use AdCaptcha\Plugin\PasswordReset\PasswordReset;
+use AdCaptcha\Plugin\Comments\Comments;
 
 class Instantiate {
 
@@ -17,5 +16,14 @@ class Instantiate {
 
         $login = new Login();
         $login->setup();
+
+        $registration = new Registration();
+        $registration->setup();
+
+        $passwordReset = new PasswordReset();
+        $passwordReset->setup();
+
+        $comments = new Comments();
+        $comments->setup();
     }
 }

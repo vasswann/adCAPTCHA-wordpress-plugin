@@ -1,13 +1,13 @@
 <?php
 
-namespace AdCaptcha\Plugin\Login;
+namespace AdCaptcha\Plugin\Registration;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 
-class Login {
+class Registration {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("login_form");
+        $adCaptcha->setup("register_form");
     }
 }

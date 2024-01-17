@@ -1,13 +1,13 @@
 <?php
 
-namespace AdCaptcha\Plugin\Login;
+namespace AdCaptcha\Plugin\Comments;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 
-class Login {
+class Comments {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("login_form");
+        $adCaptcha->setup("comment_form_submit_field");
     }
 }
