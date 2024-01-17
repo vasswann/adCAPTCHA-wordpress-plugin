@@ -21,7 +21,7 @@ class AdCaptcha {
     }
 
     public function captcha_trigger() {
-        echo '<div data-adcaptcha="PLC-01HM8Z16PFW6SY2SVWKZYAEPR6" style="margin-bottom: 20px;"></div>';
+        echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px;"></div>';
     }
 
 }

@@ -32,11 +32,8 @@ class Settings {
                 die('Invalid nonce');
             }
 
-            $api_key = $_POST['adcaptcha_option_name']['api_key'];
-            $placement_id = $_POST['adcaptcha_option_name']['placement_id'];
-
-            // var_dump($api_key);
-            // var_dump($placement_id);
+            update_option('adcaptcha_api_key', sanitize_text_field($_POST['adcaptcha_option_name']['api_key']));
+            update_option('adcaptcha_placement_id', sanitize_text_field($_POST['adcaptcha_option_name']['placement_id']));
         }
 
         ?>
@@ -51,8 +48,12 @@ class Settings {
             </div>
             </div>
             <form method="post" class="form">
-                <input type="text" id="api_key" class="api-key-input" name="adcaptcha_option_name[api_key]" value="" placeholder="API key">
-                <input type="text" id="placement_id" class="placement-id" name="adcaptcha_option_name[placement_id]" value="" placeholder="Placement ID">
+                <?php
+                    echo '<input type="text" id="api_key" class="api-key-input" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
+                ?>
+                <?php
+                    echo '<input type="text" id="placement_id" class="placement-id" name="adcaptcha_option_name[placement_id]" value="' . esc_attr(get_option('adcaptcha_placement_id')) . '" placeholder="Placement ID">';
+                ?>
                 <?php wp_nonce_field('adcaptcha_form_action'); ?>
                 <button type="submit" class="save-button">Save</button>
             </form>
