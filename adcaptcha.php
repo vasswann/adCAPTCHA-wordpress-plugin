@@ -9,13 +9,12 @@
  * @package AdCaptcha
  */
 
+require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
+use AdCaptcha\Instantiate;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-// Include the settings file
-require_once plugin_dir_path( __FILE__ ) . 'src/Settings/Settings.php';
-
-// Instantiate the Settings class and call its setup method
-$settings = new \AdCaptcha\Settings\Settings();
-$settings->setup();
+$instantiate = new Instantiate();
+$instantiate->setup();
