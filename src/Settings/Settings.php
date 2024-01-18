@@ -7,8 +7,8 @@ class Settings {
     public function setup() {
         add_action('admin_menu', array($this, 'add_adcaptcha_options_page'));
         add_action('admin_enqueue_scripts', [ $this, 'add_styles_to_settings' ]);
-        add_filter('admin_footer_text', array($this, 'change_admin_footer_text'), 11);
-        add_filter('update_footer', array($this, 'change_admin_footer_version'), 11);
+        add_filter('admin_footer_text', array($this, 'change_admin_footer_text'));
+        add_filter('update_footer', array($this, 'change_admin_footer_version'), PHP_INT_MAX);
     }
     
     public function add_adcaptcha_options_page() {
@@ -44,16 +44,21 @@ class Settings {
             </div>
             <div>
             <div class="integrating-description">
-                <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link" href="https://app.adcaptcha.com/login" target="_blank">Dashboard &rarr;</a></p>
+                <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com/login" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
             </div>
             </div>
             <form method="post" class="form">
                 <?php
-                    echo '<input type="text" id="api_key" class="api-key-input" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
+                    echo '<label for="api_key" class="input-label">API Key</label>';
+                    echo '<input type="text" id="api_key" class="input-field" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
                 ?>
                 <?php
-                    echo '<input type="text" id="placement_id" class="placement-id" name="adcaptcha_option_name[placement_id]" value="' . esc_attr(get_option('adcaptcha_placement_id')) . '" placeholder="Placement ID">';
+                    echo '<label for="placement_id" class="input-label">Placement ID</label>';
+                    echo '<input type="text" id="placement_id" class="input-field" name="adcaptcha_option_name[placement_id]" value="' . esc_attr(get_option('adcaptcha_placement_id')) . '" placeholder="Placement ID">';
                 ?>
+                <div class="integrating-description">
+                    <p>By default the captcha will be placed on the Login, Register, Lost Password and Comments forms.</p>
+                </div>
                 <?php wp_nonce_field('adcaptcha_form_action'); ?>
                 <button type="submit" class="save-button">Save</button>
             </form>

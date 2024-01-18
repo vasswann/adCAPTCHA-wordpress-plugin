@@ -24,8 +24,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-add_action('wp_ajax_nopriv_verify_token', 'AdCaptcha\Widget\Verify\Verify::verify_token');
-add_action('wp_ajax_verify_token', 'AdCaptcha\Widget\Verify\Verify::verify_token');
+register_uninstall_hook( __FILE__, 'ad_captcha_uninstall' );
+
+function ad_captcha_uninstall() {
+    delete_option( 'adcaptcha_api_key' );
+    delete_option( 'adcaptcha_placement_id' );
+    delete_option( 'adcaptcha_success_token' );
+}
 
 $instantiate = new Instantiate();
 $instantiate->setup();
