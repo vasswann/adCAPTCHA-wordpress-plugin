@@ -9,13 +9,23 @@
  * @package AdCaptcha
  */
 
+require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
+require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Login.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Registration.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/PasswordReset.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Comments.php';
+require_once plugin_dir_path(__FILE__) . 'src/Widget/AdCaptcha.php';
+require_once plugin_dir_path(__FILE__) . 'src/Widget/Verify.php';
+
+use AdCaptcha\Instantiate;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-// Include the settings file
-require_once plugin_dir_path( __FILE__ ) . 'src/Settings/Settings.php';
+add_action('wp_ajax_nopriv_verify_token', 'AdCaptcha\Widget\Verify\Verify::verify_token');
+add_action('wp_ajax_verify_token', 'AdCaptcha\Widget\Verify\Verify::verify_token');
 
-// Instantiate the Settings class and call its setup method
-$settings = new \AdCaptcha\Settings\Settings();
-$settings->setup();
+$instantiate = new Instantiate();
+$instantiate->setup();
