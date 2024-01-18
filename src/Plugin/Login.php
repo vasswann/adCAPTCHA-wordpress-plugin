@@ -15,10 +15,12 @@ class Login {
     }
 
     public function verify( $errors ) {
-        $response = Verify::verify_token();
+        $verify = new Verify();
+        $response = $verify->verify_token();
 
-        if ( !$response ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>ERROR</strong>: Invalid captcha.', 'ad-captcha' ) );
+
+        if ( $response === false ) {
+            $errors = new WP_Error('ad_captcha_error', __( '<strong>ERROR</strong>: Invalid captcha, Try again.', 'ad-captcha' ));
         }
 
         return $errors;

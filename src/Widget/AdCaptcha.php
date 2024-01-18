@@ -28,7 +28,7 @@ class AdCaptcha {
                                 url: adcaptcha_vars.ajax_url,
                                 type: "POST",
                                 data: {
-                                    action: "verify_token",
+                                    action: "save_token",
                                     successToken: window.adcap.successToken,
                                     nonce: adcaptcha_vars.nonce,
                                 }
