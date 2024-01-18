@@ -20,7 +20,7 @@ class Login {
 
 
         if ( $response === false ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>ERROR</strong>: Invalid captcha, Try again.', 'ad-captcha' ));
+            $errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha' ));
         }
 
         return $errors;

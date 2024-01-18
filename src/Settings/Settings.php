@@ -13,8 +13,8 @@ class Settings {
     
     public function add_adcaptcha_options_page() {
         add_options_page(
-            'AdCaptcha',
-            'AdCaptcha',
+            'adCaptcha',
+            'adCaptcha',
             'manage_options',
             'adcaptcha',
             array($this, 'render_adcaptcha_options_page')
@@ -62,7 +62,7 @@ class Settings {
     }
 
     public function change_admin_footer_text() {
-        return '© 2024 AdCaptcha. All rights reserved.';
+        return '© 2024 adCaptcha. All rights reserved.';
     }
 
     public function change_admin_footer_version() {
