@@ -10,7 +10,7 @@ class PasswordReset {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("lostpassword_form");
+        $adCaptcha->setup("lostpassword_form", "lostpassword_form");
         add_action( 'lostpassword_post', [ $this, 'verify' ], 10, 1 );
     }
 

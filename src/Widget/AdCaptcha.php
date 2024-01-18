@@ -4,9 +4,9 @@ namespace AdCaptcha\Widget\AdCaptcha;
 
 class AdCaptcha {
 
-    public function setup($string) {
-        add_action('login_enqueue_scripts', array($this, 'enqueue_scripts'));
-        add_action($string, array($this, 'captcha_trigger'));
+    public function setup($scriptLocation, $triggerLocation) {
+        add_action($scriptLocation, array($this, 'enqueue_scripts'));
+        add_action($triggerLocation, array($this, 'captcha_trigger'));
     }
 
     public function enqueue_scripts() {

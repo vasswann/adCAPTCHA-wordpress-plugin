@@ -10,7 +10,7 @@ class Comments {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("comment_form_submit_field");
+        $adCaptcha->setup("comment_form", "comment_form_submit_field");
         add_action( 'pre_comment_approved', [ $this, 'verify' ], 10, 1 );
     }
 

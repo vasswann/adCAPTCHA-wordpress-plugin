@@ -10,7 +10,7 @@ class Login {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("login_form");
+        $adCaptcha->setup("login_enqueue_scripts", "login_form");
         add_action( 'wp_authenticate_user', [ $this, 'verify' ], 10, 1 );
     }
 

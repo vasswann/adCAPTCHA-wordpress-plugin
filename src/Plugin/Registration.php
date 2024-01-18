@@ -10,7 +10,7 @@ class Registration {
 
     public function setup() {
         $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("register_form");
+        $adCaptcha->setup("login_enqueue_scripts", "register_form");
         add_action( 'registration_errors', [ $this, 'verify' ], 10, 1 );
     }
 
