@@ -9,8 +9,8 @@ use WP_Error;
 class Login {
 
     public function setup() {
-        $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("login_enqueue_scripts", "login_form");
+        add_action( 'login_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
+        add_action( 'login_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'wp_authenticate_user', [ $this, 'verify' ], 10, 1 );
     }
 

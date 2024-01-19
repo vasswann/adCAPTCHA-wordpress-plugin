@@ -9,9 +9,9 @@ use WP_Error;
 class Comments {
 
     public function setup() {
-        $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("comment_form", "comment_form_submit_field");
-        add_action( 'pre_comment_approved', [ $this, 'verify' ], 10, 1 );
+        add_action( 'comment_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
+        add_filter( 'comment_form_submit_field', [ $this, 'captcha_trigger_filter' ] );
+        add_action( 'pre_comment_approved', [ $this, 'verify' ], 20, 1 );
     }
 
     public function verify( $errors ) {
@@ -24,5 +24,9 @@ class Comments {
         }
 
         return $errors;
+    }
+
+    public function captcha_trigger_filter($submit_field) {
+        return AdCaptcha::captcha_trigger() . $submit_field;
     }
 }
