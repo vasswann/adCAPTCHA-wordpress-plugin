@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
+// Deletes data saved in the wp db on plugin uninstall
 register_uninstall_hook( __FILE__, 'ad_captcha_uninstall' );
 
 function ad_captcha_uninstall() {

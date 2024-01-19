@@ -4,7 +4,6 @@ namespace AdCaptcha\Plugin\Comments;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
-use WP_Error;
 
 class Comments {
 
@@ -26,6 +25,7 @@ class Comments {
         return $approved;
     }
 
+    // Renders the captcha before the submit button
     public function captcha_trigger_filter($submit_field) {
         return AdCaptcha::captcha_trigger() . $submit_field;
     }

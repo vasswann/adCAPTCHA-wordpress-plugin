@@ -26,8 +26,9 @@ class Settings {
     }
      
     public function render_adcaptcha_options_page() {
+        // Saves the Api Key and Placements ID in the wp db
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Verify the nonce
+            // Verify the nonce
             if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'adcaptcha_form_action')) {
                 die('Invalid nonce');
             }
