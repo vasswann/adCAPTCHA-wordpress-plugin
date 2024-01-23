@@ -68,7 +68,8 @@ class Settings {
     }
 
     public function change_admin_footer_text() {
-        return '© 2024 adCaptcha. All rights reserved.';
+        $current_year = date('Y');
+        return '© ' . $current_year . ' adCaptcha. All rights reserved.';
     }
 
     public function change_admin_footer_version() {
