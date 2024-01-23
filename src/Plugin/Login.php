@@ -9,8 +9,8 @@ use WP_Error;
 class Login {
 
     public function setup() {
-        $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("login_form");
+        add_action( 'login_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
+        add_action( 'login_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'wp_authenticate_user', [ $this, 'verify' ], 10, 1 );
     }
 
@@ -18,9 +18,8 @@ class Login {
         $verify = new Verify();
         $response = $verify->verify_token();
 
-
         if ( $response === false ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>ERROR</strong>: Invalid captcha, Try again.', 'ad-captcha' ));
+            $errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha' ));
         }
 
         return $errors;

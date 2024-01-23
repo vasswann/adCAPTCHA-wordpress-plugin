@@ -4,11 +4,13 @@ namespace AdCaptcha\Widget\Verify;
 
 class Verify {
 
+    // The actions are triggered after a post request is sent with action save_token
     public static function init() {
         add_action('wp_ajax_save_token', array(__CLASS__, 'save_token'));
         add_action('wp_ajax_nopriv_save_token', array(__CLASS__, 'save_token'));
     }
 
+    // Gets the successToken from the captcha trigger post request
     public static function save_token() {
         check_ajax_referer('adcaptcha_nonce', 'nonce');
         if (isset($_POST['successToken'])) {

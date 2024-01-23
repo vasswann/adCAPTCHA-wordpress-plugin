@@ -9,8 +9,8 @@ use WP_Error;
 class PasswordReset {
 
     public function setup() {
-        $adCaptcha = new AdCaptcha();
-        $adCaptcha->setup("lostpassword_form");
+        add_action( 'lostpassword_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
+        add_action( 'lostpassword_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'lostpassword_post', [ $this, 'verify' ], 10, 1 );
     }
 
