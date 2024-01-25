@@ -16,7 +16,7 @@ class Login {
 
     public function verify( $validation_error, $login, $password ) {
         global $wordpressLogin;
-        remove_action( 'wp_authenticate_user', [ $wordpressLogin , 'verify' ], 10 );
+        remove_action( 'wp_authenticate_user', [ $wordpressLogin, 'verify' ], 10 );
         $response = Verify::verify_token();
 
         if ( $response === false ) {

@@ -9,6 +9,8 @@ use WP_Error;
 class Registration {
 
     public function setup() {
+        global $wordpressRegistration;
+        $wordpressRegistration = $this;
         add_action( 'register_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'register_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'registration_errors', [ $this, 'verify' ], 10, 1 );

@@ -10,6 +10,7 @@ use AdCaptcha\Plugin\Comments\Comments;
 use AdCaptcha\Plugin\Woocommerce\Login\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Checkout\Checkout as WoocommerceCheckout;
+use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
 
 class Instantiate {
 
@@ -37,5 +38,8 @@ class Instantiate {
 
         $woocommerceCheckout = new WoocommerceCheckout();
         $woocommerceCheckout->setup();
+
+        $woocommerceRegistration = new WoocommerceRegistration();   
+        $woocommerceRegistration->setup();
     }
 }
