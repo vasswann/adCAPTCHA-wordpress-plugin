@@ -11,10 +11,12 @@ class PasswordReset {
     public function setup() {
         add_action( 'woocommerce_lostpassword_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'woocommerce_lostpassword_form', [ AdCaptcha::class, 'captcha_trigger' ] );
-        add_filter( 'lostpassword_post', [ $this, 'verify' ], 20, 1 );
+        add_filter( 'lostpassword_post', [ $this, 'verify' ], 10, 1 );
     }
 
     public function verify( $error ) {
+        global $wordpressPassword;
+        remove_action( 'lostpassword_post', [ $wordpressPassword, 'verify' ], 10 );
         $response = Verify::verify_token();
 
         if ( !$response ) {
