@@ -47,4 +47,4 @@ For more information, visit the [adCaptcha Documentation](https://docs.adcaptcha
 == Changelog ==
 
 = 1.0 =
-* Plugin Published
+- New: adCAPTCHA Plugin Published
