@@ -13,7 +13,7 @@ class Registration {
         $wordpressRegistration = $this;
         add_action( 'register_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'register_form', [ AdCaptcha::class, 'captcha_trigger' ] );
-        add_action( 'registration_errors', [ $this, 'verify' ], 10, 1 );
+        add_action( 'registration_errors', [ $wordpressRegistration, 'verify' ], 10, 1 );
     }
 
     public function verify( $errors ) {
