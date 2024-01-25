@@ -1,21 +1,29 @@
-=== adCaptcha ===
+=== adCAPTCHA ===
 
 Contributors: adcaptcha
-Tags: captcha, recaptcha, spam, anti-spam, gdpr, block bots, security, abuse, adcaptcha
+Tags: spam, anti-spam, block bots, security, adcaptcha
 Requires at least: 1.0
 Tested up to: 1.0
 Stable tag: 1.0
+Requires PHP: 7.4
 
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-AdCaptcha revolutionises your customer’s security experience, reducing time to solve by 94.33%.
+adCAPTCHA revolutionises your customer’s security experience, reducing time to solve by 94.33%.
 
 == Description ==
 
 [embed]https://www.youtube.com/watch?v=g_ub6Olcbnc[/embed]
 
-TODO
+== Supported Forms ==
+
+**WordPress**
+
+* Login
+* Comments
+* ForgotPassword
+* Register
 
 == Installation ==
 
@@ -27,10 +35,6 @@ TODO
 4. Enter your API Key and Placement ID
 
 For more information, visit the [adCaptcha Documentation](https://docs.adcaptcha.com)
-
-== Frequently Asked Questions ==
-
-TODO
 
 == Screenshots ==
 

@@ -36,6 +36,6 @@ class AdCaptcha {
     }    
 
     public static function captcha_trigger() {
-        echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px;"></div>';
+        echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>';
     }
 }

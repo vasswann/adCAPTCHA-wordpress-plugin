@@ -1,12 +1,16 @@
 <?php
 /**
- * Plugin Name: adCaptcha
+ * Plugin Name: adCAPTCHA
  * Plugin URI: http://www.adcaptcha.com
- * Description: adCaptcha revolutionises your customer’s security experience, reducing time to solve by 94.33%.
+ * Description: adCAPTCHA revolutionises your customer’s security experience, reducing time to solve by 94.33%.
  * Version: 1.0
- * Author: adCaptcha
+ * Requires PHP: 7.4
+ * Author: adCAPTCHA
+ * Text Domain: adCAPTCHA-wordpress-plugin
+ * Domain Path: /languages
  * 
- * @package adCaptcha
+ * @package adCAPTCHA
+ * @copyright 2024 adCAPTCHA. All rights reserved.
  */
 
 require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
