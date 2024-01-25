@@ -4,7 +4,6 @@ namespace AdCaptcha\Plugin\Woocommerce\Login;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
-use AdCaptcha\Plugin\Login\Login as WordpressLogin;
 use WP_Error;
 
 class Login {
