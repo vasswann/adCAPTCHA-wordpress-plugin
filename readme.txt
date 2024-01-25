@@ -14,7 +14,7 @@ adCAPTCHA revolutionises your customer’s security experience, reducing time to
 
 == Description ==
 
-[embed]https://www.youtube.com/watch?v=g_ub6Olcbnc[/embed]
+[youtube https://www.youtube.com/watch?v=g_ub6Olcbnc]
 
 == Supported Forms ==
 
