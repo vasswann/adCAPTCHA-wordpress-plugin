@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: adCAPTCHA
- * Plugin URI: https://adcaptcha.com
  * Description: Secure your site. Elevate your brand. Boost Ad Revenue.
  * Version: 1.0
  * Requires at least: 6.4.2
