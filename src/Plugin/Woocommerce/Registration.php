@@ -20,7 +20,7 @@ class Registration {
         $response = Verify::verify_token();
 
         if ( !$response ) {
-            $validation_errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha' ) );
+            $validation_errors = new WP_Error('ad_captcha_error', __( 'Incomplete captcha, Please try again.', 'ad-captcha' ) );
         }
 
         return $validation_errors;
