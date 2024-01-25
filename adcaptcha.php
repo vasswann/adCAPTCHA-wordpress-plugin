@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: adCaptcha
+ * Plugin Name: adCAPTCHA
  * Plugin URI: http://www.adcaptcha.com
- * Description: adCaptcha revolutionises your customer’s security experience, reducing time to solve by 94.33%.
+ * Description: adCAPTCHA revolutionises your customer’s security experience, reducing time to solve by 94.33%.
  * Version: 1.0
- * Author: adCaptcha
+ * Author: adCAPTCHA
  * 
- * @package adCaptcha
+ * @package adCAPTCHA
  */
 
 require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
@@ -19,8 +19,8 @@ require_once plugin_dir_path(__FILE__) . 'src/Widget/AdCaptcha.php';
 require_once plugin_dir_path(__FILE__) . 'src/Widget/Verify.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Login.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/PasswordReset.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Checkout.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Registration.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Checkout.php';
 
 use AdCaptcha\Instantiate;
 

@@ -13,8 +13,8 @@ class Settings {
     
     public function add_adcaptcha_options_page() {
         add_options_page(
-            'adCaptcha',
-            'adCaptcha',
+            'adCAPTCHA',
+            'adCAPTCHA',
             'manage_options',
             'adcaptcha',
             array($this, 'render_adcaptcha_options_page')
@@ -69,7 +69,7 @@ class Settings {
 
     public function change_admin_footer_text() {
         $current_year = date('Y');
-        return '© ' . $current_year . ' adCaptcha. All rights reserved.';
+        return '© ' . $current_year . ' adCAPTCHA. All rights reserved.';
     }
 
     public function change_admin_footer_version() {
