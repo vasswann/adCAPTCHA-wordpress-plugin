@@ -4,12 +4,7 @@ namespace AdCaptcha\Widget\AdCaptcha;
 
 class AdCaptcha {
 
-    public function setup($string) {
-        add_action('login_enqueue_scripts', array($this, 'enqueue_scripts'));
-        add_action($string, array($this, 'captcha_trigger'));
-    }
-
-    public function enqueue_scripts() {
+    public static function enqueue_scripts() {
         wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), null, true);
     
         $ajax_nonce = wp_create_nonce("adcaptcha_nonce");
@@ -40,8 +35,7 @@ class AdCaptcha {
         </script>';
     }    
 
-    public function captcha_trigger() {
+    public static function captcha_trigger() {
         echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px;"></div>';
     }
-
 }
