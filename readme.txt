@@ -20,7 +20,7 @@ One of adCAPTCHA's notable features is its commitment to privacy and data protec
 
 Moreover, the implementation of adCAPTCHA is designed with performance in mind. It doesn't introduce unnecessary delays or slowdowns to your site, ensuring that the user experience remains swift and efficient. By striking this balance between security, user experience, and data protection, adCAPTCHA emerges as a valuable tool for fortifying your website against unwanted spam and abuse without compromising on the integrity of your brand.
 
-[embed]https://www.youtube.com/watch?v=g_ub6Olcbnc[/embed]
+[youtube https://www.youtube.com/watch?v=g_ub6Olcbnc]
 
 == Supported Forms ==
 
