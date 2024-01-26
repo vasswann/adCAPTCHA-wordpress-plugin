@@ -16,8 +16,8 @@ class PasswordReset {
     }
 
     public function remove_wp_action() {
-        global $wordpressPasswordReset;
-        remove_action( 'lostpassword_post', [ $wordpressPasswordReset, 'verify' ], 10 );
+        global $adCAPTCHAWordpressPasswordReset;
+        remove_action( 'lostpassword_post', [ $adCAPTCHAWordpressPasswordReset, 'verify' ], 10 );
     }
 
     public function verify( $error ) {

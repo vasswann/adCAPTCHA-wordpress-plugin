@@ -9,11 +9,11 @@ use WP_Error;
 class Registration {
 
     public function setup() {
-        global $wordpressRegistration;
-        $wordpressRegistration = $this;
+        global $adCAPTCHAWordpressRegistration;
+        $adCAPTCHAWordpressRegistration = $this;
         add_action( 'register_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'register_form', [ AdCaptcha::class, 'captcha_trigger' ] );
-        add_action( 'registration_errors', [ $wordpressRegistration, 'verify' ], 10, 1 );
+        add_action( 'registration_errors', [ $adCAPTCHAWordpressRegistration, 'verify' ], 10, 1 );
     }
 
     public function verify( $errors ) {
