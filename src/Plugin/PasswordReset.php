@@ -9,11 +9,11 @@ use WP_Error;
 class PasswordReset {
 
     public function setup() {
-        global $wordpressPassword;
-        $wordpressPassword = $this;
+        global $wordpressPasswordReset;
+        $wordpressPasswordReset = $this;
         add_action( 'lostpassword_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'lostpassword_form', [ AdCaptcha::class, 'captcha_trigger' ] );
-        add_action( 'lostpassword_post', [ $wordpressPassword, 'verify' ], 10, 1 );
+        add_action( 'lostpassword_post', [ $wordpressPasswordReset, 'verify' ], 10, 1 );
     }
 
     public function verify( $errors ) {
