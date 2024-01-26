@@ -22,6 +22,9 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/PasswordReset.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Comments.php';
 require_once plugin_dir_path(__FILE__) . 'src/Widget/AdCaptcha.php';
 require_once plugin_dir_path(__FILE__) . 'src/Widget/Verify.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Login.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/PasswordReset.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Registration.php';
 
 use AdCaptcha\Instantiate;
 
