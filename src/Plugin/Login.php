@@ -9,11 +9,11 @@ use WP_Error;
 class Login {
 
     public function setup() {
-        global $wordpressLogin;
-        $wordpressLogin = $this;
+        global $adCAPTCHAWordpressLogin;
+        $adCAPTCHAWordpressLogin = $this;
         add_action( 'login_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'login_form', [ AdCaptcha::class, 'captcha_trigger' ] );
-        add_action( 'wp_authenticate_user', [ $wordpressLogin, 'verify' ], 10, 1 );
+        add_action( 'wp_authenticate_user', [ $adCAPTCHAWordpressLogin, 'verify' ], 10, 1 );
     }
 
     public function verify( $errors ) {

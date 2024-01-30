@@ -15,8 +15,8 @@ class Registration {
     }
 
     public function verify( $validation_errors, $username, $email ) {
-        global $wordpressRegistration;
-        remove_action( 'registration_errors', [ $wordpressRegistration, 'verify' ], 10 );
+        global $adCAPTCHAWordpressRegistration;
+        remove_action( 'registration_errors', [ $adCAPTCHAWordpressRegistration, 'verify' ], 10 );
         $response = Verify::verify_token();
 
         if ( !$response ) {
