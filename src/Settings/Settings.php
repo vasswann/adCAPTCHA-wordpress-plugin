@@ -68,7 +68,7 @@ class Settings {
     }
 
     public function change_admin_footer_text() {
-        $current_year = date('Y');
+        $current_year = gmdate('Y');
         return '© ' . $current_year . ' adCAPTCHA. All rights reserved.';
     }
 
