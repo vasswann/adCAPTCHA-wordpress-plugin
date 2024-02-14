@@ -2,7 +2,7 @@ name: Deploy to WordPress SVN
 on:
   release:
     types:
-    - published
+      - published
 jobs:
   tag:
     name: New Release of adCAPTCHA WordPress Plugin
