@@ -24,6 +24,27 @@ class Settings {
     public function add_styles_to_settings() {
         wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__));
     }
+
+    public static function verify_input_data($api_key, $placement_id) {
+        $url = 'https://api.adcaptcha.com/placements/' . $placement_id;
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $api_key,
+        ];
+
+        $response = wp_remote_post($url, array(
+            'headers' => $headers,
+        ));
+
+        if (is_wp_error($response)) {
+            return false;
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $message = json_decode($body);
+
+        return $message;
+    }
      
     public function render_adcaptcha_options_page() {
         // Saves the Api Key and Placements ID in the wp db
@@ -32,6 +53,39 @@ class Settings {
             if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'adcaptcha_form_action')) {
                 die('Invalid nonce');
             }
+
+            $url = 'https://api.adcaptcha.com/v1/placements/' . $_POST['adcaptcha_option_name']['placement_id'];
+            $headers = [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $_POST['adcaptcha_option_name']['api_key'],
+            ];
+    
+            $response = wp_remote_get($url, array(
+                'headers' => $headers,
+            ));
+            
+            if (is_wp_error($response)) {
+                $error_message = $response->get_error_message();
+                echo "Something went wrong: $error_message";
+            } else {
+                $body = wp_remote_retrieve_body($response);
+                $code = wp_remote_retrieve_response_code($response);
+                $message = wp_remote_retrieve_response_message($response);
+                $headers = wp_remote_retrieve_headers($response);
+                $cookies = wp_remote_retrieve_cookies($response);
+
+                echo "Body: $body";
+                echo "Status Code: $code";
+                echo "Status Message: $message";
+                print_r($headers);
+                print_r($cookies);
+            }
+
+            // $result = Settings::verify_input_data($_POST['adcaptcha_option_name']['api_key'], $_POST['adcaptcha_option_name']['placement_id']);
+            // if ($result) {
+            //     echo '<div class="result-message">Result: ' . $result . '</div>';
+            //     return;
+            // }
 
             update_option('adcaptcha_api_key', sanitize_text_field($_POST['adcaptcha_option_name']['api_key']));
             update_option('adcaptcha_placement_id', sanitize_text_field($_POST['adcaptcha_option_name']['placement_id']));
