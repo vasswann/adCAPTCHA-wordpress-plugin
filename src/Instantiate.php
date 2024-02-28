@@ -17,25 +17,28 @@ class Instantiate {
         $settings = new Settings();
         $settings->setup();
 
-        $login = new Login();
-        $login->setup();
+        if (get_option('adcaptcha_render_captcha') === '1') {
+            $login = new Login();
+            $login->setup();
 
-        $registration = new Registration();
-        $registration->setup();
+            $registration = new Registration();
+            $registration->setup();
 
-        $passwordReset = new PasswordReset();
-        $passwordReset->setup();
+            $passwordReset = new PasswordReset();
+            $passwordReset->setup();
 
-        $comments = new Comments();
-        $comments->setup();
 
-        $woocommerceLogin = new WoocommerceLogin();
-        $woocommerceLogin->setup();
+            $comments = new Comments();
+            $comments->setup();
 
-        $woocommercePasswordReset = new WoocommercePasswordReset();
-        $woocommercePasswordReset->setup();
+            $woocommerceLogin = new WoocommerceLogin();
+            $woocommerceLogin->setup();
 
-        $woocommerceRegistration = new WoocommerceRegistration();   
-        $woocommerceRegistration->setup();
+            $woocommercePasswordReset = new WoocommercePasswordReset();
+            $woocommercePasswordReset->setup();
+
+            $woocommerceRegistration = new WoocommerceRegistration();   
+            $woocommerceRegistration->setup();
+        }
     }
 }
