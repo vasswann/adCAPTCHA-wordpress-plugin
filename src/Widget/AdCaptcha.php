@@ -16,26 +16,37 @@ class AdCaptcha {
         echo '<script type="text/javascript">
             window.onload = function() {
                 if (window.adcap) {
-                    window.adcap.init();
-                    window.adcap.setupTriggers({
-                        onComplete: () => {
-                            jQuery.ajax({
-                                url: adcaptcha_vars.ajax_url,
-                                type: "POST",
-                                data: {
-                                    action: "save_token",
-                                    successToken: window.adcap.successToken,
-                                    nonce: adcaptcha_vars.nonce,
-                                }
-                            });
-                        }
-                    });
+                    ' . self::setupScript() . '
                 }
             }
         </script>';
-    }    
+    }
+    
+    public static function setupScript() {
+        return 'window.adcap.init();
+        window.adcap.setupTriggers({
+            onComplete: () => {
+                jQuery.ajax({
+                    url: adcaptcha_vars.ajax_url,
+                    type: "POST",
+                    data: {
+                        action: "save_token",
+                        successToken: window.adcap.successToken,
+                        nonce: adcaptcha_vars.nonce,
+                    }
+                });
+            }
+        });';
+    }
+
+    public static function ob_captcha_trigger() {
+		ob_start();
+        self::captcha_trigger();
+
+        return ob_get_clean();
+    }
 
     public static function captcha_trigger() {
-        return '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>';
+        echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>';
     }
 }
