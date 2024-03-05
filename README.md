@@ -1,6 +1,6 @@
 ![Banner](/assets/banner-1544x500.png)
 
-# adCAPTHCA WordPress Plugin
+# adCAPTCHA WordPress Plugin
 
 [adCAPTCHA](https://adcaptcha.com) serves as a robust defense mechanism against spam and abuse, safeguarding your website with challenges that strike a balance between being easy for humans to solve and challenging for automated bots. What sets adCAPTCHA apart is its innovative approach, leveraging your own media resources to craft these challenges. This not only ensures effective protection but also seamlessly integrates into your website, maintaining a smooth user experience without diverting attention from your brand.
 
