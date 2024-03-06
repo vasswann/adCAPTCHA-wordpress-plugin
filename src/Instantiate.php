@@ -10,6 +10,7 @@ use AdCaptcha\Plugin\Comments\Comments;
 use AdCaptcha\Plugin\Woocommerce\Login\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
+use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 
 class Instantiate {
 
@@ -39,6 +40,9 @@ class Instantiate {
 
             $woocommerceRegistration = new WoocommerceRegistration();   
             $woocommerceRegistration->setup();
+
+            $contactForm7 = new ContactForm7();
+            $contactForm7->setup();
         }
     }
 }
