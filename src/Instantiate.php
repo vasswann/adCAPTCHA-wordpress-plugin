@@ -10,6 +10,7 @@ use AdCaptcha\Plugin\Comments\Comments;
 use AdCaptcha\Plugin\Woocommerce\Login\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
+use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 
 class Instantiate {
 
@@ -17,25 +18,31 @@ class Instantiate {
         $settings = new Settings();
         $settings->setup();
 
-        $login = new Login();
-        $login->setup();
+        if (get_option('adcaptcha_render_captcha') === '1') {
+            $login = new Login();
+            $login->setup();
 
-        $registration = new Registration();
-        $registration->setup();
+            $registration = new Registration();
+            $registration->setup();
 
-        $passwordReset = new PasswordReset();
-        $passwordReset->setup();
+            $passwordReset = new PasswordReset();
+            $passwordReset->setup();
 
-        $comments = new Comments();
-        $comments->setup();
 
-        $woocommerceLogin = new WoocommerceLogin();
-        $woocommerceLogin->setup();
+            $comments = new Comments();
+            $comments->setup();
 
-        $woocommercePasswordReset = new WoocommercePasswordReset();
-        $woocommercePasswordReset->setup();
+            $woocommerceLogin = new WoocommerceLogin();
+            $woocommerceLogin->setup();
 
-        $woocommerceRegistration = new WoocommerceRegistration();   
-        $woocommerceRegistration->setup();
+            $woocommercePasswordReset = new WoocommercePasswordReset();
+            $woocommercePasswordReset->setup();
+
+            $woocommerceRegistration = new WoocommerceRegistration();   
+            $woocommerceRegistration->setup();
+
+            $contactForm7 = new ContactForm7();
+            $contactForm7->setup();
+        }
     }
 }
