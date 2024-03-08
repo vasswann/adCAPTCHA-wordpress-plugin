@@ -22,7 +22,7 @@ class AdCaptcha {
         </script>';
     }
     
-    public static function setupScript($enableSubmitButton) {
+    public static function setupScript($enableSubmitButton = false) {
         return 'window.adcap.init();
         window.adcap.setupTriggers({
             onComplete: () => {
