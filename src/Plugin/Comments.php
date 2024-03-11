@@ -19,7 +19,7 @@ class Comments {
 
 
         if ( $response === false ) {
-            wp_die(__('<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha'), '', ['response' => 400, 'back_link' => true]);
+            wp_die(__('<strong>Error</strong>: Incomplete captcha, Please try again.', 'adcaptcha'), '', ['response' => 400, 'back_link' => true]);
         }
 
         return $approved;

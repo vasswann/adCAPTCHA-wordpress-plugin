@@ -48,21 +48,20 @@ class Settings {
         $saved_successfully = false;
         // Saves the Api Key and Placements ID in the wp db
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $nonce = sanitize_text_field(wp_unslash($_POST['_wpnonce']));
             // Verify the nonce
-            if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'adcaptcha_form_action')) {
+            if (!isset($nonce) || !wp_verify_nonce($nonce, 'adcaptcha_form_action')) {
                 die('Invalid nonce');
             }
 
             $response = $this->verify_input_data($_POST['adcaptcha_option_name']['api_key'], $_POST['adcaptcha_option_name']['placement_id']);
             if ($response['response']['code'] === 200) {
-                update_option('adcaptcha_api_key', sanitize_text_field($_POST['adcaptcha_option_name']['api_key']));
-                update_option('adcaptcha_placement_id', sanitize_text_field($_POST['adcaptcha_option_name']['placement_id']));
+                update_option('adcaptcha_api_key', sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['api_key'])));
+                update_option('adcaptcha_placement_id', sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['placement_id'])));
                 update_option('adcaptcha_render_captcha', true);
                 $saved_successfully = true;
             } else {
                 $save_error = true;
-                update_option('adcaptcha_api_key', '');
-                update_option('adcaptcha_placement_id', '');
                 update_option('adcaptcha_render_captcha', false);
             }
         }
@@ -70,17 +69,21 @@ class Settings {
         ?>
         <div>
             <div class="header container">
-                <?php printf('<img src="%s" class="logo"/>', esc_url('https://assets.adcaptcha.com/mail/logo_gradient.png')); ?>
+                <?php printf('<img src="%s" class="logo"/>', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/logo_gradient.png')); ?>
                 <hr>
             </div>
             <div class="integrating-description">
                 <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
             </div>
-            <?php if ($save_error === true) : ?>
-                <div class="notice notice-error settings-error">Invalid Placement ID or API Key. Please try again.</div>
-            <?php endif; ?>
             <?php if ($saved_successfully === true) : ?>
-                <div class="notice notice-success settings-error">Settings saved successfully. The captcha will now be displayed.</div>
+                <div style="background-color: #22C55E; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 450px; font-size: 14px;">
+                    Settings saved successfully. The captcha will now be displayed.
+                </div>
+            <?php endif; ?>
+            <?php if (get_option('adcaptcha_render_captcha') !== '1' && $saved_successfully !== true || $save_error === true) : ?>
+                <div style="background-color: #DC2626; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 800px; font-size: 14px;">
+                    Placement ID or API Key is Invalid. Please try again. Captcha will not be displayed until the settings are saved successfully.
+                </div>
             <?php endif; ?>
             <form method="post" class="form">
                 <?php

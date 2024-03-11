@@ -13,13 +13,14 @@ class AdCaptcha {
             'nonce'    => $ajax_nonce,
         ));
     
-        echo '<script type="text/javascript">
+        $inline_script = '
             window.onload = function() {
                 if (window.adcap) {
                     ' . self::setupScript() . '
                 }
             }
-        </script>';
+        ';
+        wp_add_inline_script('adcaptcha-script', $inline_script);
     }
     
     public static function setupScript() {

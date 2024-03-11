@@ -45,10 +45,13 @@ class Forms {
     }
 
     public function reset_captcha_script() {
-        echo '<script type="text/javascript">
+        wp_enqueue_script('adcaptcha-reset', '', [], false, true);
+        $inline_script = '
             document.addEventListener("wpcf7mailsent", function(event) {
                 ' . AdCaptcha::setupScript() . '
             }, false);
-        </script>';
+        ';
+
+        wp_add_inline_script('adcaptcha-reset', $inline_script);
     }
 }

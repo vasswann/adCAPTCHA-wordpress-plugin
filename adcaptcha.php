@@ -9,10 +9,14 @@
  * Author URI: https://adcaptcha.com
  * Text Domain: adCAPTCHA-wordpress-plugin
  * Domain Path: /languages
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * 
  * @package adCAPTCHA
  * @copyright 2024 adCAPTCHA. All rights reserved.
  */
+
+ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
@@ -29,17 +33,14 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/ContactForm7/Forms.php';
 
 use AdCaptcha\Instantiate;
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly.
-}
-
 // Deletes data saved in the wp db on plugin uninstall
-register_uninstall_hook( __FILE__, 'ad_captcha_uninstall' );
+register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
 
-function ad_captcha_uninstall() {
+function adcaptcha_uninstall() {
     delete_option( 'adcaptcha_api_key' );
     delete_option( 'adcaptcha_placement_id' );
     delete_option( 'adcaptcha_success_token' );
+    delete_option( 'adcaptcha_render_captcha' );
 }
 
 $instantiate = new Instantiate();

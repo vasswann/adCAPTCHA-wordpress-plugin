@@ -22,7 +22,7 @@ class Registration {
 
 
         if ( $response === false ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha' ));
+            $errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'adcaptcha' ));
         }
 
         return $errors;
