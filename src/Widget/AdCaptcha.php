@@ -12,14 +12,12 @@ class AdCaptcha {
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => $ajax_nonce,
         ));
-    
-        echo '<script type="text/javascript">
-            window.onload = function() {
-                if (window.adcap) {
-                    ' . self::setupScript($enableSubmitButton) . '
-                }
+
+        wp_add_inline_script( 'adcaptcha-script', 'window.onload = function() {
+            if (window.adcap) {
+                ' . self::setupScript($enableSubmitButton) . '
             }
-        </script>';
+        }');
     }
     
     public static function setupScript($enableSubmitButton = false) {
@@ -55,6 +53,6 @@ class AdCaptcha {
     }
 
     public static function captcha_trigger() {
-        echo '<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>';
+        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>');
     }
 }

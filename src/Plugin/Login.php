@@ -25,30 +25,29 @@ class Login {
         $response = $verify->verify_token();
 
         if ( $response === false ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'ad-captcha' ));
+            $errors = new WP_Error('adcaptcha_error', __( '<strong>Error</strong>: Incomplete captcha, Please try again.', 'adcaptcha' ));
         }
 
         return $errors;
     }
 
     public function disable_safari_auto_submit() {
-        echo '<script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            var form = document.querySelector("#loginform");
-            var submitButton = document.querySelector("#wp-submit");
+        wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("DOMContentLoaded", function() {
+                var form = document.querySelector("#loginform");
+                var submitButton = document.querySelector("#wp-submit");
 
-            if (form) {
-                if (submitButton) {
-                    submitButton.disabled = true;
-                }
-
-                form.addEventListener("submit", function(event) {
-                    if (!window.adcap.successToken) {
-                        event.preventDefault();
+                if (form) {
+                    if (submitButton) {
+                        submitButton.disabled = true;
                     }
-                });
-            }
-        });
-    </script>';
+
+                    form.addEventListener("submit", function(event) {
+                        if (!window.adcap.successToken) {
+                            event.preventDefault();
+                        }
+                    });
+                }
+            });'
+        );
     }
 }

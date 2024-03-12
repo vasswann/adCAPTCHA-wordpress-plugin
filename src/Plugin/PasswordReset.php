@@ -20,7 +20,7 @@ class PasswordReset {
         $response = Verify::verify_token();
 
         if ( !$response ) {
-            $errors = new WP_Error('ad_captcha_error', __( '<strong>ERROR</strong>: Invalid captcha.', 'ad-captcha' ) );
+            $errors = new WP_Error('adcaptcha_error', __( '<strong>ERROR</strong>: Invalid captcha.', 'adcaptcha' ) );
         }
 
         return $errors;
