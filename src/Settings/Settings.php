@@ -54,10 +54,12 @@ class Settings {
                 die('Invalid nonce');
             }
 
-            $response = $this->verify_input_data($_POST['adcaptcha_option_name']['api_key'], $_POST['adcaptcha_option_name']['placement_id']);
+            $api_key = sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['api_key']));
+            $placement_id = sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['placement_id']));
+            $response = $this->verify_input_data($api_key, $placement_id);
             if ($response['response']['code'] === 200) {
-                update_option('adcaptcha_api_key', sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['api_key'])));
-                update_option('adcaptcha_placement_id', sanitize_text_field(wp_unslash($_POST['adcaptcha_option_name']['placement_id'])));
+                update_option('adcaptcha_api_key', $api_key);
+                update_option('adcaptcha_placement_id', $placement_id);
                 update_option('adcaptcha_render_captcha', true);
                 $saved_successfully = true;
             } else {

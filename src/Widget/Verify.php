@@ -16,7 +16,6 @@ class Verify {
         $successToken = sanitize_text_field(wp_unslash($_POST['successToken']));
         if (isset($successToken)) {
             update_option('adcaptcha_success_token', $successToken);
-            print_r(get_option('adcaptcha_success_token'));
             wp_send_json_success('Success');
         } else {
             wp_send_json_success('Failed');
