@@ -7,7 +7,7 @@
  * Requires PHP: 7.4
  * Author: adCAPTCHA
  * Author URI: https://adcaptcha.com
- * Text Domain: adCAPTCHA-wordpress-plugin
+ * Text Domain: adcaptcha
  * Domain Path: /languages
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
