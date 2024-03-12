@@ -4,7 +4,7 @@ namespace AdCaptcha\Widget\AdCaptcha;
 
 class AdCaptcha {
 
-    public static function enqueue_scripts() {
+    public static function enqueue_scripts($enableSubmitButton = false) {
         wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), null, true);
     
         $ajax_nonce = wp_create_nonce("adcaptcha_nonce");
@@ -15,12 +15,12 @@ class AdCaptcha {
 
         wp_add_inline_script( 'adcaptcha-script', 'window.onload = function() {
             if (window.adcap) {
-                ' . self::setupScript() . '
+                ' . self::setupScript($enableSubmitButton) . '
             }
         }');
     }
     
-    public static function setupScript() {
+    public static function setupScript($enableSubmitButton = false) {
         return 'window.adcap.init();
         window.adcap.setupTriggers({
             onComplete: () => {
@@ -33,8 +33,16 @@ class AdCaptcha {
                         nonce: adcaptcha_vars.nonce,
                     }
                 });
+                ' . ($enableSubmitButton ? self::enable_submit_button() : '') . '
             }
         });';
+    }
+
+    public static function enable_submit_button() {
+        return 'var submitButton = document.querySelector("#wp-submit");
+        if (submitButton) {
+            submitButton.disabled = false;
+        }';
     }
 
     public static function ob_captcha_trigger() {
