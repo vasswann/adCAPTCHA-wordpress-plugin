@@ -16,7 +16,7 @@
  * @copyright 2024 adCAPTCHA. All rights reserved.
  */
 
- if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
