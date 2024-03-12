@@ -4,6 +4,7 @@ namespace AdCaptcha\Plugin\Comments;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use WP_Error;
 
 class Comments {
 
@@ -19,7 +20,7 @@ class Comments {
 
 
         if ( $response === false ) {
-            wp_die(__('<strong>Error</strong>: Incomplete captcha, Please try again.', 'adcaptcha'), '', ['response' => 400, 'back_link' => true]);
+            $approved = new WP_Error( 'adcaptcha_error', __( 'Incomplete captcha, Please try again', 'adcaptcha' ), 400 );
         }
 
         return $approved;

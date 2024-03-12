@@ -33,6 +33,8 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/ContactForm7/Forms.php';
 
 use AdCaptcha\Instantiate;
 
+const PLUGIN_VERSION = '1.0.0';
+
 // Deletes data saved in the wp db on plugin uninstall
 register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
 
