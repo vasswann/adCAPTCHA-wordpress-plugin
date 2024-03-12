@@ -12,15 +12,12 @@ class AdCaptcha {
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => $ajax_nonce,
         ));
-    
-        $inline_script = '
-            window.onload = function() {
-                if (window.adcap) {
-                    ' . self::setupScript() . '
-                }
+
+        wp_add_inline_script( 'adcaptcha-script', 'window.onload = function() {
+            if (window.adcap) {
+                ' . self::setupScript() . '
             }
-        ';
-        wp_add_inline_script('adcaptcha-script', $inline_script);
+        }');
     }
     
     public static function setupScript() {

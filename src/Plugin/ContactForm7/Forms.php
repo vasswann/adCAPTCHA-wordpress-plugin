@@ -9,7 +9,7 @@ class Forms {
 
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
-        add_filter( 'wp_enqueue_scripts', [ $this, 'reset_captcha_script' ], 9 );
+        add_action( 'wp_enqueue_scripts', [ $this, 'reset_captcha_script' ], 9 );
         add_filter( 'wpcf7_form_elements', [ $this, 'captcha_trigger_filter' ], 20, 1 );
         add_filter( 'wpcf7_spam', [ $this, 'verify' ], 9, 1 );
     }
@@ -45,13 +45,6 @@ class Forms {
     }
 
     public function reset_captcha_script() {
-        wp_enqueue_script('adcaptcha-reset', '', [], false, true);
-        $inline_script = '
-            document.addEventListener("wpcf7mailsent", function(event) {
-                ' . AdCaptcha::setupScript() . '
-            }, false);
-        ';
-
-        wp_add_inline_script('adcaptcha-reset', $inline_script);
+        wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("wpcf7mailsent", function(event) { ' . AdCaptcha::setupScript() . ' }, false);' );
     }
 }

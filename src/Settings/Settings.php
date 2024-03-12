@@ -88,7 +88,7 @@ class Settings {
             <form method="post" class="form">
                 <?php
                     echo '<label for="api_key" class="input-label">API Key</label>';
-                    echo '<input type="text" id="api_key" class="input-field" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
+                    echo '<input type="password" id="api_key" class="input-field" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
                 ?>
                 <?php
                     echo '<label for="placement_id" class="input-label">Placement ID</label>';
