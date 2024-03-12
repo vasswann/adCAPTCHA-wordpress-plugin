@@ -20,7 +20,7 @@ class Login {
         $response = Verify::verify_token();
 
         if ( $response === false ) {
-            $validation_error = new WP_Error('ad_captcha_error', __( 'Incomplete captcha, Please try again.', 'adcaptcha' ));
+            $validation_error = new WP_Error('adcaptcha_error', __( 'Incomplete captcha, Please try again.', 'adcaptcha' ));
         }
 
         return $validation_error;
