@@ -13,9 +13,9 @@ class Verify {
     // Gets the successToken from the captcha trigger post request
     public static function save_token() {
         check_ajax_referer('adcaptcha_nonce', 'nonce');
-        if (isset($_POST['successToken'])) {
-            update_option('adcaptcha_success_token', sanitize_text_field($_POST['successToken']));
-            print_r(get_option('adcaptcha_success_token'));
+        $successToken = sanitize_text_field(wp_unslash($_POST['successToken']));
+        if (isset($successToken)) {
+            update_option('adcaptcha_success_token', $successToken);
             wp_send_json_success('Success');
         } else {
             wp_send_json_success('Failed');
