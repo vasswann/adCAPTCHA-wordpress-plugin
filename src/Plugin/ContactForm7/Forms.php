@@ -26,7 +26,7 @@ class Forms {
             $spam = true;
             add_filter('wpcf7_display_message', function($message, $status) {
                 if ($status == 'spam') {
-                    $message = __( 'Incomplete captcha, Please try again.', 'adCAPTCHA' );
+                    $message = __( 'Incomplete captcha, Please try again.', 'adcaptcha' );
                 }
                 return $message;
             }, 10, 2);
