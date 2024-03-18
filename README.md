@@ -35,6 +35,10 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 
 * Forms
 
+### Mailchimp
+
+* Forms
+
 ## Privacy Notices
 
 adCAPTCHA adheres to GDPR regulations.

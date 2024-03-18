@@ -41,6 +41,10 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 
 * Forms
 
+**Mailchimp**
+
+* Forms
+
 == Installation ==
 
 **Installation**

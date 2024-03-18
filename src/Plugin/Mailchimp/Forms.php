@@ -36,13 +36,14 @@ class Forms {
     }
 
     public function form_preview_setup_triggers() {
-        $screen = get_current_screen();
-        if ($screen->id == 'mc4wp_page_mailchimp-for-wp-forms') {
-            echo '<script type="text/javascript">
-                setTimeout(() => {
-                        document.getElementById("mc4wp-form-content").addEventListener("change", () => { document.getElementById("mc4wp-form-preview").contentWindow.adcap.setupTriggers() }); 
-                }, 1000);
-            </script>';
-        }
+        wp_register_script('adcaptcha-mc4wp-preview-script', null);
+        wp_add_inline_script('adcaptcha-mc4wp-preview-script', 'window.onload = function() {
+            if (adminpage === "mc4wp_page_mailchimp-for-wp-forms") {
+                document.getElementById("mc4wp-form-content").addEventListener("change", function() {
+                    document.getElementById("mc4wp-form-preview").contentWindow.adcap.setupTriggers();
+                }); 
+            }
+        };');
+        wp_enqueue_script('adcaptcha-mc4wp-preview-script');
     }
 }
