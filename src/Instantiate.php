@@ -11,6 +11,7 @@ use AdCaptcha\Plugin\Woocommerce\Login\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
 use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
+use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
 
 class Instantiate {
 
@@ -43,6 +44,9 @@ class Instantiate {
 
             $contactForm7 = new ContactForm7();
             $contactForm7->setup();
+
+            $mailchimpForms = new MailchimpForms();
+            $mailchimpForms->setup();
         }
     }
 }
