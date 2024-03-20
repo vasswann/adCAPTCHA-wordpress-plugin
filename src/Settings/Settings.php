@@ -21,7 +21,7 @@ class Settings {
     }
 
     public function add_styles_to_settings() {
-        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__));
+        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__), array(), PLUGIN_VERSION);
     }
 
     public function verify_input_data($api_key, $placement_id) {
@@ -37,7 +37,7 @@ class Settings {
         
         if (is_wp_error($response)) {
             $error_message = $response->get_error_message();
-            echo "Something went wrong: $error_message";
+            echo esc_html("Something went wrong: $error_message");
         }
 
         return $response;
