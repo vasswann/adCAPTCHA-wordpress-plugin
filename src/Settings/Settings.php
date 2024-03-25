@@ -46,6 +46,7 @@ class Settings {
     public function render_adcaptcha_options_page() {
         $save_error = false;
         $saved_successfully = false;
+        $tab = 'general';
         // Saves the Api Key and Placements ID in the wp db
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nonce = sanitize_text_field(wp_unslash($_POST['_wpnonce']));
@@ -73,6 +74,18 @@ class Settings {
             <div class="header container">
                 <?php printf('<img src="%s" class="logo"/>', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/logo_gradient.png')); ?>
                 <hr>
+                <nav class="nav">
+                    <a href="?page=adcaptcha" class="nav-tab
+                        <?php
+                            if ( $tab === 'general' ) :
+                        ?>
+                    nav-tab-active<?php endif; ?>">General</a>
+                    <a href="?page=adcaptcha&tab=plugins" class="nav-tab
+                        <?php
+                            if ( $tab === 'plugins' ) :
+                        ?>
+                    nav-tab-active<?php endif; ?>">Plugins</a>
+                </nav>
             </div>
             <div class="integrating-description">
                 <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
