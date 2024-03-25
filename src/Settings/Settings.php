@@ -46,7 +46,8 @@ class Settings {
     public function render_adcaptcha_options_page() {
         $save_error = false;
         $saved_successfully = false;
-        $tab = 'general';
+        $tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $tab = isset( $tab ) ? $tab : 'general';
         // Saves the Api Key and Placements ID in the wp db
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nonce = sanitize_text_field(wp_unslash($_POST['_wpnonce']));
