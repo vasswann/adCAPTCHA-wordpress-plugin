@@ -43,7 +43,9 @@ class Plugins {
             if (!isset($nonce) || !wp_verify_nonce($nonce, 'adcaptcha_form_action')) {
                 die('Invalid nonce');
             }
-            $checked_ids = array_map('sanitize_text_field', wp_unslash($_POST['selected_plugins']));
+            $checked_ids = isset($_POST['selected_plugins']) && is_array($_POST['selected_plugins']) 
+            ? array_map('sanitize_text_field', wp_unslash($_POST['selected_plugins'])) 
+            : array();
             $selected_plugins = $checked_ids;
             update_option('adcaptcha_selected_plugins', $checked_ids);
         }
