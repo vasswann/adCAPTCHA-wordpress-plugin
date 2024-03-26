@@ -49,36 +49,33 @@ class General {
         }
 
         ?>
-        <div>
-            <div class="integrating-description">
-                <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
-            </div>
-            <?php if ($saved_successfully === true) : ?>
-                <div style="background-color: #22C55E; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 450px; font-size: 14px;">
-                    Settings saved successfully. The captcha will now be displayed.
-                </div>
-            <?php endif; ?>
-            <?php if (get_option('adcaptcha_render_captcha') !== '1' && $saved_successfully !== true || $save_error === true) : ?>
-                <div style="background-color: #DC2626; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 800px; font-size: 14px;">
-                    Placement ID or API Key is Invalid. Please try again. Captcha will not be displayed until the settings are saved successfully.
-                </div>
-            <?php endif; ?>
-            <form method="post" class="form">
-                <?php
-                    echo '<label for="api_key" class="input-label">API Key</label>';
-                    echo '<input type="password" id="api_key" class="input-field" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
-                ?>
-                <?php
-                    echo '<label for="placement_id" class="input-label">Placement ID</label>';
-                    echo '<input type="text" id="placement_id" class="input-field" name="adcaptcha_option_name[placement_id]" value="' . esc_attr(get_option('adcaptcha_placement_id')) . '" placeholder="Placement ID">';
-                ?>
+            <div>
                 <div class="integrating-description">
-                    <p>By default the captcha will be placed on the Login, Register, Lost Password and Comments forms.</p>
+                    <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
                 </div>
-                <?php wp_nonce_field('adcaptcha_form_action'); ?>
-                <button type="submit" class="save-button">Save</button>
-            </form>
-        </div>
+                <?php if ($saved_successfully === true) : ?>
+                    <div style="background-color: #22C55E; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 450px; font-size: 14px;">
+                        Settings saved successfully. The captcha will now be displayed.
+                    </div>
+                <?php endif; ?>
+                <?php if (get_option('adcaptcha_render_captcha') !== '1' && $saved_successfully !== true || $save_error === true) : ?>
+                    <div style="background-color: #DC2626; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 800px; font-size: 14px;">
+                        Placement ID or API Key is Invalid. Please try again. Captcha will not be displayed until the settings are saved successfully.
+                    </div>
+                <?php endif; ?>
+                <form method="post" class="form">
+                    <?php
+                        echo '<label for="api_key" class="input-label">API Key</label>';
+                        echo '<input type="password" id="api_key" class="input-field" name="adcaptcha_option_name[api_key]" value="' . esc_attr(get_option('adcaptcha_api_key')) . '" placeholder="API key">';
+                    ?>
+                    <?php
+                        echo '<label for="placement_id" class="input-label">Placement ID</label>';
+                        echo '<input type="text" id="placement_id" class="input-field" name="adcaptcha_option_name[placement_id]" value="' . esc_attr(get_option('adcaptcha_placement_id')) . '" placeholder="Placement ID">';
+                    ?>
+                    <?php wp_nonce_field('adcaptcha_form_action'); ?>
+                    <button type="submit" class="save-button">Save</button>
+                </form>
+            </div>
 		<?php
     }
 }

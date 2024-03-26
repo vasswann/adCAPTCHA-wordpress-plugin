@@ -46,6 +46,7 @@ function adcaptcha_uninstall() {
     delete_option( 'adcaptcha_placement_id' );
     delete_option( 'adcaptcha_success_token' );
     delete_option( 'adcaptcha_render_captcha' );
+    delete_option( 'adcaptcha_selected_plugins' );
 }
 
 $instantiate = new Instantiate();
