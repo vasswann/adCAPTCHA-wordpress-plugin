@@ -50,9 +50,6 @@ class Plugins {
             : array();
             $selected_plugins = $checked_ids;
             update_option('adcaptcha_selected_plugins', $checked_ids);
-            if (empty($checked_ids)) {
-                $saved_setting = false;
-            }
             $saved_setting = true;
         }
 
@@ -65,7 +62,7 @@ class Plugins {
                             Settings saved. Captcha will be displayed in the selected plugins.
                         </div>
                     <?php endif; ?>
-                    <?php if ($saved_setting === false) : ?>
+                    <?php if (empty($selected_plugins)) : ?>
                     <div style="background-color: #DC2626; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 800px; font-size: 14px;">
                     Captcha is currently not being displayed anywhere. Please select the plugins where you want the Captcha to be displayed.
                     </div>
