@@ -22,7 +22,7 @@
 }
 
 .plugin_logo {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     margin-top: 10px;
 }
 
@@ -61,17 +61,29 @@
 .plugin-form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     margin-right: 36px;
 }
 
-.plugins-container{
-    margin-top: 20px;
-    margin-left: 20px;
+.plugins-layout {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.integrating-description {
+.plugin-container {
+    background-color: white; 
+    padding: 20px 20px 0px 20px;
+    width: 320px;
+    height: 225px;
+    margin-bottom: 20px;
+    margin-right: 30px;
+    border-radius: 5px;
+}
+
+.plugins-container, .integrating-description {
     margin-top: 20px;
+    margin-left: 20px;
 }
 
 p {

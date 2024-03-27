@@ -49,8 +49,8 @@ class General {
         }
 
         ?>
-            <div>
-                <div class="integrating-description">
+            <div class="integrating-description">
+                <div>
                     <p>Before integrating, you must have an adCAPTCHA account and gone through the setup process. <a class="dashboard-link link" href="https://app.adcaptcha.com" target="_blank">Dashboard &rarr;</a><a class="documentation-link link" href="https://docs.adcaptcha.com/" target="_blank">Documentation &rarr;</a></p>
                 </div>
                 <?php if ($saved_successfully === true) : ?>
