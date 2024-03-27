@@ -45,11 +45,14 @@ class Plugins {
             if (!isset($nonce) || !wp_verify_nonce($nonce, 'adcaptcha_form_action')) {
                 die('Invalid nonce');
             }
-            $checked_ids = array_map('sanitize_text_field', wp_unslash($_POST['selected_plugins']));
-            $selected_plugins = isset($checked_ids) && is_array($checked_ids) 
-            ? $checked_ids
+            $checked_ids = isset($_POST['selected_plugins']) && is_array($_POST['selected_plugins']) 
+            ? array_map('sanitize_text_field', wp_unslash($_POST['selected_plugins'])) 
             : array();
-            update_option('adcaptcha_selected_plugins', $selected_plugins);
+            $selected_plugins = $checked_ids;
+            update_option('adcaptcha_selected_plugins', $checked_ids);
+            if (empty($checked_ids)) {
+                $saved_setting = false;
+            }
             $saved_setting = true;
         }
 
@@ -62,6 +65,11 @@ class Plugins {
                             Settings saved. Captcha will be displayed in the selected plugins.
                         </div>
                     <?php endif; ?>
+                    <?php if ($saved_setting === false) : ?>
+                    <div style="background-color: #DC2626; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 800px; font-size: 14px;">
+                    Captcha is currently not being displayed anywhere. Please select the plugins where you want the Captcha to be displayed.
+                    </div>
+                <?php endif; ?>
                     <form method="post" class="plugin-form">
                         <div class="plugins-layout">
                             <?php
