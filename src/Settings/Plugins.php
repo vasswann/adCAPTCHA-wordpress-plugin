@@ -50,7 +50,9 @@ class Plugins {
             : array();
             $selected_plugins = $checked_ids;
             update_option('adcaptcha_selected_plugins', $checked_ids);
-            $saved_setting = true;
+            if (!empty($selected_plugins)) {
+                $saved_setting = true;
+            }
         }
 
         ?>
