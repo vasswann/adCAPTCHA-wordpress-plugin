@@ -1,4 +1,4 @@
-=== adCAPTCHA ===
+=== adCAPTCHA for WordPress ===
 
 Contributors: adCAPTCHA
 Tags: spam, anti-spam, block bots, security, adCAPTCHA
