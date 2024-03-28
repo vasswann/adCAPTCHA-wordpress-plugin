@@ -4,7 +4,7 @@ Contributors: adCAPTCHA
 Tags: spam, anti-spam, block bots, security, adCAPTCHA
 Requires at least: 6.0
 Tested up to: 6.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,4 +80,7 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 - New: adCAPTCHA Plugin Published
 
 = 1.0.1 =
-- Patch: update plugin assets
+- Minor patch: update plugin assets
+
+= 1.0.2 =
+- Minor patch: changed plugin name
