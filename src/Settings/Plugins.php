@@ -58,7 +58,8 @@ class Plugins {
         ?>
                 <div class="plugins-container">
                     <h1>Manage Plugins</h1>
-                    <p>adCAPTCHA is compatible with the following plugins:</p>
+                    <p>adCAPTCHA integrates with other Wordpress plugins to provide a CAPTCHA that is both secure and user-friendly.</p>
+                    <p>If you are using a plugin that is not listed here, please contact our support team at<a class="link" href="mailto:support@adcaptcha.com"> support@adcaptcha.com.</a></p>
                     <?php if ($saved_setting === true) : ?>
                         <div style="background-color: #22C55E; color: #ffffff; padding: 10px; border-radius: 5px; margin: 10px 0; max-width: 450px; font-size: 14px;">
                             Settings saved. Captcha will be displayed in the selected plugins.
