@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: adCAPTCHA
+ * Plugin Name: adCAPTCHA for WordPress
  * Description: Secure your site. Elevate your brand. Boost Ad Revenue.
  * Version: 1.0.1
  * Requires at least: 6.4.2
