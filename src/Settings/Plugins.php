@@ -9,29 +9,21 @@ class Plugins {
             array(
                 'label' => 'Wordpress',
                 'logo' => 'wordpress_logo.png',
-                'logo_width' => '200px',
-                'logo_height' => '40px',
                 'options' => array('Login', 'Register', 'Comments', 'Forgot Password')
             ),
             array(
                 'label' => 'Woocommerce',
                 'logo' => 'woocommerce_logo.png',
-                'logo_width' => '200px',
-                'logo_height' => '40px',
                 'options' => array('Login', 'Register', 'Forgot Password')
             ),
             array(
                 'label' => 'ContactForm7',
                 'logo' => 'contactForm7_logo.png',
-                'logo_width' => '200px',
-                'logo_height' => '40px',
                 'options' => array('Forms')
             ),
             array(
                 'label' => 'Mailchimp',
                 'logo' => 'mailchimp_logo.png',
-                'logo_width' => '200px',
-                'logo_height' => '40px',
                 'options' => array('Forms')
             ),
         );
@@ -77,7 +69,7 @@ class Plugins {
                                     ?>
                                         <div class="plugin-container">
                                             <?php
-                                            printf('<img class="plugin_logo" src="%s" height="%s" width="%s" />', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/' . $plugin['logo']), $plugin['logo_height'], $plugin['logo_width']);
+                                            printf('<img class="plugin_logo" src="%s" height="40px" />', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/' . $plugin['logo']));
                                             foreach ($plugin['options'] as $option) {
                                                 $optionId = $plugin['label'] . '_' . str_replace(' ', '', $option);
                                                 $checked = in_array($optionId, $selected_plugins, true) ? 'checked' : '';
