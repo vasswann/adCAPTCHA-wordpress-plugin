@@ -2,7 +2,7 @@
 /**
  * Plugin Name: adCAPTCHA
  * Description: Secure your site. Elevate your brand. Boost Ad Revenue.
- * Version: 1.0
+ * Version: 1.0.1
  * Requires at least: 6.4.2
  * Requires PHP: 7.4
  * Author: adCAPTCHA
@@ -34,7 +34,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/Mailchimp/Forms.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION = '1.0.0';
+const PLUGIN_VERSION = '1.0.1';
 
 // Deletes data saved in the wp db on plugin uninstall
 register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
