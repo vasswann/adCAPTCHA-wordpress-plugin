@@ -60,10 +60,10 @@ For more information, visit the [adCAPTCHA Documentation](https://docs.adcaptcha
 
 1. Login
 2. Comments
-3. ForgotPassword
+3. Forgot Password
 4. Register
-5. GeneralSettings
-6. PluginSettings
+5. General Settings
+6. Manage Plugins
 
 == Privacy Notices ==
 
