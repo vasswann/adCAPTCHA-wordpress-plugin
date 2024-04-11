@@ -12,10 +12,16 @@ use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePassw
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
 use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
+use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
 
 class Instantiate {
 
     public function setup() {
+
+        if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+        
         $classes = array(
             'Wordpress_Login' => new Login(),
             'Wordpress_Register' => new Registration(),
@@ -40,5 +46,12 @@ class Instantiate {
                 }
             }
         }
+
+        // if ( class_exists( 'Ninja_Forms' ) && method_exists( 'Ninja_Forms', 'instance' ) && class_exists('NF_Abstracts_Field')) {
+        //     add_action('plugins_loaded', function() {
+        //         $ninja = new NinjaForms();
+        //         $ninja->setup();
+        //     });
+        // }
     }
 }

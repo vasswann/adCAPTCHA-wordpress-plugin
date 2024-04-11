@@ -33,10 +33,12 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/PasswordReset.p
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Registration.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/ContactForm7/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Mailchimp/Forms.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/Forms.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/AdcaptchaField.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION = '1.0.1';
+const PLUGIN_VERSION_adCAPTCHA = '1.0.1';
 
 // Deletes data saved in the wp db on plugin uninstall
 register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
