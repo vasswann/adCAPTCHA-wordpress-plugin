@@ -22,17 +22,48 @@ class Instantiate {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
         
-        $classes = array(
-            'Wordpress_Login' => new Login(),
-            'Wordpress_Register' => new Registration(),
-            'Wordpress_ForgotPassword' => new PasswordReset(),
-            'Wordpress_Comments' => new Comments(),
-            'Woocommerce_Login' => new WoocommerceLogin(),
-            'Woocommerce_ForgotPassword' => new WoocommercePasswordReset(),
-            'Woocommerce_Register' => new WoocommerceRegistration(),
-            'ContactForm7_Forms' => new ContactForm7(),
-            'Mailchimp_Forms' => new MailchimpForms(),
-        );
+        $classes = [
+            'Wordpress_Login' => [
+                'instance' => new Login(),
+                'plugin' => [],
+            ],
+            'Wordpress_Register' => [
+                'instance' => new Registration(),
+                'plugin' => [],
+            ],
+            'Wordpress_ForgotPassword' => [
+                'instance' => new PasswordReset(),
+                'plugin' => [],
+            ],
+            'Wordpress_Comments' => [
+                'instance' => new Comments(),
+                'plugin' => [],
+            ],
+            'Woocommerce_Login' => [
+                'instance' => new WoocommerceLogin(),
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'Woocommerce_ForgotPassword' => [
+                'instance' => new WoocommercePasswordReset(),
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'Woocommerce_Register' => [
+                'instance' => new WoocommerceRegistration(),
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'ContactForm7_Forms' => [
+                'instance' => new ContactForm7(),
+                'plugin' => [ 'contact-form-7/wp-contact-form-7.php' ],
+            ],
+            'Mailchimp_Forms' => [
+                'instance' => new MailchimpForms(),
+                'plugin' => [ 'mailchimp-for-wp/mailchimp-for-wp.php' ],
+            ],
+            'NinjaForms_Forms' => [
+                'instance' => new NinjaForms(),
+                'plugin' => [ 'ninja-forms/ninja-forms.php' ],
+            ]
+        ];
 
         $selected_plugins = get_option('adcaptcha_selected_plugins') ? get_option('adcaptcha_selected_plugins') : array();
 
@@ -42,16 +73,13 @@ class Instantiate {
         if (get_option('adcaptcha_render_captcha') === '1') {
             foreach ($selected_plugins as $selected_plugin) {
                 if (isset($classes[$selected_plugin])) {
-                    $classes[$selected_plugin]->setup();
+                    foreach ($classes[$selected_plugin]['plugin'] as $plugin) {
+                        if (is_plugin_active($plugin)) {
+                            $classes[$selected_plugin]['instance']->setup();
+                        }
+                    }
                 }
             }
         }
-
-        // if ( class_exists( 'Ninja_Forms' ) && method_exists( 'Ninja_Forms', 'instance' ) && class_exists('NF_Abstracts_Field')) {
-        //     add_action('plugins_loaded', function() {
-        //         $ninja = new NinjaForms();
-        //         $ninja->setup();
-        //     });
-        // }
     }
 }
