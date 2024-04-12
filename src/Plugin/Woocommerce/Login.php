@@ -4,9 +4,10 @@ namespace AdCaptcha\Plugin\Woocommerce\Login;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Plugin\Plugin;
 use WP_Error;
 
-class Login {
+class Login extends Plugin {
 
     public function setup() {
         add_action( 'woocommerce_login_form', [ AdCaptcha::class, 'enqueue_scripts' ] );

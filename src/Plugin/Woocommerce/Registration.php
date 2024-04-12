@@ -4,9 +4,10 @@ namespace AdCaptcha\Plugin\Woocommerce\Registration;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Plugin\Plugin;
 use WP_Error;
 
-class Registration {
+class Registration extends Plugin {
 
     public function setup() {
         add_action( 'woocommerce_register_form', [ AdCaptcha::class, 'enqueue_scripts' ] );

@@ -4,8 +4,9 @@ namespace AdCaptcha\Plugin\ContactFrom7\Froms;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Plugin\Plugin;
 
-class Forms {
+class Forms extends Plugin {
 
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );

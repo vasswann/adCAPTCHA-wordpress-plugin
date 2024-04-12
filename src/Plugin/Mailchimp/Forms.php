@@ -4,10 +4,11 @@ namespace AdCaptcha\Plugin\Mailchimp\Froms;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Plugin\Plugin;
 
 use MC4WP_Form;
 
-class Forms {
+class Forms extends Plugin {
 
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );

@@ -3,8 +3,9 @@
 namespace AdCaptcha\Plugin\NinjaForms\Froms;
 
 use AdCaptcha\Plugin\NinjaForms\AdcaptchaField\AdcaptchaField;
+use AdCaptcha\Plugin\Plugin;
 
-class Forms {
+class Forms extends Plugin {
 
     public function setup() {
 		add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
