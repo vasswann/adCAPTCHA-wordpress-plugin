@@ -8,7 +8,10 @@ use AdCaptcha\Plugin\Plugin;
 class Forms extends Plugin {
 
     public function setup() {
-		add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
+		add_action('plugins_loaded', function() {
+			require_once plugin_dir_path(__FILE__) . '/AdcaptchaField.php';
+			add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
+		});
     }
 
 	public function register_field( $fields ): array {

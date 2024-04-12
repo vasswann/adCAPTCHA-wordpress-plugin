@@ -12,7 +12,7 @@ use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePassw
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
 use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
-// use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
+use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
 
 class Instantiate {
 
@@ -59,10 +59,10 @@ class Instantiate {
                 'instance' => MailchimpForms::class,
                 'plugin' => [ 'mailchimp-for-wp/mailchimp-for-wp.php' ],
             ],
-            // 'NinjaForms_Forms' => [
-            //     'instance' => NinjaForms::class,
-            //     'plugin' => [ 'ninja-forms/ninja-forms.php' ],
-            // ]
+            'NinjaForms_Forms' => [
+                'instance' => NinjaForms::class,
+                'plugin' => [ 'ninja-forms/ninja-forms.php' ],
+            ]
         ];
 
         $selected_plugins = get_option('adcaptcha_selected_plugins') ? get_option('adcaptcha_selected_plugins') : array();

@@ -35,7 +35,6 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Registration.ph
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/ContactForm7/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Mailchimp/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/Forms.php';
-// require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/AdcaptchaField.php';
 
 use AdCaptcha\Instantiate;
 
