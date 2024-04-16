@@ -15,6 +15,7 @@ class Forms extends Plugin {
 			add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
 			add_filter( 'ninja_forms_field_template_file_paths', [ $this, 'register_template' ]  );
 			add_filter( 'ninja_forms_localize_field_adcaptcha', [ $this, 'render_field' ] );
+			add_filter( 'ninja_forms_localize_field_adcaptcha_preview', [ $this, 'render_field' ] );
 		});
     }
 
@@ -35,8 +36,16 @@ class Forms extends Plugin {
 	public function render_field( $field ): array {
 		$field = (array) $field;
 
-		$field['settings']['adcaptcha'] = AdCaptcha::ob_captcha_trigger();
+		$id = $field['id'] ?? 0;
+		$adcaptcha = str_replace(
+			'<div',
+			'<div id="adcaptcha-' . $id . '"',
+			AdCaptcha::ob_captcha_trigger()
+		);
+
+		$field['settings']['adcaptcha'] = $adcaptcha;
 
 		return $field;
 	}
+
 }

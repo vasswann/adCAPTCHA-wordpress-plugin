@@ -18,7 +18,7 @@ class Forms extends Plugin {
             $messages = (array) $messages;
             $messages['invalid_captcha'] = [
                 'type' => 'error',
-                'text' => __( 'Incomplete captcha, Please try again.', 'adCAPTCHA' ),
+                'text' => __( 'Incomplete captcha, Please try again.', 'adcaptcha' ),
             ];
             return $messages;
         });
