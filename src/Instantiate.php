@@ -73,10 +73,15 @@ class Instantiate {
         if (get_option('adcaptcha_render_captcha') === '1') {
             foreach ($selected_plugins as $selected_plugin) {
                 if (isset($classes[$selected_plugin])) {
-                    foreach ($classes[$selected_plugin]['plugin'] as $plugin) {
-                        if (is_plugin_active($plugin)) {
-                            $className = $classes[$selected_plugin]['instance'];
-                            new $className();
+                    $className = $classes[$selected_plugin]['instance'];
+                    if (empty($classes[$selected_plugin]['plugin'])) {
+                        new $className();
+                    } else {
+                        foreach ($classes[$selected_plugin]['plugin'] as $plugin) {
+                            if (is_plugin_active($plugin)) {
+                                $className = $classes[$selected_plugin]['instance'];
+                                new $className();
+                            }
                         }
                     }
                 }
