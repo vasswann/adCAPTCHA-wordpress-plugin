@@ -24,7 +24,6 @@ class Forms extends Plugin {
                     AdCaptcha::enqueue_scripts();
                 });
 
-
                 add_filter('wpforms_load_fields', function($fields) {
                     $fields[] = 'adcaptcha';
                     return $fields;
