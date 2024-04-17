@@ -17,15 +17,12 @@ const AdCaptchaFieldController = Marionette.Object.extend({
       if ('adcaptcha' !== model.get('type')) {
         return;
       }
-      console.log('Updating field...');
   
       const id = model.get('id');
-      console.log(id);
 
       if (!window.adcap.successToken) return;
   
       if (window.adcap.successToken) {
-        console.log('Value is set, removing error...');
         nfRadio.channel('fields').request('remove:error', id, 'required-error');
         return;
       }
@@ -33,6 +30,5 @@ const AdCaptchaFieldController = Marionette.Object.extend({
   });
   
   jQuery(document).ready(() => {
-    console.log('Document is ready, creating new AdCaptchaFieldController...');
     new AdCaptchaFieldController();
   });
