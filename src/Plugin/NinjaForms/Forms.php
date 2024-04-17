@@ -12,6 +12,7 @@ class Forms extends Plugin {
 		add_action('plugins_loaded', function() {
 			require_once plugin_dir_path(__FILE__) . '/AdcaptchaField.php';
 			add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ]);
+			add_action( 'wp_enqueue_scripts', [ $this, 'load_scripts' ] );
 			add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
 			add_filter( 'ninja_forms_field_template_file_paths', [ $this, 'register_template' ]  );
 			add_filter( 'ninja_forms_localize_field_adcaptcha', [ $this, 'render_field' ] );
@@ -48,4 +49,13 @@ class Forms extends Plugin {
 		return $field;
 	}
 
+	public function load_scripts() {
+		wp_enqueue_script(
+            'adcaptcha-ninjaforms',
+			plugins_url('AdCaptchaFieldController.js', __FILE__),
+            [ 'nf-front-end' ],
+            PLUGIN_VERSION_adCAPTCHA,
+            true
+        );
+    }
 }

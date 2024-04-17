@@ -30,7 +30,7 @@ class AdcaptchaField extends NF_Fields_Recaptcha {
         $response = $verify->verify_token();
 
         if ( $response === false ) {
-            return __( 'Incomplete captcha, Please try again.', 'adcaptcha' );
+            return esc_html__( 'Incomplete captcha, Please try again.', 'adcaptcha' );
         }
 	}
 }
