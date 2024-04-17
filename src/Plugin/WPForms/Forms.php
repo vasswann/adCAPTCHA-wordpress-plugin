@@ -14,7 +14,16 @@ class Forms extends Plugin {
                 require_once plugin_dir_path(__FILE__) . '/AdCAPTCHA_WPForms_Field.php';
                 new AdCAPTCHA_WPForms_Field();
                 add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ]);
-                // add_action( 'admin_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ]);
+
+                add_action('admin_enqueue_scripts', function() {
+                    $screen = get_current_screen();
+                    if ($screen->id !== 'wpforms_page_wpforms-builder') {
+                        return;
+                    }
+
+                    AdCaptcha::enqueue_scripts();
+                });
+
 
                 add_filter('wpforms_load_fields', function($fields) {
                     $fields[] = 'adcaptcha';
@@ -27,7 +36,6 @@ class Forms extends Plugin {
                 });
             });
 
-            // add_action( 'wpforms_display_submit_before', [ AdCaptcha::class, 'captcha_trigger'] );
             add_action( 'wpforms_process', [ $this, 'verify' ], 10, 3 );
         }
 

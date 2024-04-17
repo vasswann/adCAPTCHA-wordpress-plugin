@@ -21,35 +21,14 @@ class AdCAPTCHA_WPForms_Field extends WPForms_Field {
 	 * @param array $field
 	 */
 	public function field_options( $field ) {
-
-		//--------------------------------------------------------------------//
-		// Basic field options
-		//--------------------------------------------------------------------//
-
 		// Options open markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'open' ) );
 
 		// Description
 		$this->field_option( 'description', $field );
 
-		// Required toggle
-		$this->field_option( 'required', $field );
-
 		// Options close markup
 		$this->field_option( 'basic-options', $field, array( 'markup' => 'close' ) );
-
-		//--------------------------------------------------------------------//
-		// Advanced field options
-		//--------------------------------------------------------------------//
-
-		// Options open markup
-		$this->field_option( 'advanced-options', $field, array( 'markup' => 'open' ) );
-
-		// Custom CSS classes
-		$this->field_option( 'css', $field );
-
-		// Options close markup
-		$this->field_option( 'advanced-options', $field, array( 'markup' => 'close' ) );
 	}
 
 	/**
