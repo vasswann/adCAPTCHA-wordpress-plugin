@@ -27,12 +27,8 @@ const AdCaptchaFieldController = Marionette.Object.extend({
       if (window.adcap.successToken) {
         console.log('Value is set, removing error...');
         nfRadio.channel('fields').request('remove:error', id, 'required-error');
+        return;
       }
-  
-      const response = window.adcap.successToken;
-      console.log(response);
-      console.log('Setting model value to response...');
-      model.set('value', response);
     },
   });
   
