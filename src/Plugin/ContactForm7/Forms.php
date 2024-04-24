@@ -38,7 +38,7 @@ class Forms {
     // Renders the captcha before the submit button
     public function captcha_trigger_filter(string $elements) {
         return preg_replace(
-            '/(<input.*?type="submit")/',
+            '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
             AdCaptcha::ob_captcha_trigger() . '$1',
             $elements
             );
