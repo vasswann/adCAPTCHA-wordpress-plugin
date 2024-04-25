@@ -10,25 +10,29 @@ class Forms {
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ], 9 );
+        add_action( 'wp_enqueue_scripts', [ $this, 'get_success_token' ], 9 );
         add_action( 'wp_enqueue_scripts', [ $this, 'reset_captcha_script' ], 9 );
         add_filter( 'wpcf7_form_elements', [ $this, 'captcha_trigger_filter' ], 20, 1 );
+        add_filter('wpcf7_form_hidden_fields', [$this, 'add_adcaptcha_response_field']);
         add_filter( 'wpcf7_spam', [ $this, 'verify' ], 9, 1 );
     }
 
-    public function verify( $spam) {
+    public function verify( $spam ) {
         if ( $spam ) {
             return $spam;
         }
+
+        $token = trim( $_POST['_wpcf7_adcaptcha_response']);
     
         $verify = new Verify();
-        $response = $verify->verify_token();
+        $response = $verify->verify_token($token);
     
         if ( $response === false ) {
             $spam = true;
     
             add_filter('wpcf7_display_message', function($message, $status) {
                 if ($status == 'spam') {
-                    $message = __( 'Incomplete captcha, Please try again.', 'adcaptcha' );
+                    $message = __( 'Please click the I am human box', 'adcaptcha' );
                 }
                 return $message;
             }, 10, 2);
@@ -43,11 +47,17 @@ class Forms {
             '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
             AdCaptcha::ob_captcha_trigger() . '$1',
             $elements
-            );
+        );
+    }
+
+    public function add_adcaptcha_response_field($fields) {
+        return array_merge( $fields, array(
+            '_wpcf7_adcaptcha_response' => '',
+        ) );
     }
 
     public function reset_captcha_script() {
-        wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("wpcf7mailsent", function(event) { ' . AdCaptcha::setupScript() . ' }, false);' );
+        wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("wpcf7mailsent", function(event) { ' . AdCaptcha::setupScript() . ' window.adcap.successToken = ""; }, false);' );
     }
 
     public function block_submission() {
@@ -60,6 +70,7 @@ class Forms {
                         submitButton.forEach(function(submitButton) {
                             submitButton.addEventListener("click", function(event) {
                                 if (!window.adcap || !window.adcap.successToken) {
+                                    console.log(window.adcap.successToken);
                                     event.preventDefault();
                                     return false;
                                 }
@@ -68,6 +79,21 @@ class Forms {
                     }
                 }
             });';
+    
+        wp_add_inline_script( 'adcaptcha-script', $script );
+    }
+
+    public function get_success_token() {
+        $script = '
+        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("adcaptchaexecuted", (e) => {
+                const t = document.querySelectorAll(
+                "form.wpcf7-form input[name=\'_wpcf7_adcaptcha_response\']"
+                );
+                for (let c = 0; c < t.length; c++)
+                t[c].setAttribute("value", e.detail.successToken);
+            });
+        });';
     
         wp_add_inline_script( 'adcaptcha-script', $script );
     }

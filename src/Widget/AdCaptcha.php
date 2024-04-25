@@ -34,6 +34,10 @@ class AdCaptcha {
                     }
                 });
                 ' . ($enableSubmitButton ? self::enable_submit_button() : '') . '
+                const event = new CustomEvent("adcaptchaexecuted", {
+                    detail: { successToken: window.adcap.successToken },
+                });
+                document.dispatchEvent(event);
             }
         });';
     }
