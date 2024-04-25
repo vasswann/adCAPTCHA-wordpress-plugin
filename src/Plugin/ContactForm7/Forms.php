@@ -32,7 +32,7 @@ class Forms {
     
             add_filter('wpcf7_display_message', function($message, $status) {
                 if ($status == 'spam') {
-                    $message = __( 'Please click the I am human box', 'adcaptcha' );
+                    $message = __( 'Please complete the I am human box', 'adcaptcha' );
                 }
                 return $message;
             }, 10, 2);
