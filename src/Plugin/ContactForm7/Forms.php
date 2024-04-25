@@ -86,7 +86,7 @@ class Forms {
     public function get_success_token() {
         $script = '
         document.addEventListener("DOMContentLoaded", function() {
-            document.addEventListener("adcaptchaexecuted", (e) => {
+            document.addEventListener("adcaptcha_onSuccess", (e) => {
                 const t = document.querySelectorAll(
                 "form.wpcf7-form input[name=\'_wpcf7_adcaptcha_response\']"
                 );
