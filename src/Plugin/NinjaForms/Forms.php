@@ -40,7 +40,7 @@ class Forms extends Plugin {
 		$id = $field['id'] ?? 0;
 		$adcaptcha = str_replace(
 			'<div',
-			'<div id="adcaptcha-' . $id . '"',
+			'<div',
 			AdCaptcha::ob_captcha_trigger()
 		);
 

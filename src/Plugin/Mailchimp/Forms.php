@@ -22,7 +22,7 @@ class Forms extends Plugin {
             $messages = (array) $messages;
             $messages['invalid_captcha'] = [
                 'type' => 'error',
-                'text' => __( 'Please complete the I am human box.', 'adCAPTCHA' ),
+                'text' => __( 'Please complete the I am human box.', 'adcaptcha' ),
             ];
             return $messages;
         });

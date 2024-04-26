@@ -25,9 +25,9 @@ class AdcaptchaField extends NF_Fields_Recaptcha {
 
 
     public function validate( $field, $data ) {
-
+        $value = $field['value'] ?? '';
         $verify = new Verify();
-        $response = $verify->verify_token();
+        $response = $verify->verify_token($value);
 
         if ( $response === false ) {
             return esc_html__( 'Incomplete captcha, Please try again.', 'adcaptcha' );

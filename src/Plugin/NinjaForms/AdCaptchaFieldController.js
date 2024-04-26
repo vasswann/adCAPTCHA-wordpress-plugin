@@ -1,6 +1,5 @@
 const AdCaptchaFieldController = Marionette.Object.extend({
     initialize() {
-      console.log('Initializing AdCaptchaFieldController...');
       this.listenTo(
         nfRadio.channel('submit'),
         'validate:field',
@@ -24,6 +23,8 @@ const AdCaptchaFieldController = Marionette.Object.extend({
   
       if (window.adcap.successToken) {
         nfRadio.channel('fields').request('remove:error', id, 'required-error');
+        const response = window.adcap.successToken;
+        model.set('value', response);
         return;
       }
     },
