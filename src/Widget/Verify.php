@@ -4,27 +4,11 @@ namespace AdCaptcha\Widget\Verify;
 
 class Verify {
 
-    // The actions are triggered after a post request is sent with action save_token
-    public static function init() {
-        add_action('wp_ajax_save_token', array(__CLASS__, 'save_token'));
-        add_action('wp_ajax_nopriv_save_token', array(__CLASS__, 'save_token'));
-    }
-
-    // Gets the successToken from the captcha trigger post request
-    public static function save_token() {
-        check_ajax_referer('adcaptcha_nonce', 'nonce');
-        $successToken = sanitize_text_field(wp_unslash($_POST['successToken']));
-        if (isset($successToken)) {
-            update_option('adcaptcha_success_token', $successToken);
-            wp_send_json_success('Success');
-        } else {
-            wp_send_json_success('Failed');
-        }
-    }
-
     public static function verify_token($successToken = null) {
+        error_log(print_r($_POST, true));
         if (empty($successToken)) {
-            $successToken = get_option('adcaptcha_success_token');
+            $successToken = trim( $_POST['successToken']);
+            echo $successToken;
         }
 
         $apiKey = get_option('adcaptcha_api_key');
@@ -57,5 +41,3 @@ class Verify {
         return false;
     }
 }
-
-Verify::init();

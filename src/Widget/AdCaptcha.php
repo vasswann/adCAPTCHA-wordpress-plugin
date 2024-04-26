@@ -19,16 +19,15 @@ class AdCaptcha {
             }
         }');
     }
-    
+
     public static function setupScript($enableSubmitButton = false) {
         return 'window.adcap.init();
         window.adcap.setupTriggers({
             onComplete: () => {
                 jQuery.ajax({
-                    url: adcaptcha_vars.ajax_url,
+                    url: "/wp-json/adcaptcha/v1/verify_token/",
                     type: "POST",
                     data: {
-                        action: "save_token",
                         successToken: window.adcap.successToken,
                         nonce: adcaptcha_vars.nonce,
                     }
@@ -57,6 +56,6 @@ class AdCaptcha {
     }
 
     public static function captcha_trigger() {
-        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>');
+        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div><input type="hidden" id="adcaptcha_successToken" name="adcaptcha_successToken">');
     }
 }
