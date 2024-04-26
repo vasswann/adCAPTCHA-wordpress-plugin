@@ -70,10 +70,18 @@ class Forms {
                         submitButton.forEach(function(submitButton) {
                             submitButton.addEventListener("click", function(event) {
                                 if (!window.adcap || !window.adcap.successToken) {
-                                    console.log(window.adcap.successToken);
                                     event.preventDefault();
+                                    var errorMessage = form.querySelector(".wpcf7-response-output");
+                                    errorMessage.className += " wpcf7-validation-errors";
+                                    errorMessage.style.display = "block";
+                                    errorMessage.textContent = "Please complete the I am human box";
+                                    errorMessage.setAttribute("aria-hidden", "false");
                                     return false;
                                 }
+                                var removeMessage = form.querySelector(".wpcf7-response-output");
+                                removeMessage.classList.remove("wpcf7-validation-errors");
+                                removeMessage.style = "";
+                                removeMessage.textContent = "";
                             });
                         });
                     }
