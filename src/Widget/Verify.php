@@ -38,7 +38,10 @@ class Verify {
         $script = '
         document.addEventListener("DOMContentLoaded", function() {
             document.addEventListener("adcaptcha_onSuccess", function(e) {
-                document.getElementById("adcaptcha_successToken").value = e.detail.successToken;
+                var elements = document.querySelectorAll(".adcaptcha_successToken");
+                elements.forEach(function(element) {
+                    element.value = e.detail.successToken;
+                });
             });
         });';
     

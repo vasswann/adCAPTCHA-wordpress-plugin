@@ -24,14 +24,6 @@ class AdCaptcha {
         return 'window.adcap.init();
         window.adcap.setupTriggers({
             onComplete: () => {
-                jQuery.ajax({
-                    url: "/wp-json/adcaptcha/v1/verify_token/",
-                    type: "POST",
-                    data: {
-                        successToken: window.adcap.successToken,
-                        nonce: adcaptcha_vars.nonce,
-                    }
-                });
                 ' . ($enableSubmitButton ? self::enable_submit_button() : '') . '
                 const event = new CustomEvent("adcaptcha_onSuccess", {
                     detail: { successToken: window.adcap.successToken },
@@ -56,6 +48,6 @@ class AdCaptcha {
     }
 
     public static function captcha_trigger() {
-        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div><input type="hidden" id="adcaptcha_successToken" name="adcaptcha_successToken">');
+        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div><input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">');
     }
 }
