@@ -3,7 +3,7 @@
 namespace AdCaptcha\Widget\Verify;
 
 class Verify {
-    public static function verify_token($successToken = null) {
+    public static function verify_token($successToken) {
         $apiKey = get_option('adcaptcha_api_key');
         $url = 'https://api.adcaptcha.com/v1/verify';
         $body = wp_json_encode([
