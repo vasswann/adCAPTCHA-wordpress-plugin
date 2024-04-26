@@ -6,6 +6,7 @@ use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
 
 use MC4WP_Form;
+use MC4WP_Form_Element;
 
 class Forms {
 
@@ -13,6 +14,7 @@ class Forms {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ], 9 );
+        add_filter( 'mc4wp_form_content', [ $this, 'add_hidden_input' ], 20, 3 );
         add_action( 'admin_enqueue_scripts', [ $this, 'form_preview_setup_triggers' ], 9 );
         add_filter( 'mc4wp_form_errors', [ $this, 'verify' ], 10, 2 );
         add_filter('mc4wp_form_messages', function($messages) {
@@ -23,6 +25,14 @@ class Forms {
             ];
             return $messages;
         });
+    }
+
+    public function add_hidden_input( string $content, MC4WP_Form $form, MC4WP_Form_Element $element ): string {
+        return preg_replace(
+            '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
+            '<input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">' . '$1',
+            $content
+		);
     }
 
     public function verify( $errors, MC4WP_Form $form ) {
