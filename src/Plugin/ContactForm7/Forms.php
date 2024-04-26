@@ -78,6 +78,10 @@ class Forms {
                                     errorMessage.setAttribute("aria-hidden", "false");
                                     return false;
                                 }
+                                var removeMessage = form.querySelector(".wpcf7-response-output");
+                                removeMessage.classList.remove("wpcf7-validation-errors");
+                                removeMessage.style = "";
+                                removeMessage.textContent = "";
                             });
                         });
                     }
