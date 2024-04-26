@@ -15,7 +15,7 @@ class Login {
         add_action('login_enqueue_scripts', function() use ($enableSubmitButtonScript) {
             AdCaptcha::enqueue_scripts($enableSubmitButtonScript);
         });
-        add_action( 'login_enqueue_scripts', [ $this, 'get_success_token' ] );
+        add_action( 'login_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'login_enqueue_scripts', [ $this, 'disable_safari_auto_submit' ] );
         add_action( 'login_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'wp_authenticate_user', [ $adCAPTCHAWordpressLogin, 'verify' ], 10, 1 );
@@ -51,16 +51,5 @@ class Login {
                 }
             });'
         );
-    }
-
-    public function get_success_token() {
-        $script = '
-        document.addEventListener("DOMContentLoaded", function() {
-            document.addEventListener("adcaptcha_onSuccess", function(e) {
-                document.getElementById("adcaptcha_successToken").value = e.detail.successToken;
-            });
-        });';
-    
-        wp_add_inline_script( 'adcaptcha-script', $script );
     }
 }

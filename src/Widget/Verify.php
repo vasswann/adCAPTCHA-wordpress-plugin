@@ -3,14 +3,7 @@
 namespace AdCaptcha\Widget\Verify;
 
 class Verify {
-
     public static function verify_token($successToken = null) {
-        error_log(print_r($_POST, true));
-        if (empty($successToken)) {
-            $successToken = trim( $_POST['successToken']);
-            echo $successToken;
-        }
-
         $apiKey = get_option('adcaptcha_api_key');
         $url = 'https://api.adcaptcha.com/v1/verify';
         $body = wp_json_encode([
@@ -39,5 +32,16 @@ class Verify {
         }
 
         return false;
+    }
+
+    public function get_success_token() {
+        $script = '
+        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("adcaptcha_onSuccess", function(e) {
+                document.getElementById("adcaptcha_successToken").value = e.detail.successToken;
+            });
+        });';
+    
+        wp_add_inline_script( 'adcaptcha-script', $script );
     }
 }
