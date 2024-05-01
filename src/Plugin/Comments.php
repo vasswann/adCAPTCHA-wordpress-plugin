@@ -10,13 +10,15 @@ class Comments {
 
     public function setup() {
         add_action( 'comment_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
+        add_action( 'comment_form', [ Verify::class, 'get_success_token' ] );
         add_filter( 'comment_form_submit_field', [ $this, 'captcha_trigger_filter' ] );
         add_action( 'pre_comment_approved', [ $this, 'verify' ], 20, 2 );
     }
 
     public function verify( $approved, array $commentdata ) {
+        $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $verify = new Verify();
-        $response = $verify->verify_token();
+        $response = $verify->verify_token($successToken);
 
 
         if ( $response === false ) {

@@ -15,14 +15,16 @@ class Login {
         add_action('login_enqueue_scripts', function() use ($enableSubmitButtonScript) {
             AdCaptcha::enqueue_scripts($enableSubmitButtonScript);
         });
+        add_action( 'login_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'login_enqueue_scripts', [ $this, 'disable_safari_auto_submit' ] );
         add_action( 'login_form', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action( 'wp_authenticate_user', [ $adCAPTCHAWordpressLogin, 'verify' ], 10, 1 );
     }
 
     public function verify( $errors ) {
+        $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $verify = new Verify();
-        $response = $verify->verify_token();
+        $response = $verify->verify_token($successToken);
 
         if ( $response === false ) {
             $errors = new WP_Error('adcaptcha_error', __( 'Incomplete captcha, Please try again.', 'adcaptcha' ));
