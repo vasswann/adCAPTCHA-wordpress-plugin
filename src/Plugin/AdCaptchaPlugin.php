@@ -1,8 +1,8 @@
 <?php
 
-namespace AdCaptcha\Plugin;
+namespace AdCaptcha\AdCaptchaPlugin;
 
-abstract class Plugin {
+abstract class AdCaptchaPlugin {
 
     abstract public function setup();
 

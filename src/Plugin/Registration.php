@@ -4,10 +4,10 @@ namespace AdCaptcha\Plugin\Registration;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
-use AdCaptcha\Plugin\Plugin;
+use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 use WP_Error;
 
-class Registration extends Plugin {
+class Registration extends AdCaptchaPlugin {
 
     public function setup() {
         global $adCAPTCHAWordpressRegistration;

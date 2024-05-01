@@ -4,10 +4,10 @@ namespace AdCaptcha\Plugin\Woocommerce\PasswordReset;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
-use AdCaptcha\Plugin\Plugin;
+use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 use WP_Error;
 
-class PasswordReset extends Plugin {
+class PasswordReset extends AdCaptchaPlugin {
 
     public function setup() {
         add_action( 'woocommerce_lostpassword_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
