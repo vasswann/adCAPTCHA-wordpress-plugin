@@ -15,6 +15,7 @@ class Forms extends AdCaptchaPlugin {
                 new AdCAPTCHA_WPForms_Field();
                 add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ]);
                 add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
+                add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ] );
 
                 add_action('admin_enqueue_scripts', function() {
                     $screen = get_current_screen();
@@ -39,13 +40,42 @@ class Forms extends AdCaptchaPlugin {
             add_action( 'wpforms_process', [ $this, 'verify' ], 10, 3 );
         }
 
+        public function block_submission() {
+            $script = '
+                document.addEventListener("DOMContentLoaded", function() {
+                    var form = document.querySelector(".wpforms-form");
+                    if (form) {
+                        var submitButton =[... document.querySelectorAll("[type=\'submit\']")];
+                        if (submitButton) {
+                            submitButton.forEach(function(submitButton) {
+                                submitButton.addEventListener("click", function(event) {
+                                    if (!window.adcap || !window.adcap.successToken) {
+                                        event.preventDefault();
+                                        var errorMessage = document.createElement("div");
+                                        errorMessage.id = "adcaptcha-error-message";
+                                        errorMessage.className = "wpforms-error-container";
+                                        errorMessage.role = "alert";
+                                        errorMessage.innerHTML = \'<span class="wpforms-hidden" aria-hidden="false">Form error message</span><p>Please complete the I am human box.</p>\';
+                                        var parent = submitButton.parentNode;
+                                        parent.parentNode.insertBefore(errorMessage, parent);
+                                        return false;
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });';
+    
+            wp_add_inline_script('adcaptcha-script', $script);
+        }
+
         public function verify( array $fields, array $entry, array $form_data ) {
             $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
             $verify = new Verify();
             $response = $verify->verify_token($successToken);
     
             if ( $response === false ) {
-                wpforms()->get( 'process' )->errors[ $form_data['id'] ]['footer'] = __( 'Incomplete captcha, Please try again.', 'adcaptcha' );
+                wpforms()->get( 'process' )->errors[ $form_data['id'] ]['footer'] = __( ADCAPTCHA_ERROR_MESSAGE );
             }
         }
 }
