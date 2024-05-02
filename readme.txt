@@ -4,7 +4,7 @@ Contributors: adCAPTCHA
 Tags: spam, anti-spam, block bots, security, adCAPTCHA
 Requires at least: 6.0
 Tested up to: 6.5.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -44,6 +44,15 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 **Mailchimp**
 
 * Forms
+
+**Ninja Form**
+
+* Forms
+
+**WPForms**
+
+* Forms
+
 
 == Installation ==
 
@@ -105,3 +114,6 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 - Feature: Support for Ninja Forms
 - Feature: Support for WPForms
 - Test: WordPress v6.5.2
+
+= 1.2.1 =
+- Update readme documentation

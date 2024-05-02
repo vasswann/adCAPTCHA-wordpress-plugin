@@ -39,6 +39,14 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 
 * Forms
 
+### Ninja Forms
+
+* Forms
+
+### WPForms
+
+* Forms
+
 ## Privacy Notices
 
 adCAPTCHA adheres to GDPR regulations.
