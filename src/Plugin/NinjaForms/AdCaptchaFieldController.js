@@ -19,7 +19,10 @@ const AdCaptchaFieldController = Marionette.Object.extend({
   
       const id = model.get('id');
 
-      if (!window.adcap.successToken) return;
+      if (!window.adcap.successToken) {
+        nfRadio.channel('fields').request('add:error', id, 'required-error', 'Please complete the I am human box.');
+        return;
+      }
   
       if (window.adcap.successToken) {
         nfRadio.channel('fields').request('remove:error', id, 'required-error');
