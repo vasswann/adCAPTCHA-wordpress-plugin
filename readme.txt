@@ -45,7 +45,7 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 
 * Forms
 
-**Ninja Form**
+**Ninja Forms**
 
 * Forms
 
