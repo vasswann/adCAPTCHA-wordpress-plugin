@@ -48,6 +48,6 @@ class AdCaptcha {
     }
 
     public static function captcha_trigger() {
-        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div><input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">');
+        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px; outline: none !important;"></div><input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">');
     }
 }
