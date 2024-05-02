@@ -5,7 +5,7 @@ namespace AdCaptcha\Widget\AdCaptcha;
 class AdCaptcha {
 
     public static function enqueue_scripts($enableSubmitButton = false) {
-        wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), PLUGIN_VERSION, true);
+        wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), PLUGIN_VERSION_ADCAPTCHA, true);
     
         $ajax_nonce = wp_create_nonce("adcaptcha_nonce");
         wp_localize_script('adcaptcha-script', 'adcaptcha_vars', array(

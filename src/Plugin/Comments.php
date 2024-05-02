@@ -4,9 +4,10 @@ namespace AdCaptcha\Plugin\Comments;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 use WP_Error;
 
-class Comments {
+class Comments extends AdCaptchaPlugin {
 
     public function setup() {
         add_action( 'comment_form', [ AdCaptcha::class, 'enqueue_scripts' ] );

@@ -4,11 +4,12 @@ namespace AdCaptcha\Plugin\Mailchimp\Froms;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
 use MC4WP_Form;
 use MC4WP_Form_Element;
 
-class Forms {
+class Forms extends AdCaptchaPlugin {
 
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
@@ -21,7 +22,7 @@ class Forms {
             $messages = (array) $messages;
             $messages['invalid_captcha'] = [
                 'type' => 'error',
-                'text' => __( 'Please complete the I am human box.', 'adCAPTCHA' ),
+                'text' => ADCAPTCHA_ERROR_MESSAGE,
             ];
             return $messages;
         });
@@ -53,14 +54,14 @@ class Forms {
             document.addEventListener("DOMContentLoaded", function() {
                 var form = document.querySelector(".mc4wp-form");
                 if (form) {
-                var submitButton =[... document.querySelectorAll("[type=\'submit\']")];
+                    var submitButton =[... document.querySelectorAll("[type=\'submit\']")];
                     if (submitButton) {
                         submitButton.forEach(function(submitButton) {
                             submitButton.addEventListener("click", function(event) {
                                 if (!window.adcap || !window.adcap.successToken) {
                                     event.preventDefault();
                                     var responseDiv = document.querySelector(".mc4wp-response");
-                                    responseDiv.innerHTML = \'<div class="mc4wp-alert mc4wp-error" role="alert"><p>Please complete the I am human box.</p></div>\';
+                                    responseDiv.innerHTML = \'<div class="mc4wp-alert mc4wp-error" role="alert"><p>\' + adCaptchaErrorMessage + \'</p></div>\';
                                     return false;
                                 }
                             });
@@ -68,8 +69,10 @@ class Forms {
                     }
                 }
             });';
-    
-        wp_add_inline_script( 'adcaptcha-script', $script );
+
+        wp_register_script('adcaptcha-script', '', [], false, true);
+        wp_localize_script('adcaptcha-script', 'adCaptchaErrorMessage', array(ADCAPTCHA_ERROR_MESSAGE));
+        wp_add_inline_script('adcaptcha-script', $script);
     }
 
     public function form_preview_setup_triggers() {

@@ -21,7 +21,7 @@ class Settings {
     }
 
     public function add_styles_to_settings() {
-        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__), array(), PLUGIN_VERSION);
+        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__), array(), PLUGIN_VERSION_ADCAPTCHA);
     }
      
     public function render_adcaptcha_options_page() {
