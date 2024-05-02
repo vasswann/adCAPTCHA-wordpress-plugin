@@ -21,7 +21,7 @@ class Settings {
     }
 
     public function add_styles_to_settings() {
-        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__), array(), PLUGIN_VERSION_adCAPTCHA);
+        wp_enqueue_style('adcaptcha-admin-styles', plugins_url('../styles/settings.css', __FILE__), array(), PLUGIN_VERSION_ADCAPTCHA);
     }
      
     public function render_adcaptcha_options_page() {
@@ -70,6 +70,6 @@ class Settings {
     }
 
     public function change_admin_footer_version() {
-        return 'Version 1.1.0';
+        return 'Version 1.1.3';
     }
 }

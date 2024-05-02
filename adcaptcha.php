@@ -2,7 +2,7 @@
 /**
  * Plugin Name: adCAPTCHA for WordPress
  * Description: Secure your site. Elevate your brand. Boost Ad Revenue.
- * Version: 1.1.0
+ * Version: 1.1.3
  * Requires at least: 6.4.2
  * Requires PHP: 7.4
  * Author: adCAPTCHA
@@ -22,7 +22,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/General.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Plugins.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Plugin.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/AdCaptchaPlugin.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Login.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Registration.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/PasswordReset.php';
@@ -39,7 +39,8 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/WPForms/Forms.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION_adCAPTCHA = '1.1.0';
+const PLUGIN_VERSION_ADCAPTCHA = '1.1.0';
+define('ADCAPTCHA_ERROR_MESSAGE', __( 'Please complete the I am human box.', 'adcaptcha' ));
 
 // Deletes data saved in the wp db on plugin uninstall
 register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
@@ -47,7 +48,6 @@ register_uninstall_hook( __FILE__, 'adcaptcha_uninstall' );
 function adcaptcha_uninstall() {
     delete_option( 'adcaptcha_api_key' );
     delete_option( 'adcaptcha_placement_id' );
-    delete_option( 'adcaptcha_success_token' );
     delete_option( 'adcaptcha_render_captcha' );
     delete_option( 'adcaptcha_selected_plugins' );
 }

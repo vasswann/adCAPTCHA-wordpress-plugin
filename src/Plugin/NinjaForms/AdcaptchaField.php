@@ -1,10 +1,10 @@
 <?php
-namespace AdCaptcha\Plugin\NinjaForms\AdcaptchaField;
+namespace AdCaptcha\Plugin\NinjaForms\AdCaptchaField;
 
 use NF_Fields_Recaptcha;
 use AdCaptcha\Widget\Verify\Verify;
 
-class AdcaptchaField extends NF_Fields_Recaptcha {
+class AdCaptchaField extends NF_Fields_Recaptcha {
 
     protected $_name = 'adcaptcha';
 
@@ -25,12 +25,17 @@ class AdcaptchaField extends NF_Fields_Recaptcha {
 
 
     public function validate( $field, $data ) {
+        $value = $field['value'] ?? '';
+
+        if ( empty( $value ) ) {
+            return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
+        }
 
         $verify = new Verify();
-        $response = $verify->verify_token();
+        $response = $verify->verify_token($value);
 
         if ( $response === false ) {
-            return esc_html__( 'Incomplete captcha, Please try again.', 'adcaptcha' );
+            return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
         }
 	}
 }

@@ -2,15 +2,15 @@
 
 namespace AdCaptcha\Plugin\NinjaForms\Froms;
 
-use AdCaptcha\Plugin\NinjaForms\AdcaptchaField\AdcaptchaField;
+use AdCaptcha\Plugin\NinjaForms\AdCaptchaField\AdCaptchaField;
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
-use AdCaptcha\Plugin\Plugin;
+use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
-class Forms extends Plugin {
+class Forms extends AdCaptchaPlugin {
 
     public function setup() {
 		add_action('plugins_loaded', function() {
-			require_once plugin_dir_path(__FILE__) . '/AdcaptchaField.php';
+			require_once plugin_dir_path(__FILE__) . '/AdCaptchaField.php';
 			add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ]);
 			add_action( 'wp_enqueue_scripts', [ $this, 'load_scripts' ] );
 			add_filter( 'ninja_forms_register_fields', [ $this, 'register_field' ] );
@@ -22,7 +22,7 @@ class Forms extends Plugin {
 
 	public function register_field( $fields ): array {
 		$fields = (array) $fields;
-		$fields['adcaptcha'] = new AdcaptchaField();
+		$fields['adcaptcha'] = new AdCaptchaField();
 
 		return $fields;
 	}
@@ -40,7 +40,7 @@ class Forms extends Plugin {
 		$id = $field['id'] ?? 0;
 		$adcaptcha = str_replace(
 			'<div',
-			'<div id="adcaptcha-' . $id . '"',
+			'<div',
 			AdCaptcha::ob_captcha_trigger()
 		);
 
@@ -54,7 +54,7 @@ class Forms extends Plugin {
             'adcaptcha-ninjaforms',
 			plugins_url('AdCaptchaFieldController.js', __FILE__),
             [ 'nf-front-end' ],
-            PLUGIN_VERSION_adCAPTCHA,
+            PLUGIN_VERSION_ADCAPTCHA,
             true
         );
     }

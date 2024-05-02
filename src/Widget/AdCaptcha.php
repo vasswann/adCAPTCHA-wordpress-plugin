@@ -5,7 +5,7 @@ namespace AdCaptcha\Widget\AdCaptcha;
 class AdCaptcha {
 
     public static function enqueue_scripts($enableSubmitButton = false) {
-        wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), PLUGIN_VERSION_adCAPTCHA, true);
+        wp_enqueue_script('adcaptcha-script', 'https://widget.adcaptcha.com/index.js', array('jquery'), PLUGIN_VERSION_ADCAPTCHA, true);
     
         $ajax_nonce = wp_create_nonce("adcaptcha_nonce");
         wp_localize_script('adcaptcha-script', 'adcaptcha_vars', array(
@@ -19,21 +19,16 @@ class AdCaptcha {
             }
         }');
     }
-    
+
     public static function setupScript($enableSubmitButton = false) {
         return 'window.adcap.init();
         window.adcap.setupTriggers({
             onComplete: () => {
-                jQuery.ajax({
-                    url: adcaptcha_vars.ajax_url,
-                    type: "POST",
-                    data: {
-                        action: "save_token",
-                        successToken: window.adcap.successToken,
-                        nonce: adcaptcha_vars.nonce,
-                    }
-                });
                 ' . ($enableSubmitButton ? self::enable_submit_button() : '') . '
+                const event = new CustomEvent("adcaptcha_onSuccess", {
+                    detail: { successToken: window.adcap.successToken },
+                });
+                document.dispatchEvent(event);
             }
         });';
     }
@@ -53,6 +48,6 @@ class AdCaptcha {
     }
 
     public static function captcha_trigger() {
-        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div>');
+        printf('<div data-adcaptcha="' . esc_attr(get_option('adcaptcha_placement_id')) . '" style="margin-bottom: 20px; max-width: 400px;"></div><input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">');
     }
 }
