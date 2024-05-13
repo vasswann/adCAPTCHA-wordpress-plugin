@@ -12,21 +12,63 @@ use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePassw
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
 use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
+use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
+use AdCaptcha\Plugin\WPForms\Froms\Forms as WPForms;
 
 class Instantiate {
 
     public function setup() {
-        $classes = array(
-            'Wordpress_Login' => new Login(),
-            'Wordpress_Register' => new Registration(),
-            'Wordpress_ForgotPassword' => new PasswordReset(),
-            'Wordpress_Comments' => new Comments(),
-            'Woocommerce_Login' => new WoocommerceLogin(),
-            'Woocommerce_ForgotPassword' => new WoocommercePasswordReset(),
-            'Woocommerce_Register' => new WoocommerceRegistration(),
-            'ContactForm7_Forms' => new ContactForm7(),
-            'Mailchimp_Forms' => new MailchimpForms(),
-        );
+
+        if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+        
+        $classes = [
+            'Wordpress_Login' => [
+                'instance' => Login::class,
+                'plugin' => [],
+            ],
+            'Wordpress_Register' => [
+                'instance' => Registration::class,
+                'plugin' => [],
+            ],
+            'Wordpress_ForgotPassword' => [
+                'instance' => PasswordReset::class,
+                'plugin' => [],
+            ],
+            'Wordpress_Comments' => [
+                'instance' => Comments::class,
+                'plugin' => [],
+            ],
+            'Woocommerce_Login' => [
+                'instance' => WoocommerceLogin::class,
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'Woocommerce_ForgotPassword' => [
+                'instance' => WoocommercePasswordReset::class,
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'Woocommerce_Register' => [
+                'instance' => WoocommerceRegistration::class,
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'ContactForm7_Forms' => [
+                'instance' => ContactForm7::class,
+                'plugin' => [ 'contact-form-7/wp-contact-form-7.php' ],
+            ],
+            'Mailchimp_Forms' => [
+                'instance' => MailchimpForms::class,
+                'plugin' => [ 'mailchimp-for-wp/mailchimp-for-wp.php' ],
+            ],
+            'NinjaForms_Forms' => [
+                'instance' => NinjaForms::class,
+                'plugin' => [ 'ninja-forms/ninja-forms.php' ],
+            ],
+            'WPForms_Forms' => [
+                'instance' => WPForms::class,
+                'plugin' => [ 'wpforms-lite/wpforms.php', 'wpforms/wpforms.php' ],
+            ],
+        ];
 
         $selected_plugins = get_option('adcaptcha_selected_plugins') ? get_option('adcaptcha_selected_plugins') : array();
 
@@ -36,7 +78,17 @@ class Instantiate {
         if (get_option('adcaptcha_render_captcha') === '1') {
             foreach ($selected_plugins as $selected_plugin) {
                 if (isset($classes[$selected_plugin])) {
-                    $classes[$selected_plugin]->setup();
+                    $className = $classes[$selected_plugin]['instance'];
+                    if (empty($classes[$selected_plugin]['plugin'])) {
+                        new $className();
+                    } else {
+                        foreach ($classes[$selected_plugin]['plugin'] as $plugin) {
+                            if (is_plugin_active($plugin)) {
+                                $className = $classes[$selected_plugin]['instance'];
+                                new $className();
+                            }
+                        }
+                    }
                 }
             }
         }

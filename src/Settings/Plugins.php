@@ -26,6 +26,16 @@ class Plugins {
                 'logo' => 'mailchimp_logo.png',
                 'options' => array('Forms')
             ),
+            array(
+                'label' => 'NinjaForms',
+                'logo' => 'ninjaForms_logo.png',
+                'options' => array('Forms')
+            ),
+            array(
+                'label' => 'WPForms',
+                'logo' => 'wpforms_logo.png',
+                'options' => array('Forms')
+            ),
         );
 
         $saved_setting = false;
