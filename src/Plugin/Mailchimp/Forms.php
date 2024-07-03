@@ -60,8 +60,6 @@ class Forms extends AdCaptchaPlugin {
                             submitButton.addEventListener("click", function(event) {
                                 if (!window.adcap || !window.adcap.successToken) {
                                     event.preventDefault();
-                                    var responseDiv = document.querySelector(".mc4wp-response");
-                                    responseDiv.innerHTML = \'<div class="mc4wp-alert mc4wp-error" role="alert"><p>\' + adCaptchaErrorMessage + \'</p></div>\';
                                     return false;
                                 }
                             });
