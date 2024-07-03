@@ -37,7 +37,7 @@ class Verify {
         return false;
     }
 
-    public function get_success_token() {
+    public static function get_success_token() {
         $script = '
         document.addEventListener("DOMContentLoaded", function() {
             document.addEventListener("adcaptcha_onSuccess", function(e) {
