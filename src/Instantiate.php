@@ -14,6 +14,7 @@ use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
 use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
 use AdCaptcha\Plugin\WPForms\Froms\Forms as WPForms;
+use AdCaptcha\Plugin\Elementor\Forms\Forms as Elementor;
 
 class Instantiate {
 
@@ -68,6 +69,10 @@ class Instantiate {
                 'instance' => WPForms::class,
                 'plugin' => [ 'wpforms-lite/wpforms.php', 'wpforms/wpforms.php' ],
             ],
+            'Elementor_Forms' => [
+				'instance' => Elementor::class,
+				'plugin' => [ 'elementor-pro/elementor-pro.php' ],
+			]
         ];
 
         $selected_plugins = get_option('adcaptcha_selected_plugins') ? get_option('adcaptcha_selected_plugins') : array();
