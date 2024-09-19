@@ -24,7 +24,7 @@ class Forms extends AdCaptchaPlugin {
     public function setup() {
         add_filter( 'elementor_pro/forms/field_types', [ $this, 'add_field_type' ] );
         add_filter( 'elementor_pro/forms/render/item', [ $this, 'filter_field_item' ] );
-        add_action( 'elementor_pro/forms/render_field/' . static::get_adcaptcha_name(), [ AdCaptcha::class, 'captcha_trigger' ], 10, 3 );
+        add_action( 'elementor_pro/forms/render_field/' . static::get_adcaptcha_name(), [ $this, 'render_field' ], 10, 3 );
 		add_filter( 'elementor_pro/editor/localize_settings', [ $this, 'localize_settings' ] );
         add_action(
 			'elementor/element/form/section_form_fields/after_section_end',
@@ -33,6 +33,7 @@ class Forms extends AdCaptchaPlugin {
 			2
 		);
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
+		add_action( 'elementor/preview/enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'elementor_pro/forms/validation', [ $this, 'verify' ], 10, 2 );
 		if ( is_admin() ) {
@@ -50,10 +51,23 @@ class Forms extends AdCaptchaPlugin {
 					'</a>'
 				);
 				echo sprintf(
-					esc_html__( 'To set up adCAPTCHA, go to our plugin setting page and enter your API Key and Placement ID.', 'elementor-pro' ),
+					'<a href="%1$s" class="button" style="display: inline-block; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">%2$s</a>',
+					esc_url('/adcaptcha/wp-admin/options-general.php?page=adcaptcha'),
+					esc_html__('Click to configure adCAPTCHA', 'elementor-pro'),
 				);
 			},
 		] );
+	}
+
+	public function render_field( $item, $item_index, $widget ) {
+		$html = '<div style="width: 100%; class="elementor-field" id="form-field-' . $item['custom_id'] . '">';
+
+        add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
+		$html .= AdCaptcha::ob_captcha_trigger();
+
+		$html .= '</div>';
+
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
     public function add_field_type( $field_types ) {
@@ -108,4 +122,40 @@ class Forms extends AdCaptchaPlugin {
 
 		return $settings;
 	}
+
+    /**
+     * Verify captcha
+     *
+     * @param Form_Record  $record Record.
+     * @param Ajax_Handler $ajax_handler Ajax Handler.
+     */
+	public function verify( $record, $ajax_handler ) {
+		$fields = $record->get_field( [
+			'type' => static::get_adcaptcha_name(),
+		] );
+
+		if ( empty( $fields ) ) {
+			return;
+		}
+        $field = current( $fields );
+
+        $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
+		error_log('Success Token: ' . $successToken);
+
+        if ( empty( $successToken ) ) {
+			$ajax_handler->add_error( $field['id'], __( 'Please fill out the captcha', 'elementor-pro' ) );
+
+			return;
+		}
+
+        $response = Verify::verify_token($successToken);
+
+		if ( $response === false ) {
+			$ajax_handler->add_error( $field['id'], __( 'Invalid Captcha', 'elementor-pro' ) );
+
+			return;
+		}
+
+		$record->remove_field( $field['id'] );
+    }
 }
