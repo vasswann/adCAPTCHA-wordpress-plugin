@@ -4,7 +4,7 @@ Contributors: adCAPTCHA
 Tags: spam, anti-spam, block bots, security, adCAPTCHA
 Requires at least: 6.0
 Tested up to: 6.5.2
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,11 +13,7 @@ Secure your site. Elevate your brand. Boost Ad Revenue.
 
 == Description ==
 
-adCAPTCHA serves as a robust defense mechanism against spam and abuse, safeguarding your website with challenges that strike a balance between being easy for humans to solve and challenging for automated bots. What sets adCAPTCHA apart is its innovative approach, leveraging your own media resources to craft these challenges. This not only ensures effective protection but also seamlessly integrates into your website, maintaining a smooth user experience without diverting attention from your brand.
-
-One of adCAPTCHA's notable features is its commitment to privacy and data protection. It operates without the use of cookies and refrains from collecting any personal information. This dedication to user privacy aligns with GDPR compliance, offering reassurance to both website owners and users alike.
-
-Moreover, the implementation of adCAPTCHA is designed with performance in mind. It doesn't introduce unnecessary delays or slowdowns to your site, ensuring that the user experience remains swift and efficient. By striking this balance between security, user experience, and data protection, adCAPTCHA emerges as a valuable tool for fortifying your website against unwanted spam and abuse without compromising on the integrity of your brand.
+adCAPTCHA offers a unique proposition in the digital space by combining Security, Marketing and UX to form a product which beats Bots and elevates brands. Current solutions offer structured challenges and often collect user data which by their nature provides vulnerabilities when protecting against Bots. We collect no user data and offer limitless variables by the nature of Brand's ever changing content.
 
 [youtube https://www.youtube.com/watch?v=g_ub6Olcbnc]
 
@@ -53,6 +49,10 @@ Moreover, the implementation of adCAPTCHA is designed with performance in mind. 
 
 * Forms
 
+**Elementor**
+
+* Forms
+
 
 == Installation ==
 
@@ -70,7 +70,7 @@ For more information, visit the [adCAPTCHA Documentation](https://docs.adcaptcha
 1. Login
 2. Comments
 3. Forgot Password
-4. Register
+4. adCAPTCHA challenge
 5. General Settings
 6. Manage Plugins
 
@@ -120,3 +120,7 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 
 = 1.2.2 =
 - Minor patch: Plugin update to be compatible with PHP 8.2
+
+= 1.3.0 =
+- Feature: Support for Elementor
+- Update to adCAPTCHA settings page theme colour
