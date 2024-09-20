@@ -33,6 +33,7 @@ class Forms extends AdCaptchaPlugin {
 			2
 		);
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'reset_captcha_script' ], 9 );
 		add_action( 'elementor/preview/enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'elementor_pro/forms/validation', [ $this, 'verify' ], 10, 2 );
@@ -58,6 +59,10 @@ class Forms extends AdCaptchaPlugin {
 			},
 		] );
 	}
+
+	public function reset_captcha_script() {
+        wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("submit", function(event) { ' . AdCaptcha::setupScript() . ' window.adcap.successToken = ""; }, false);' );
+    }
 
 	public function render_field( $item, $item_index, $widget ) {
 		$html = '<div style="width: 100%; class="elementor-field" id="form-field-' . $item['custom_id'] . '">';
@@ -143,7 +148,7 @@ class Forms extends AdCaptchaPlugin {
 		error_log('Success Token: ' . $successToken);
 
         if ( empty( $successToken ) ) {
-			$ajax_handler->add_error( $field['id'], __( 'Please fill out the captcha', 'elementor-pro' ) );
+			$ajax_handler->add_error( $field['id'], __( 'Please complete the I am human box', 'elementor-pro' ) );
 
 			return;
 		}
@@ -151,7 +156,7 @@ class Forms extends AdCaptchaPlugin {
         $response = Verify::verify_token($successToken);
 
 		if ( $response === false ) {
-			$ajax_handler->add_error( $field['id'], __( 'Invalid Captcha', 'elementor-pro' ) );
+			$ajax_handler->add_error( $field['id'], __( 'Invalid, adCAPTCHA validation failed.', 'elementor-pro' ) );
 
 			return;
 		}
