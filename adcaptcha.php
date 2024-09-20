@@ -40,7 +40,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/Elementor/Forms.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION_ADCAPTCHA = '1.2.2';
+const PLUGIN_VERSION_ADCAPTCHA = '1.3.0';
 define('ADCAPTCHA_ERROR_MESSAGE', __( 'Please complete the I am human box.', 'adcaptcha' ));
 
 // Deletes data saved in the wp db on plugin uninstall

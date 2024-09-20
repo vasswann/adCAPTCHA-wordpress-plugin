@@ -25,7 +25,6 @@ class Forms extends AdCaptchaPlugin {
         add_filter( 'elementor_pro/forms/field_types', [ $this, 'add_field_type' ] );
         add_filter( 'elementor_pro/forms/render/item', [ $this, 'filter_field_item' ] );
         add_action( 'elementor_pro/forms/render_field/' . static::get_adcaptcha_name(), [ $this, 'render_field' ], 10, 3 );
-		add_filter( 'elementor_pro/editor/localize_settings', [ $this, 'localize_settings' ] );
         add_action(
 			'elementor/element/form/section_form_fields/after_section_end',
 			[ $this, 'update_controls' ],
@@ -111,21 +110,6 @@ class Forms extends AdCaptchaPlugin {
 		}
 
 		return $item;
-	}
-
-	public function localize_settings( $settings ) {
-		$settings = array_replace_recursive( $settings, [
-			'forms' => [
-				static::get_adcaptcha_name() => [
-					'enabled' => 'true',
-					'type' => 'adcaptcha',
-					'site_key' => 'pro_adcaptcha_site_key',
-					'setup_message' => static::get_setup_message(),
-				],
-			],
-		] );
-
-		return $settings;
 	}
 
     /**
