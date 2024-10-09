@@ -14,7 +14,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
      */
     public function __construct() {
         parent::__construct(
-            'ad-captcha-response',  // Changed to match adCAPTCHA response key
+            'adcaptcha_successToken',  // Changed to match adCAPTCHA response key
             'adCAPTCHA',            // Title set to adCAPTCHA
             [ 'captcha' ],
             'advanced'
@@ -97,23 +97,25 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
         return $response;  // No changes needed, the response is returned as-is
     }
 
-    /**
-     * Verify input
-     *
-     * @param  mixed $error_message Error message.
-     * @param  mixed $form Form.
-     * @return array
-     */
+	/**
+	 * Verify input
+	 *
+	 * @param  mixed $error_message Error message.
+	 * @param  mixed $field Field.
+	 * @param  mixed $form_data Form Data.
+	 * @param  mixed $fields Form fields.
+	 * @param  mixed $form Form.
+	 * @return array
+	 */
     public function verify( $error_message, $field, $form_data, $fields, $form ) {
         $field_name = $field['name'];
-		$response = $form_data[ $field_name ];
 
-        $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
+        $successToken = $form_data['adcaptcha_successToken'];
         $verify = new Verify();
         $response = $verify->verify_token($successToken);
 
         if ( $response === false ) {
-            $error_message = [ __( $this->key, 'adCAPTCHA' ) ];
+            $error_message = [ __( 'Incomplete captcha, Please try again.', 'adcaptcha_successToken' ) ];
         }
 
         return  $error_message;
