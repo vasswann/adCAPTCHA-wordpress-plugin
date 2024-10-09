@@ -37,6 +37,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/Mailchimp/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/WPForms/Forms.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Elementor/Forms.php';
+require_once plugin_dir_path(__FILE__) . 'src/Plugin/FluentForms/Forms.php';
 
 use AdCaptcha\Instantiate;
 
