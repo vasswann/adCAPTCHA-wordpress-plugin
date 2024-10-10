@@ -14,7 +14,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
      */
     public function __construct() {
         parent::__construct(
-            'adcaptcha_successToken',  // Changed to match adCAPTCHA response key
+            'adcaptcha_widget',  // Changed to match adCAPTCHA response key
             'adCAPTCHA',            // Title set to adCAPTCHA
             [ 'captcha' ],
             'advanced'
@@ -75,10 +75,10 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
         }
 
         // Use AdCaptcha to build the HTML for the captcha hidden input
-        $adcaptcha = AdCaptcha::captcha_trigger();
+        $adcaptcha = AdCaptcha::ob_captcha_trigger(false);
 
         // Render the final captcha HTML element
-        $el = "<div class='ff-el-input--content'><div data-fluent_id='" . $form->id . "'>{$adcaptcha}</div></div>";
+        $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
         $html = "<div class='ff-el-group " . esc_attr( $container_class ) . "' >" . fluentform_sanitize_html( $label ) . "{$el}</div>";
 
         // Print the final content to Fluent Forms
@@ -108,9 +108,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
 	 * @return array
 	 */
     public function verify( $error_message, $field, $form_data, $fields, $form ) {
-        $field_name = $field['name'];
-
-        $successToken = $form_data['adcaptcha_successToken'];
+        $successToken = $form_data['adcaptcha_widget'];
         $verify = new Verify();
         $response = $verify->verify_token($successToken);
 
