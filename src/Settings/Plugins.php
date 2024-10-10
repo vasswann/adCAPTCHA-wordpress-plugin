@@ -36,6 +36,11 @@ class Plugins {
                 'logo' => 'wpforms_logo.png',
                 'options' => array('Forms')
             ),
+            array(
+                'label' => 'Elementor',
+                'logo' => 'elementor_logo.png',
+                'options' => array('Forms')
+            ),
         );
 
         $saved_setting = false;

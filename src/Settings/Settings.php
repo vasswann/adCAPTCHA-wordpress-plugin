@@ -33,8 +33,8 @@ class Settings {
 
         ?>
         <div>
-            <div class="header container">
-                <?php printf('<img src="%s" class="logo"/>', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/logo_gradient.png')); ?>
+            <div class="adcap_header container">
+                <?php printf('<img src="%s" class="logo"/>', esc_url(untrailingslashit(plugin_dir_url(dirname(dirname(__FILE__)))) . '/assets/logo.png')); ?>
                 <hr>
                 <nav class="nav">
                     <a href="?page=adcaptcha" class="nav-tab
@@ -70,6 +70,6 @@ class Settings {
     }
 
     public function change_admin_footer_version() {
-        return 'Version 1.2.2';
+        return 'Version 1.3.1';
     }
 }
