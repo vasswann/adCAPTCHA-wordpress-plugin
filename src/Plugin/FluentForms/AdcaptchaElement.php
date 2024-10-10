@@ -75,7 +75,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
         }
 
         // Use AdCaptcha to build the HTML for the captcha hidden input
-        $adcaptcha = AdCaptcha::ob_captcha_trigger(false);
+        $adcaptcha = AdCaptcha::ob_captcha_trigger();
 
         // Render the final captcha HTML element
         $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
@@ -113,7 +113,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
         $response = $verify->verify_token($successToken);
 
         if ( $response === false ) {
-            $error_message = [ __( 'Incomplete captcha, Please try again.', 'adcaptcha_successToken' ) ];
+            $error_message = [ __( 'Incomplete captcha, Please try again.', 'adcaptcha' ) ];
         }
 
         return  $error_message;
