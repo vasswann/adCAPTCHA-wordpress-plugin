@@ -241,9 +241,8 @@ public function testResetCaptchaScript()
         return true; // Allow the mock to proceed
         },
     ]);
-
-    // Call the reset_captcha_script method to execute the logic
-    $this->forms->reset_captcha_script(); // Call the method under test
+    
+    $this->forms->reset_captcha_script(); 
     // Assert that the script contains the expected content
     $this->assertStringContainsString('document.addEventListener("wpcf7mailsent"', $capturedScript, 'Event listener registration is missing');
     $this->assertStringContainsString('window.adcap.successToken = "";', $capturedScript, 'Success token reset logic is missing');
