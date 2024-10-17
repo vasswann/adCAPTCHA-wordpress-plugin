@@ -1,15 +1,80 @@
 <?php return array(
     'root' => array(
-        'name' => 'vendor/verifyadcaptcha',
+        'name' => 'adcaptcha/testforms',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '6c47a9e85485e39ec2a31473b0b015b288173285',
+        'reference' => '2a5eb59b11b3e3cada3d81732182ef5a3a1b3aaf',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        '10up/wp_mock' => array(
+            'pretty_version' => '0.4.2',
+            'version' => '0.4.2.0',
+            'reference' => '9019226eb50df275aa86bb15bfc98a619601ee49',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../10up/wp_mock',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'adcaptcha/testforms' => array(
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '2a5eb59b11b3e3cada3d81732182ef5a3a1b3aaf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'antecedent/patchwork' => array(
+            'pretty_version' => '2.2.0',
+            'version' => '2.2.0.0',
+            'reference' => 'b07d4fb37c3c723c8755122160c089e077d5de65',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../antecedent/patchwork',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'cordoval/hamcrest-php' => array(
+            'dev_requirement' => true,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'davedevelopment/hamcrest-php' => array(
+            'dev_requirement' => true,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'hamcrest/hamcrest-php' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'dd03e528e461e059e21cdd2ce50fdb842efe5a91',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../hamcrest/hamcrest-php',
+            'aliases' => array(
+                0 => '2.1.x-dev',
+            ),
+            'dev_requirement' => true,
+        ),
+        'kodova/hamcrest-php' => array(
+            'dev_requirement' => true,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'mockery/mockery' => array(
+            'pretty_version' => '1.7.x-dev',
+            'version' => '1.7.9999999.9999999-dev',
+            'reference' => '3f8d3ff1ffe4c552d45c5690c6d825e9310769bf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mockery/mockery',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.12.0',
             'version' => '1.12.0.0',
@@ -243,15 +308,6 @@
             'install_path' => __DIR__ . '/../theseer/tokenizer',
             'aliases' => array(),
             'dev_requirement' => true,
-        ),
-        'vendor/verifyadcaptcha' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => '6c47a9e85485e39ec2a31473b0b015b288173285',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../../',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
     ),
 );

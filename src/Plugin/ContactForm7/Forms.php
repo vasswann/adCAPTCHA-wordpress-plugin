@@ -8,6 +8,12 @@ use AdCaptcha\Plugin\AdCaptchaPlugin;
 
 class Forms extends AdCaptchaPlugin {
 
+    // Declare the $adCaptcha property to hold an instance of the AdCaptcha class.
+    // This property is used to store the AdCaptcha object, allowing us to access its methods 
+    // throughout the Forms class without dynamically creating properties, 
+    // which is deprecated in PHP 8.2. This enhances code clarity and type safety.
+    private ?AdCaptcha $adCaptcha = null; // Explicitly define the property as nullable
+
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ], 9 );
@@ -62,6 +68,8 @@ class Forms extends AdCaptchaPlugin {
     }
 
     public function block_submission() {
+        // Log to see if this method is called
+    error_log("block_submission method called"); 
         $script = '
             document.addEventListener("DOMContentLoaded", function() {
                 var form = document.querySelector(".wpcf7-form");
@@ -107,7 +115,14 @@ class Forms extends AdCaptchaPlugin {
         wp_add_inline_script( 'adcaptcha-script', $script );
     }
 
-    public function test() {
-        return 'hello';
+    // Set the AdCaptcha instance for the Forms class.
+    // This method allows the Forms class to receive and store an instance
+    // of the AdCaptcha class. By using dependency injection, we can easily
+    // manage the AdCaptcha object and its methods within the Forms class.
+    // This enhances testability and maintains a clear separation of concerns,
+    // enabling easier unit testing and potential future changes to the AdCaptcha 
+    // implementation without affecting the Forms class directly.
+    public function setAdCaptcha(AdCaptcha $adCaptcha) {
+        $this->adCaptcha = $adCaptcha;
     }
 }
