@@ -29,7 +29,7 @@ if (!function_exists('add_filter')) {
 
 if (!function_exists('esc_attr')) {
     function esc_attr($text) {
-        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8');
     }
 }
 
