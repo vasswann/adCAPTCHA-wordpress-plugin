@@ -45,7 +45,7 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
             ],
             'editor_options' => [
                 'title'      => $this->title,
-                'icon_class' => 'ff-edit-recaptcha',
+                'icon_class' => 'ff-edit-adcaptcha',
                 'template'   => 'inputHidden',
             ],
         ];
