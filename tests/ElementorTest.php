@@ -5,11 +5,13 @@
  * @package AdCaptcha
  */
 
+
 use PHPUnit\Framework\TestCase;
+use WP_Mock;
 use AdCaptcha\Plugin\Elementor\Forms;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
-use WP_Mock as M;
+use Elementor\Plugin as ElementorPlugin;
 
 // Mocking the is_admin function
 if (!function_exists('is_admin')) {
@@ -46,13 +48,14 @@ class ElementorTest extends TestCase
         $mocked_actions = [];
         $mocked_filters = [];
         $is_admin = true; 
-        M::setUp();
+        WP_Mock::setUp();
         $this->forms = new Forms();
+       
     }
 
     protected function tearDown(): void
     {
-        M::tearDown();
+        WP_Mock::tearDown();
         parent::tearDown();
     }
 
@@ -62,42 +65,37 @@ class ElementorTest extends TestCase
         // Use reflection to access the protected method
         $reflection = new \ReflectionMethod(get_class($this->forms), 'get_adcaptcha_name');
         
-        $reflection->setAccessible(true); // Make the method accessible
+        $reflection->setAccessible(true); 
 
-        // Call the method statically since it's a static method
-        $result = $reflection->invoke(null); // null because it's static
+        $result = $reflection->invoke(null);
 
-        // Assert the method is protected
         $this->assertTrue($reflection->isProtected(), 'Method get_adcaptcha_name is not public');
-        // Assert the result is 'adCAPTCHA'
+  
         $this->assertEquals('adCAPTCHA', $result);
-        // Check if the method exists in the Forms class
+  
         $this->assertTrue(method_exists($this->forms, 'get_adcaptcha_name'), 'Method get_adcaptcha_name does not exist in Forms class');
     }
 
     public function testGetSetupMessage()
     {
         $result = $this->forms->get_setup_message();
-        // Assert that the result matches the expected error message
+    
         $this->assertEquals('Please enter your adCAPTCHA API Key and Placement ID in the adCAPTCHA settings.', $result);
-        // Assert that the 'get_setup_message' method exists in the Forms class.
+     
         $this->assertTrue(method_exists($this->forms, 'get_setup_message'), 'Method get_setup_message does not exist in Forms class');
     }
 
     public function testSetup() {
-        
-        // Call the setup method
+    
         $this->forms->setup();
-        // Access the global variables
+
         global $mocked_actions, $mocked_filters; 
 
-        // Assert that the method exists in the Forms class
         $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist in Forms class');
 
         // Assert that the number of actions is 14
         $this->assertCount(14, $mocked_actions);
         
-        // Assert that the field_types filter is registered correctly
         $this->assertContains([
             'hook' => 'elementor_pro/forms/field_types',
             'callback' => [$this->forms, 'add_field_type'],
@@ -105,7 +103,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_filters, 'The field_types filter is not registered correctly.');
         
-        // Check if the render/item filter is registered correctly
         $this->assertContains([
             'hook' => 'elementor_pro/forms/render/item',
             'callback' => [$this->forms, 'filter_field_item'],
@@ -113,7 +110,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_filters, 'The render/item filter is not registered correctly.'); 
         
-        // Check if the render_field action is registered correctly
         $this->assertContains([
             'hook' => 'elementor_pro/forms/render_field/adCAPTCHA',
             'callback' => [$this->forms, 'render_field'],
@@ -121,7 +117,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 3
         ], $mocked_actions, 'The render_field action is not registered correctly.'); 
 
-        // Check if the update_controls action is registered correctly 
         $this->assertContains([
             'hook' => 'elementor/element/form/section_form_fields/after_section_end',
             'callback' => [$this->forms, 'update_controls'],
@@ -129,7 +124,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 2
         ], $mocked_actions, 'The update_controls action is not registered correctly.'); 
 
-        // Check if the enqueue_scripts action is registered correctly
         $this->assertContains([
             'hook' => 'wp_enqueue_scripts',
             'callback' => [AdCaptcha::class, 'enqueue_scripts'],
@@ -137,7 +131,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_actions, 'The enqueue_scripts action is not registered correctly.');
 
-        // Check if the reset_captcha_script action is registered correctly
         $this->assertContains([
             'hook' => 'wp_enqueue_scripts',
             'callback' => [$this->forms, 'reset_captcha_script'],
@@ -145,7 +138,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_actions, 'The reset_captcha_script action is not registered correctly.');
 
-        // Check if the preview/enqueue_scripts action is registered correctly
         $this->assertContains([
             'hook' => 'elementor/preview/enqueue_scripts',
             'callback' => [AdCaptcha::class, 'enqueue_scripts'],
@@ -153,7 +145,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_actions, 'The preview/enqueue_scripts action is not registered correctly.');
         
-        // Check if the get_success_token action is registered correctly
         $this->assertContains([
             'hook' => 'wp_enqueue_scripts',
             'callback' => [Verify::class, 'get_success_token'],
@@ -161,7 +152,6 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_actions, 'The get_success_token action is not registered correctly.');
 
-        // Check if the validation action is registered correctly
         $this->assertContains([
             'hook' => 'elementor_pro/forms/validation',
             'callback' => [$this->forms, 'verify'],
@@ -172,26 +162,44 @@ class ElementorTest extends TestCase
         // this need to refuctored mock the is_admin function to be true and mocked the add_action function
         // Check if the admin/after_create_settings/elementor action is registered correctly
         // $this->assertContains([
-        //     'hook' => 'elementor/admin/after_create_settings/elementor',
+        //     'hook' => 'elementor/admin/after_create_settings',
         //     'callback' => [$this->forms, 'register_admin_fields'],
         //     'priority' => 10,
         //     'accepted_args' => 1
         // ], $mocked_actions, 'The admin/after_create_settings/elementor action is not registered correctly.');
+
+   
     }
 
     public function testRegisterAdminFields() {
 
         // mocking ElementorPlugin::$instance->settings->add_section
+        // WP_Mock::userFunction('add_section', [
+        //     'times' => 1,
+        //     'args' => ['integrations', 'adCAPTCHA', [
+        //         'label' => esc_html__('adCAPTCHA', 'adcaptcha'),
+        //         'callback' => function () {
+        //             echo sprintf(
+        //                 esc_html__('%1$sadCAPTCHA%2$s is the first CAPTCHA product which combines technical security features with a brands own media to block Bots and identify human verified users.', 'elementor-pro') . '<br><br>',
+        //                 '<a href="https://adcaptcha.com/" target="_blank">',
+        //                 '</a>'
+        //             );
+        //             echo sprintf(
+        //                 '<a href="%1$s" class="button" style="display: inline-block; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">%2$s</a>',
+        //                 esc_url('/adcaptcha/wp-admin/options-general.php?page=adcaptcha'),
+        //                 esc_html__('Click to configure adCAPTCHA', 'elementor-pro'),
+        //             );
+        //         }
+        //     ]]
+        // ]);
 
-        // Assert that the method exists in the Forms class
         $this->assertTrue(method_exists($this->forms, 'register_admin_fields'), 'Method register_admin_fields does not exist in Forms class');
     }
 
     public function testResetCaptchaScript() {
-         // Variable to hold the captured script
+    
         $capturedScript = '';
 
-        // Mock wp_add_inline_script to capture the injected script
         WP_Mock::userFunction('wp_add_inline_script', [
             'times' => 1, 
             'return' => function ($handle, $script) use (&$capturedScript) {
@@ -202,19 +210,16 @@ class ElementorTest extends TestCase
             },
         ]);
 
-        // Verify that the method executes without errors.
         try {
             $this->forms->reset_captcha_script();
             $this->assertTrue(true);
         } catch (\Exception $e) {
             $this->fail('reset_captcha_script method threw an exception: ' . $e->getMessage());
         } 
-    
-        // Assert that the captured script contains the expected content
+
         $this->assertStringContainsString('document.addEventListener("submit"', $capturedScript, 'Event listener registration is missing');
         $this->assertStringContainsString('window.adcap.successToken = "";', $capturedScript, 'Success token reset logic is missing');
 
-        // Assert that the method exists in the Forms class
         $this->assertTrue(method_exists($this->forms, 'reset_captcha_script'), 'Method reset_captcha_script does not exist in Forms class');
     }
 
@@ -228,10 +233,8 @@ class ElementorTest extends TestCase
         // Get the buffered output   
         $output = ob_get_clean(); 
 
-        // Access the global variables
         global $mocked_actions;
 
-        // Check if the enqueue_scripts action is registered correctly
         $this->assertContains([
             'hook' => 'wp_enqueue_scripts',
             'callback' => [AdCaptcha::class, 'enqueue_scripts'],
@@ -239,63 +242,108 @@ class ElementorTest extends TestCase
             'accepted_args' => 1
         ], $mocked_actions, 'The enqueue_scripts action is not registered correctly.'); 
 
-        // Assert that the inner <div> with data-adcaptcha is present
         $this->assertStringContainsString(
             '<div data-adcaptcha=""',
             $output,
             'The inner <div> with data-adcaptcha is missing.'
         ); 
     
-        // Assert that the hidden input for successToken is present
         $this->assertStringContainsString(
             '<input type="hidden" class="adcaptcha_successToken"',
             $output,
             'The hidden input for successToken is missing.'
         ); 
 
-         // Assert that the method exists in the Forms class
          $this->assertTrue(method_exists($this->forms, 'render_field'), 'Method render_field does not exist in Forms class');
     }
 
     public function testAddFieldType() {
-        // Mock field_types array
+
         $field_types = ['text' => 'Text Field', 'number' => 'Number Field'];
 
-        // Call the add_field_type method
         $result = $this->forms->add_field_type($field_types);
 
         // Use reflection to access the protected method
         $reflection = new \ReflectionMethod(get_class($this->forms), 'get_adcaptcha_name');
         
-        $reflection->setAccessible(true); // Make the method accessible
+        $reflection->setAccessible(true); 
 
-        // Call the method statically since it's a static method
         $expected_field_name = $reflection->invoke(null);
 
-        // Assert that existing field types are preserved
         $this->assertArrayHasKey('text', $result, 'Existing field type "text" should be preserved.');
+
         $this->assertArrayHasKey('number', $result, 'Existing field type "number" should be preserved.');
         
-        // Assert that the field name is correctly added to the field_types array
         $this->assertArrayHasKey($expected_field_name, $result, 'The field type name was not added correctly.');
 
-        // Additionally, check the value associated with that key
         $this->assertEquals( esc_html__('adCAPTCHA', 'elementor-pro'),$result[$expected_field_name],'The value for the new field is not properly escaped when input array is empty.');
 
-        // Assert that the value for the new field is properly escaped
         $this->assertEquals( esc_html__('adCAPTCHA', 'elementor-pro'), 'adCAPTCHA','The value for the new field is not properly escaped.');
 
-        // Assert that the method exists in the Forms class
         $this->assertTrue(method_exists($this->forms, 'add_field_type'), 'Method add_field_type does not exist in Forms class');
     }
 
     
     public function testUpdateControls()
     {
-       
-        
+        // WP_Mock::userFunction('get_unique_name', [
+        //     'times' => 1,
+        //     'return' => 'mocked_unique_name'
+        // ]);
 
-        // Assert that the method exists in the Forms class
+        
+        // $this->forms = new Forms();
+        // WP_Mock::userFunction('my_function', ['times' => 1]);
+        // $this->assertConditionsMet(); 
+
         $this->assertTrue(method_exists($this->forms, 'update_controls'), 'Method update_controls does not exist in Forms class');
+    }
+
+    public function testFilterFieldItem()
+    {
+
+        $item = ['field_type' => 'adCAPTCHA', 'field_label' => 'Test Label'];
+
+        $item_not_adCAPTCHA = ['field_type' => 'text', 'field_label' => 'Test Label'];
+
+        $expected = ['field_type' => 'adCAPTCHA', 'field_label' => false];
+
+        $result = $this->forms->filter_field_item($item);
+
+        $this->assertEquals($expected, $result, 'The item is not equal to the expected value.');
+
+        $this->assertEquals($item_not_adCAPTCHA, $this->forms->filter_field_item($item_not_adCAPTCHA), 'The item is not different to the expected value and return the item as is.');
+
+        $this->assertEmpty($result['field_label'], 'The field_label should be empty.');
+
+        $this->assertArrayHasKey('field_type', $result, 'The field_type key is missing.');
+
+        $this->assertFalse($result['field_label'], 'The field_label should be set to false.');
+
+        $this->assertTrue(method_exists($this->forms, 'filter_field_item'), 'Method filter_field_item does not exist in Forms class');
+    }
+
+    public function testVerify()
+    {
+      
+        // WP_Mock::userFunction('record', [
+        //     'times' => 1,
+        //     'return' => [
+        //         'get_field' => function ($args) {
+        //             return [
+        //                 [
+        //                     'id' => 'mock_field_id',
+        //                     'field_type' => 'adcaptcha', // Simulating a field type that matches
+        //                 ]
+        //             ];
+        //         },
+        //         'remove_field' => function ($field_id) {
+        //             // Simulating the remove_field behavior
+        //             return true; // Return value or mock behavior
+        //         }
+        //     ]
+        // ]);
+    
+        $this->assertTrue(method_exists($this->forms, 'verify'), 'Method verify does not exist in Forms class');
     }
 }
