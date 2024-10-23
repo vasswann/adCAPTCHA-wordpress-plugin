@@ -122,14 +122,13 @@ class Forms extends AdCaptchaPlugin {
 		$fields = $record->get_field( [
 			'type' => static::get_adcaptcha_name(),
 		] );
-
+	
 		if ( empty( $fields ) ) {
 			return;
 		}
+		
         $field = current( $fields );
-
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-		error_log('Success Token: ' . $successToken);
 
         if ( empty( $successToken ) ) {
 			$ajax_handler->add_error( $field['id'], __( 'Please complete the I am human box', 'elementor-pro' ) );
@@ -138,7 +137,7 @@ class Forms extends AdCaptchaPlugin {
 		}
 
         $response = Verify::verify_token($successToken);
-
+		
 		if ( $response === false ) {
 			$ajax_handler->add_error( $field['id'], __( 'Invalid, adCAPTCHA validation failed.', 'elementor-pro' ) );
 

@@ -5,6 +5,11 @@
          colors="true"
          stopOnFailure="false"
          displayDetailsOnTestsThatTriggerDeprecations="true">
+
+    <php>
+        <ini name="error_reporting" value="-1"/>
+        <ini name="display_errors" value="1"/>
+    </php>
     
     <testsuites>
         <testsuite name="Application Test Suite">

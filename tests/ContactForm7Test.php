@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Plugin\ContactForm7\Forms;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
-use WP_Mock;
 
 // This block checks if a function named 'add_action' is already defined.
 // If it is not defined, it creates a mock implementation of 'add_action'.
