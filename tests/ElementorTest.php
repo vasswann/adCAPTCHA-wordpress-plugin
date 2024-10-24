@@ -96,6 +96,22 @@ class MockElementorPlugin {
         return static::$instance;
     }
 }
+
+// Mocking the get_unique_name function for update_controls method
+class Controls_Stack
+{
+    private $unique_name;
+
+    public function __construct($unique_name)
+    {
+        $this->unique_name = $unique_name;
+    }
+
+    public function get_unique_name()
+    {
+        return $this->unique_name;
+    }
+}
 // <<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
 class ElementorTest extends TestCase
 {
@@ -251,41 +267,44 @@ class ElementorTest extends TestCase
         // $mockVerify->shouldReceive('verify_token')
         //     ->with('some_valid_token')
         //     ->andReturn('some_valid_token');
-        
-    // Mock the Elementor\Plugin class to simulate the static instance method
-    $mockPlugin = Mockery::mock('alias:Elementor\Plugin');
-
-    // Mock the settings object and its add_section method
-    $settingsMock = $this->getMockBuilder(MockSettings::class)
-        ->onlyMethods(['add_section'])
-        ->getMock();
-
-    // Set up expectations for add_section
-    $settingsMock->expects($this->once())
-        ->method('add_section')
-        ->with(
-            $this->equalTo('integrations'),
-            $this->equalTo('adcaptcha'),
-            $this->callback(function ($args) {
-                return isset($args['label']) && isset($args['callback']);
-            })
-        );
-
-    // Mock the MockElementorPlugin class to return the settings mock
-    $mockElementorPlugin = $this->getMockBuilder(MockElementorPlugin::class)
-        ->disableOriginalConstructor()
-        ->getMock();
-
-    // Assign the settings mock to the plugin mock
-    $mockElementorPlugin->settings = $settingsMock;
-
-    // Mock the static Elementor\Plugin::instance method to return the mockElementorPlugin
-    $mockPlugin->shouldReceive('instance')
-        ->andReturn($mockElementorPlugin);
-
-    // Now, create an instance of Forms with the mock plugin
-    $forms = new Forms($mockElementorPlugin);
-
+            // Mock the Elementor\Plugin class
+            $mockPlugin = Mockery::mock('alias:Elementor\Plugin');
+            $mockPlugin->shouldReceive('instance')
+                ->andReturn(MockElementorPlugin::instance());
+    
+            // Create a mock for the settings object
+            $settingsMock = $this->getMockBuilder(MockSettings::class)
+                ->onlyMethods(['add_section'])
+                ->getMock();
+    
+            // Set up the expectation for the add_section method
+            $settingsMock->expects($this->once())
+                ->method('add_section')
+                ->with(
+                    $this->equalTo('integrations'),
+                    $this->equalTo('adcaptcha'),
+                    $this->callback(function ($args) {
+                        return isset($args['label']) && isset($args['callback']);
+                    })
+                );
+    
+            // Create a mock for the ElementorPlugin instance
+            $mockElementorInstance = $this->getMockBuilder(MockElementorPlugin::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+    
+            // Inject the mock settings object into the mock ElementorPlugin object
+            $mockElementorInstance->settings = $settingsMock;
+    
+            // Use Mockery to set the static instance property
+            $mockPlugin->shouldReceive('instance')
+                ->andReturn($mockElementorInstance);
+    
+            // Create an instance of Forms with the mock ElementorPlugin object
+            $forms = new Forms($mockElementorInstance);
+    
+            // Call the register_admin_fields method
+            $forms->register_admin_fields();
     // Call the register_admin_fields method
     $forms->register_admin_fields();
     // Call the register_admin_fields method
