@@ -107,10 +107,31 @@ class ContactForm7Test extends TestCase
         ], $mocked_filters);
     }
 
-    public function testVerifySpamAlreadyTrue()
+    public function testVerify()
     {
-        $result = $this->forms->verify(true);
+        $spam = true;
+        $result = $this->forms->verify($spam);
         $this->assertTrue($result);
+        $spam = false;
+
+        $_POST['_wpcf7_adcaptcha_response'] = 'test-token';
+
+        // $mockVerify = $this->getMockBuilder(Verify::class)
+        //     ->onlyMethods(['verify_token'])
+        //     ->getMock();
+
+        // $mockVerify->expects($this->once())
+        //     ->method('verify_token')
+        //     ->willReturn(true);
+
+        WP_Mock::userFunction(Verify::class . 'verify_token', [
+            'times' => 1,
+            'return' => true,
+        ]);
+
+        $result = $this->forms->verify($spam);
+
+        $this->assertFalse($result, 'The result should return false when verify_token returns true');
     }
 
     public function testCaptchaTriggerFilter()
