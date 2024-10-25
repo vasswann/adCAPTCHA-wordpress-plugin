@@ -36,13 +36,13 @@ class Forms extends AdCaptchaPlugin {
 		add_action( 'elementor/preview/enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'elementor_pro/forms/validation', [ $this, 'verify' ], 10, 2 );
-		if ( is_admin() ) {
+		if ( \is_admin() ) {
 			add_action( 'elementor/admin/after_create_settings/' . 'elementor', [ $this, 'register_admin_fields' ] );
 		}
     }
 
 	public function register_admin_fields() {
-		ElementorPlugin::$instance->settings->add_section( 'integrations', static::get_adcaptcha_name(), [
+		$this->apply_settings_to_elemntor( 'integrations', static::get_adcaptcha_name(), [
 			'label' => esc_html__( static::get_adcaptcha_name(), 'adcaptcha' ),
 			'callback' => function () {
 				echo sprintf(
@@ -58,6 +58,12 @@ class Forms extends AdCaptchaPlugin {
 			},
 		] );
 	}
+
+	// We assume this function will always work becaues we trust Elementor
+	public function apply_settings_to_elemntor($sectionName, $settingsName, $settingsObject) {
+		ElementorPlugin::$instance->settings->add_section($sectionName, $sectionName, $settingsObject);
+	}
+	
 
 	public function reset_captcha_script() {
         wp_add_inline_script( 'adcaptcha-script', 'document.addEventListener("submit", function(event) { ' . AdCaptcha::setupScript() . ' window.adcap.successToken = ""; }, false);' );
@@ -82,10 +88,7 @@ class Forms extends AdCaptchaPlugin {
 
     public function update_controls( Controls_Stack $controls_stack, array $args ) {
 		$control_id   = 'form_fields';
-		$control_data = ElementorPlugin::$instance->controls_manager->get_control_from_stack(
-			$controls_stack->get_unique_name(),
-			$control_id
-		);
+		$control_data = $this->helper_func_get_control_from_stack($controls_stack, $control_id);
 
 		$term = [
 			'name'     => 'field_type',
@@ -96,12 +99,25 @@ class Forms extends AdCaptchaPlugin {
 		$control_data['fields']['width']['conditions']['terms'][]    = $term;
 		$control_data['fields']['required']['conditions']['terms'][] = $term;
 
-		ElementorPlugin::$instance->controls_manager->update_control_in_stack(
-			$controls_stack,
-			$control_id,
-			$control_data,
-			[ 'recursive' => true ]
-		);
+		$this->helper_func_update_control_in_stack($controls_stack, $control_id, $control_data);
+	}
+
+	// Helper function to update control in stack we assume this function will always work becaues we trust Elementor
+	public function helper_func_get_control_from_stack(Controls_Stack $controls_stack, string $control_id) {
+    	return ElementorPlugin::$instance->controls_manager->get_control_from_stack(
+        $controls_stack->get_unique_name(),
+        $control_id
+    	);
+	}
+
+	// Helper function to update control in stack we assume this function will always work becaues we trust Elementor
+	public function helper_func_update_control_in_stack(Controls_Stack $controls_stack, string $control_id, array $control_data) {
+    	ElementorPlugin::$instance->controls_manager->update_control_in_stack(
+        	$controls_stack,
+        	$control_id,
+        	$control_data,
+        	['recursive' => true]
+    	);
 	}
 
 	public function filter_field_item( $item ) {

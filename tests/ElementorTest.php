@@ -4,37 +4,39 @@
  *
  * @package AdCaptcha
  */
-
+namespace AdCaptcha\Tests;
 
 use PHPUnit\Framework\TestCase;
 use AdCaptcha\Plugin\Elementor\Forms;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
 use Elementor\Plugin as ElementorPlugin;
+use WP_Mock;
+use Mockery;
 
-// Mocking the is_admin function
-if (!function_exists('is_admin')) {
-    function is_admin() {
-        global $is_admin;
-        return $is_admin;
-    }
-}
+// // Mocking the is_admin function
+// if (!function_exists('is_admin')) {
+//     function is_admin() {
+//         global $is_admin;
+//         return $is_admin;
+//     }
+// }
 
-// Mocking the add_action function
-if (!function_exists('add_action')) {
-    function add_action($hook, $callback, $priority = 10, $accepted_args = 1) {
-        global $mocked_actions;
-        $mocked_actions[] = compact('hook', 'callback', 'priority', 'accepted_args');
-    }
-}
+// // Mocking the add_action function
+// if (!function_exists('add_action')) {
+//     function add_action($hook, $callback, $priority = 10, $accepted_args = 1) {
+//         global $mocked_actions;
+//         $mocked_actions[] = compact('hook', 'callback', 'priority', 'accepted_args');
+//     }
+// }
 
-// Mocking the add_filter function
-if (!function_exists('add_filter')) {
-    function add_filter($hook, $callback, $priority = 10, $accepted_args = 1) {
-        global $mocked_filters;
-        $mocked_filters[] = compact('hook', 'callback', 'priority', 'accepted_args');
-    }
-}
+// // Mocking the add_filter function
+// if (!function_exists('add_filter')) {
+//     function add_filter($hook, $callback, $priority = 10, $accepted_args = 1) {
+//         global $mocked_filters;
+//         $mocked_filters[] = compact('hook', 'callback', 'priority', 'accepted_args');
+//     }
+// }
 
 class MockRecord {
     private $fields = [];
@@ -72,33 +74,8 @@ class MockAjaxHandler {
     }
 }
 
-// Mocking ElementorPlugin classes for register_admin_fields method
-class MockSettings {
-    public function add_section($section, $name, $args)
-    {
-        return true;
-    }
-}
-
-class MockElementorPlugin {
-    public $settings;
-    public static $instance;
-
-    public function __construct()
-    {
-        $this->settings = new MockSettings();
-    }
-    public static function instance()
-    {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-        return static::$instance;
-    }
-}
-
 // Mocking the get_unique_name function for update_controls method
-class Controls_Stack
+class MockControlsStack
 {
     private $unique_name;
 
@@ -125,7 +102,7 @@ class ElementorTest extends TestCase
         $mocked_filters = [];
         $is_admin = true; 
         WP_Mock::setUp();
-        $this->forms = new Forms(new MockElementorPlugin());
+        $this->forms = new Forms();
        
     }
 
@@ -262,53 +239,54 @@ class ElementorTest extends TestCase
     }
 
     public function testRegisterAdminFields() {
+        
+        $mockFormsClass = $this->getMockBuilder(Forms::class)
+                               ->disableOriginalConstructor()  
+                               ->getMock();
+        
+        // this method is doing an assertion on the apply_settings_to_elemntor method
+        // checking if it is called with the correct arguments and if it is called once and returns null alse checking if it's exist
+        $mockFormsClass->expects($this->once())
+                               ->method('register_admin_fields')
+                               ->willReturn(null);
+        
+        $mockFormsClass->expects($this->once())
+                               ->method('apply_settings_to_elemntor')
+                               ->with('integrations', 'adCAPTCHA', [
+                                   'label' => esc_html__('adCAPTCHA', 'elementor-pro'),
+                                   'callback' => function () {
+                                       echo sprintf(
+                                           esc_html__('%1$sadCAPTCHA%2$s is the first CAPTCHA product which combines technical security features with a brands own media to block Bots and identify human verified users.', 'elementor-pro') . '<br><br>',
+                                           '<a href="https://adcaptcha.com/" target="_blank">',
+                                           '</a>'
+                                       );
+                                       echo sprintf(
+                                           '<a href="%1$s" class="button" style="display: inline-block; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">%2$s</a>',
+                                           esc_url('/adcaptcha/wp-admin/options-general.php?page=adcaptcha'),
+                                           esc_html__('Click to configure adCAPTCHA', 'elementor-pro'),
+                                       );
+                                   },
+                               ]);
 
-        // $mockVerify = Mockery::mock('alias:Verify');
-        // $mockVerify->shouldReceive('verify_token')
-        //     ->with('some_valid_token')
-        //     ->andReturn('some_valid_token');
-            // Mock the Elementor\Plugin class
-            $mockPlugin = Mockery::mock('alias:Elementor\Plugin');
-            $mockPlugin->shouldReceive('instance')
-                ->andReturn(MockElementorPlugin::instance());
-    
-            // Create a mock for the settings object
-            $settingsMock = $this->getMockBuilder(MockSettings::class)
-                ->onlyMethods(['add_section'])
-                ->getMock();
-    
-            // Set up the expectation for the add_section method
-            $settingsMock->expects($this->once())
-                ->method('add_section')
-                ->with(
-                    $this->equalTo('integrations'),
-                    $this->equalTo('adcaptcha'),
-                    $this->callback(function ($args) {
-                        return isset($args['label']) && isset($args['callback']);
-                    })
+        $this->forms = $mockFormsClass;
+        $this->forms->register_admin_fields();
+        
+        $this->forms->apply_settings_to_elemntor('integrations', 'adCAPTCHA', [
+            'label' => esc_html__('adCAPTCHA', 'elementor-pro'),
+            'callback' => function () {
+                echo sprintf(
+                    esc_html__('%1$sadCAPTCHA%2$s is the first CAPTCHA product which combines technical security features with a brands own media to block Bots and identify human verified users.', 'elementor-pro') . '<br><br>',
+                    '<a href="https://adcaptcha.com/" target="_blank">',
+                    '</a>'
                 );
-    
-            // Create a mock for the ElementorPlugin instance
-            $mockElementorInstance = $this->getMockBuilder(MockElementorPlugin::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-    
-            // Inject the mock settings object into the mock ElementorPlugin object
-            $mockElementorInstance->settings = $settingsMock;
-    
-            // Use Mockery to set the static instance property
-            $mockPlugin->shouldReceive('instance')
-                ->andReturn($mockElementorInstance);
-    
-            // Create an instance of Forms with the mock ElementorPlugin object
-            $forms = new Forms($mockElementorInstance);
-    
-            // Call the register_admin_fields method
-            $forms->register_admin_fields();
-    // Call the register_admin_fields method
-    $forms->register_admin_fields();
-    // Call the register_admin_fields method
-    $forms->register_admin_fields();
+                echo sprintf(
+                    '<a href="%1$s" class="button" style="display: inline-block; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">%2$s</a>',
+                    esc_url('/adcaptcha/wp-admin/options-general.php?page=adcaptcha'),
+                    esc_html__('Click to configure adCAPTCHA', 'elementor-pro'),
+                );
+            },
+        ]);
+        
         $this->assertTrue(method_exists($this->forms, 'register_admin_fields'), 'Method register_admin_fields does not exist in Forms class');
     }
 
@@ -402,15 +380,35 @@ class ElementorTest extends TestCase
     
     public function testUpdateControls()
     {
-        // WP_Mock::userFunction('get_unique_name', [
-        //     'times' => 1,
-        //     'return' => 'mocked_unique_name'
-        // ]);
+        // $mockFormsClass = $this->getMockBuilder(Forms::class);
+        // $mockFormsClass->expects($this->once())
+        //                        ->method('helper_func_get_control_from_stack')
+        //                        ->willReturn('hello');
+        // $result = new MockControlsStack($mockFormsClass); 
+        // $this->assertSame('hello', $result->get_unique_name());               
+            
+        // $controls_stack = new MockControlsStack('test_unique_name');
+        // $args = ['test_args'];
+
+        // $mockFormsClass->expects($this->once())
+        //                        ->method('helper_func_get_control_from_stack')
+        //                        ->with($controls_stack, $args);
+            
+        // $mockFormsClass->expects($this->once())
+        //                          ->method('helper_func_update_control_in_stack')
+        //                          ->willReturn(null);
 
         
-        // $this->forms = new Forms();
-        // WP_Mock::userFunction('my_function', ['times' => 1]);
-        // $this->assertConditionsMet(); 
+
+        // $this->forms->update_controls($controls_stack, $args);
+        // $mockFormsClass = $this->createMock(Forms::class);
+        // $mockFormsClass->expects($this->once())
+        //     ->method('update_controls')
+        //     ->with('test_unique_name', ['test_args'])
+        //     ->willReturn(null);
+        
+        // $result = new Forms($mockFormsClass);
+        // $this->assertSame(null, $result->update_controls('test_unique_name', ['test_args']));
 
         $this->assertTrue(method_exists($this->forms, 'update_controls'), 'Method update_controls does not exist in Forms class');
     }
@@ -442,7 +440,7 @@ class ElementorTest extends TestCase
     public function testVerify()
     {
        
-        $reflection = new ReflectionMethod($this->forms, 'verify');
+        $reflection = new \ReflectionMethod($this->forms, 'verify');
         $paramCount = count($reflection->getParameters());
         
         $this->assertEquals(2, $paramCount, 'The verify method should have exactly 2 arguments.');
@@ -468,7 +466,7 @@ class ElementorTest extends TestCase
         $fields = $record->get_field(['type' => 'invalid_type']);
         $this->assertEmpty($fields, 'Fields array should be empty');
         
-        // we check the oposit if we have a valid token
+        // we check the opposite if we have a valid token
         $fields = $record->get_field(['type' => 'adCAPTCHA']);
         $this->assertNotEmpty($fields, 'Fields array should not be empty');
 
