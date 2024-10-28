@@ -3,7 +3,7 @@
         'name' => 'adcaptcha/testforms',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '8d24012d8c8bb32c722c74c260203520c09514b7',
+        'reference' => '2e8e2d758f33f79216df025fe96b26bc341af2ea',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'adcaptcha/testforms' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '8d24012d8c8bb32c722c74c260203520c09514b7',
+            'reference' => '2e8e2d758f33f79216df025fe96b26bc341af2ea',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
