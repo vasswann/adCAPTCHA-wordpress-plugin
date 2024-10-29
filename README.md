@@ -29,23 +29,15 @@
 
 ### ContactForm7
 
-* Forms
-
 ### Mailchimp
-
-* Forms
 
 ### Ninja Forms
 
-* Forms
-
 ### WPForms
-
-* Forms
 
 ### Elementor
 
-* Forms
+### Fluent Forms
 
 ## Privacy Notices
 
@@ -56,4 +48,3 @@ This plugin intentionally avoids the use of cookies, refrains from tracking user
 During verification, the adCAPTCHA service may briefly receive the user's IP address and browser vendor data to safeguard enabled pages. However, it promptly discards this information after verification and does not retain any data. Importantly, none of the information utilized for verification enables adCAPTCHA to identify individual users.
 
 [Privacy Policy](https://adcaptcha.com/privacy).
-
