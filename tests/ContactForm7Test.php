@@ -26,6 +26,8 @@ if (!function_exists('esc_attr')) {
     }
 }
 
+
+
 class ContactForm7Test extends TestCase
 {
     private $forms;
@@ -108,57 +110,45 @@ class ContactForm7Test extends TestCase
         ], $mocked_filters);
     }
 
-    public function testVerifySpamTrue()
+    public function testVerifyTokenFalse()
     {
-        // $spam = true;
-        
-        // $verifyMock = $this->getMockBuilder(Verify::class)
-        //                    ->onlyMethods(['verify_token'])
-        //                    ->getMock();
-        
-        // $verifyMock->expects($this->never())
-        //                    ->method('verify_token')
-        //                     ->willReturn(false);
+        $spam = false;
+        $_POST['_wpcf7_adcaptcha_response'] = 'invalid_token';
 
-        // $this->verifyMock = $this->createMock(Verify::class);
-        // $reflection = new \ReflectionClass($this->forms);
-        // $property = $reflection->getProperty('verify');
-        // $property->setAccessible(true);
-        // $property->setValue($this->forms, $this->verifyMock);
-        // $this->verifyMock->method('verify_token')
-        //     ->willReturn(true);
-
-        $result = $this->forms->verify(true);
+        $this->verifyMock = $this->createMock(Verify::class);
+        $reflection = new \ReflectionClass($this->forms);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->forms, $this->verifyMock);
+        $this->verifyMock->method('verify_token')
+            ->willReturn(false);
+        global $mocked_filters;
+        var_dump($mocked_filters);
+        $result = $this->forms->verify($spam);
         $this->assertTrue($result, 'Expected verify to return true when spam is true.');
         
         
     }
 
-    // public function testVerifyReturnsSpamWhenTokenIsInvalid() {
-    //     // Arrange
-    //     $spam = false;
-    //     $_POST['_wpcf7_adcaptcha_response'] = 'invalid_token'; // Simulate POST data
+    public function testVerifyTokenTrue()
+    {
+        $spam = false;
+        $_POST['_wpcf7_adcaptcha_response'] = 'invalid_token';
 
-    //     // Create a mock for the Verify class
-    //     $verifyMock = $this->createMock(Verify::class);
+        $this->verifyMock = $this->createMock(Verify::class);
+        $reflection = new \ReflectionClass($this->forms);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->forms, $this->verifyMock);
+        $this->verifyMock->method('verify_token')
+            ->willReturn(true);
 
-    //     // Set up the expectation for verify_token to return false (indicating spam)
-    //     $verifyMock->method('verify_token')
-    //                ->willReturn(false);
+        $result = $this->forms->verify($spam);
+        $this->assertFalse($result, 'Expected verify to return true when spam is true.');
+        
+        
+    }
 
-    //     // Use reflection to set the private verify instance in the Forms class
-    //     $reflection = new \ReflectionClass($this->forms);
-    //     $property = $reflection->getProperty('verify');
-    //     $property->setAccessible(true);
-    //     $property->setValue($this->forms, $verifyMock);
-
-    //     // Act
-    //     $result = $this->forms->verify($spam);
-
-    //     // Assert that the result is true (indicating spam)
-    //     $this->assertTrue($result, 'Expected verify to return true when token is invalid.');
-    // }
-   
     public function testVerifyReturnsFalseWhenTokenIsValid() {
         $this->verifyMock = $this->createMock(Verify::class);
         $_POST['_wpcf7_adcaptcha_response'] = 'valid_token';

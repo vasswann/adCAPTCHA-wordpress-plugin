@@ -30,20 +30,14 @@ class Forms extends AdCaptchaPlugin {
     }
 
     public function verify( $spam ) {
-        if ( $spam ) {
-            echo "this line is executed----";
-            var_dump($spam);
-            return $spam;
-        }
-
+      
         $token = trim( $_POST['_wpcf7_adcaptcha_response']);
     
         $response = $this->verify->verify_token($token);
     
         if ( $response === false ) {
             $spam = true;
-            echo "this line is executed inside the if statement-----";
-              var_dump($response);
+           
             add_filter('wpcf7_display_message', function($message, $status) {
                 if ($status == 'spam') {
                     $message = __( 'Please complete the I am human box', 'adcaptcha' );
@@ -51,8 +45,7 @@ class Forms extends AdCaptchaPlugin {
                 return $message;
             }, 10, 2);
         }
-        echo "checking the spam in the end of the verify method-----";
-        var_dump($spam);
+      
         return $spam;
     }
 
