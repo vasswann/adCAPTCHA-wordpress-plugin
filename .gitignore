@@ -8,3 +8,5 @@
 /src/Plugin/Elementor/ExampleCommand.php
 /src/Plugin/Elementor/ExampleService.php
 /src/Plugin/Elementor/ExampleDependency.php
+
+.DS_Store
