@@ -18,7 +18,8 @@ use MC4WP_Form_Element;
 
 class MailchimpTest extends TestCase
 {
-    protected Forms $forms;
+    private $verifyMock;
+    private $forms;
 
     protected function setUp(): void
     {
@@ -28,11 +29,14 @@ class MailchimpTest extends TestCase
         $mocked_filters = [];
         WP_Mock::setUp();
         $this->forms = new Forms();
+        
     }
 
     protected function tearDown(): void
     {
+        Mockery::close();
         WP_Mock::tearDown();
+
         parent::tearDown();
     }
 
@@ -45,8 +49,8 @@ class MailchimpTest extends TestCase
         $this->assertTrue(method_exists($this->forms, 'setup'));
 
         $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 9, 'accepted_args' => 1], $mocked_actions);
-
-        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [Verify::class, 'get_success_token'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions);
+   
+        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [$this->forms, 'get_success_token_wrapper'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions);
 
         $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [$this->forms, 'block_submission'], 'priority' => 9, 'accepted_args' => 1], $mocked_actions);
 
@@ -56,7 +60,7 @@ class MailchimpTest extends TestCase
 
         $this->assertContains(['hook' => 'mc4wp_form_errors', 'callback'=> [$this->forms, 'verify'], 'priority' => 10, 'accepted_args' => 2], $mocked_filters);
 
-         // Custom assertion for mc4wp_form_messages hook filter to chekc if 
+         // Custom assertion for mc4wp_form_messages hook filter to chekc if the filter is registered correctly 
          $found = false;
          foreach ($mocked_filters as $filter) {
              if ($filter['hook'] === 'mc4wp_form_messages' &&
@@ -95,40 +99,41 @@ class MailchimpTest extends TestCase
         $this->assertEquals($expected_output, $output_html, "Hidden input field was added even though there was no submit button.");
     }
 
-    // public function testVerifyValidToken()
-    // {
-        // $successToken = 'test-token';
-        // $_POST['adcaptcha_successToken'] = $successToken; // Simulate the POST data
+    public function testVerifyTokenSuccess() {
+        $this->verifyMock = $this->createMock(Verify::class);
+        // reflection we use here to access the private property verify and set the mock object
+        $reflection = new \ReflectionClass($this->forms);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->forms, $this->verifyMock);
         
-        // // Mocking Verify behavior directly
-        // $verifyMock = Mockery::mock(Verify::class);
-        // $verifyMock->shouldReceive('verify_token')
-        //     ->with($successToken)
-        //     ->andReturn(true); // Simulate a successful verification
+        $this->verifyMock->method('verify_token')
+            ->willReturn(true);
 
-        // // Here you would need to ensure that the Forms class uses this mocked Verify object.
-
-        // // If you cannot inject it, you'll face issues because the Forms class will create a new instance of Verify.
-
-        // $errors = []; // Start with an empty errors array
-        // $formMock = Mockery::mock(MC4WP_Form::class); // Mock the MC4WP_Form class
-
-        // $result = $this->forms->verify($errors, $formMock);
-
-        // // Assert that 'invalid_captcha' is not in the result
-        // $this->assertNotContains('invalid_captcha', $result, "Errors should not contain 'invalid_captcha' for valid token.");
-    // }
-
-    public function testVerifyInvalidToken()
-    {
-        $verifyMock = Mockery::mock(Verify::class);
-        $verifyMock->shouldReceive('verify_token')
-                ->andReturn(false); 
-
+        $form = $this->createMock(MC4WP_Form::class);
         $errors = [];
-        $errors = $this->forms->verify($errors, Mockery::mock(MC4WP_Form::class));
+        $result = $this->forms->verify($errors, $form);
 
-        $this->assertContains('invalid_captcha', $errors, "Errors should contain 'invalid_captcha' for invalid token.");
+        $this->assertNotContains('invalid_captcha', $result, "Errors should not contain 'invalid_captcha' for valid token.");
+    }
+
+
+    public function testVerifyInvalidToken(){
+        $this->verifyMock = $this->createMock(Verify::class);
+
+        $reflection = new \ReflectionClass($this->forms);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->forms, $this->verifyMock);
+
+        $this->verifyMock->method('verify_token')
+            ->willReturn(false);
+
+        $form = $this->createMock(MC4WP_Form::class);
+        $errors = [];
+        $result = $this->forms->verify($errors, $form);
+
+        $this->assertContains('invalid_captcha', $result, "Errors should contain 'invalid_captcha' for invalid token.");
     }
 
     // We are testing that the script 'adcaptcha-script' is registered exactly once. Testing the localization of the script to ensure the error message is correctly passed. It checks that the inline script is added and contains the necessary logic to block form submission. Assertions on captured script content verify the presence of event listeners and conditions for preventing submission. Checking method existence to ensure the block_submission method is defined.

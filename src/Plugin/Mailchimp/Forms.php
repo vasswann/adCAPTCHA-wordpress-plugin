@@ -11,9 +11,21 @@ use MC4WP_Form_Element;
 
 class Forms extends AdCaptchaPlugin {
 
+    private $verify;
+
+    public function __construct() {
+        parent::__construct();
+        $this->verify = new Verify();
+    }
+
+    public function get_success_token_wrapper() {
+        return $this->verify->get_success_token();
+    }
+
+   
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
-        add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
+        add_action( 'wp_enqueue_scripts', [ $this, 'get_success_token_wrapper' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ], 9 );
         add_filter( 'mc4wp_form_content', [ $this, 'add_hidden_input' ], 20, 3 );
         add_action( 'admin_enqueue_scripts', [ $this, 'form_preview_setup_triggers' ], 9 );
@@ -33,13 +45,12 @@ class Forms extends AdCaptchaPlugin {
             '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
             '<input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">' . '$1',
             $content
-		);
+        );
     }
 
     public function verify( $errors, MC4WP_Form $form ) {
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-        $verify = new Verify();
-        $response = $verify->verify_token($successToken);
+        $response = $this->verify->verify_token($successToken);
 
         if ( $response === false ) {
             $errors     = (array) $errors;
