@@ -3,7 +3,7 @@
 namespace AdCaptcha\Widget;
 
 class Verify {
-    public static function verify_token($successToken) {
+    public function verify_token($successToken) {
         $apiKey = get_option('adcaptcha_api_key');
 
         if (!$successToken || !$apiKey) {
