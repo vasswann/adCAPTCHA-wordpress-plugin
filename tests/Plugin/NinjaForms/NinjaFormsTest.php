@@ -38,21 +38,27 @@ class NinjaFormsTest extends TestCase {
         $this->nfMock = $this->getMockBuilder('NF_Fields_Recaptcha')
             ->disableOriginalConstructor()
             ->getMock();
-        // $this->nfMock->__construct();
-        $this->verifyMock = $this->getMockBuilder(Verify::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->adcaptchaField = new AdCaptchaField();
-        $this->forms = new Forms();   
+       
+        $this->verifyMock = $this->createMock(Verify::class);
+        
+        $this->adcaptchaField = new AdCaptchaField($this->verifyMock);
+        $this->forms = new Forms(); 
+
+        // using reflection to set the verify property to be accessible because verify it is a private property from the AdCaptchaField class
+        $reflection = new \ReflectionClass($this->adcaptchaField);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->adcaptchaField, $this->verifyMock);
     }
 
     public function tearDown(): void {
         WP_Mock::tearDown();
+        Mockery::close();
         parent::tearDown();
     }
 
+    // Tests the setup and initialization of the Forms class within the AdCaptcha plugin. This test confirms that Forms setup registers the necessary WordPress actions and filters for proper integration with Ninja Forms and AdCaptcha.
     public function testSetup() {
-        
         
         global $mocked_actions, $mocked_filters; 
         $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist');
@@ -101,14 +107,15 @@ class NinjaFormsTest extends TestCase {
         $this->assertContains(['hook' => 'ninja_forms_localize_field_adcaptcha_preview', 'callback'=> [$this->forms, 'render_field'], 'priority' => 10, 'accepted_args' => 1], $mocked_filters);
     }
 
+    // Tests that `register_field` correctly adds the 'adcaptcha' field and ensures it is an instance of AdCaptchaField.
     public function testRegisterField() {
-        
         $fields = $this->forms->register_field([]);
 
         $this->assertArrayHasKey('adcaptcha', $fields, 'Field not found');
         $this->assertInstanceOf(AdCaptchaField::class, $fields['adcaptcha'], 'Field is not an instance of AdCaptchaField');
     }
 
+    // Verifies `register_template` method exists and returns an array containing the expected template path.
     public function testRegisterTemplate() {
         $expectedPath = "path/to/template";
         $paths = $this->forms->register_template($expectedPath);
@@ -118,6 +125,7 @@ class NinjaFormsTest extends TestCase {
         $this->assertTrue(method_exists($this->forms, 'register_template'), 'Method register_template does not exist');
     }
 
+    // // Tests that `render_field` method exists and returns an array with 'settings' containing an 'adcaptcha' HTML div element.
     public function testRenderField() {
         $field = $this->forms->render_field([]);
 
@@ -127,6 +135,7 @@ class NinjaFormsTest extends TestCase {
         $this->assertTrue(method_exists($this->forms, 'render_field'), 'Method render_field does not exist');
     }
 
+    // Tests that `load_scripts` method exists and properly enqueues the AdCaptcha script with the correct parameters.
     public function testLoadScripts() {
         if(!defined('PLUGIN_VERSION_ADCAPTCHA')) {
             define('PLUGIN_VERSION_ADCAPTCHA', '1.0.0');
@@ -134,7 +143,8 @@ class NinjaFormsTest extends TestCase {
     
         WP_Mock::userFunction('plugins_url', [
             'args' => ['AdCaptchaFieldController.js', Mockery::any()],
-            'return' => 'path/to/script/AdCaptchaFieldController.js'
+            'return' => 'path/to/script/AdCaptchaFieldController.js',
+            'times' => 1,
         ]);
 
         WP_Mock::userFunction('wp_enqueue_script', [
@@ -152,37 +162,34 @@ class NinjaFormsTest extends TestCase {
 
         $this->assertTrue(defined('PLUGIN_VERSION_ADCAPTCHA'), 'PLUGIN_VERSION_ADCAPTCHA is not defined');
         $this->assertTrue(method_exists($this->forms, 'load_scripts'), 'Method load_scripts does not exist');
-
-        
-
-        // Verify that wp_enqueue_script was called with the correct arguments
-    // WP_Mock::expectActionAdded('wp_enqueue_script', [
-    //     'adcaptcha-ninjaforms',
-    //     'path/to/script/AdCaptchaFieldController.js',
-    //     ['nf-front-end'],
-    //     PLUGIN_VERSION_ADCAPTCHA,
-    //     true
-    // ]);
-
-    // Verify that wp_enqueue_script was called exactly once
-    // WP_Mock::expectActionAdded('wp_enqueue_script', [
-    //     'adcaptcha-ninjaforms',
-    //     'path/to/script/AdCaptchaFieldController.js',
-    //     ['nf-front-end'],
-    //     PLUGIN_VERSION_ADCAPTCHA,
-    //     true
-    // ], 1);
     }
 
-    // public function testValidate() {
-    //     $field = ['value' => ''];
-    //     $data = [];
-    //     $this->verifyMock->expects($this->once())
-    //         ->method('verify_token')
-    //         ->with('token')
-    //         ->willReturn(false);
-    //     $this->adcaptchaField->validate($field, $data);
-        
-       
-    // }
+    public function testValidateEmptyField() {
+        $field = ['value' => ''];
+        $result = $this->adcaptchaField->validate($field, []);
+        $this->assertEquals(esc_html__(ADCAPTCHA_ERROR_MESSAGE), $result);
+        $this->assertTrue(method_exists($this->adcaptchaField, 'validate'), 'Method validate does not exist');
+    }
+
+    public function testValidateWithVerifyTokenReturningFalse()
+    {
+        $this->verifyMock->method('verify_token')
+            ->with('invalid_value')
+            ->willReturn(false);
+        $field = ['value' => 'invalid_value'];
+        $result = $this->adcaptchaField->validate($field, []);
+        $this->assertSame('Please complete the CAPTCHA', $result);
+        $this->assertEquals(esc_html__(ADCAPTCHA_ERROR_MESSAGE), $result);
+    }
+
+    public function testValidateWithVerifyTokenReturningTrue()
+    {
+        $this->verifyMock->method('verify_token')
+            ->with('valid_token')
+            ->willReturn(true);
+
+        $field = ['value' => 'valid_token'];
+        $result = $this->adcaptchaField->validate($field, []);
+        $this->assertNull($result); 
+    }
 }

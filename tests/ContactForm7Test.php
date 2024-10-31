@@ -122,11 +122,8 @@ class ContactForm7Test extends TestCase
         $this->verifyMock->method('verify_token')
             ->willReturn(false);
         global $mocked_filters;
-        var_dump($mocked_filters);
         $result = $this->forms->verify($spam);
         $this->assertTrue($result, 'Expected verify to return true when spam is true.');
-        
-        
     }
 
     public function testVerifyTokenTrue()
