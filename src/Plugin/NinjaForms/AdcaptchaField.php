@@ -19,7 +19,10 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
     protected $_nicename;
 
     public function __construct() {
-        parent::__construct();
+        // parent::__construct();
+        // if (is_subclass_of($this, 'NF_Fields_Recaptcha')) { 
+        //     parent::__construct();
+        // }
         $this->_nicename = esc_html__( 'adCAPTCHA', 'adcaptcha' );
     }
 
@@ -33,7 +36,7 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
 
         $verify = new Verify();
         $response = $verify->verify_token($value);
-
+var_dump($response);
         if ( $response === false ) {
             return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
         }

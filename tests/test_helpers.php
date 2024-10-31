@@ -24,3 +24,13 @@ if (!function_exists('add_filter')) {
         $mocked_filters[] = compact('hook', 'callback', 'priority', 'accepted_args');
     }
 }
+
+function execute_mocked_hook($hook_name) {
+    global $mocked_actions;
+
+    foreach ($mocked_actions as $action) {
+        if ($action['hook'] === $hook_name && is_callable($action['callback'])) {
+            call_user_func($action['callback']);
+        }
+    }
+}
