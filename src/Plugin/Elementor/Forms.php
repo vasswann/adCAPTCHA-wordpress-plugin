@@ -88,8 +88,9 @@ class Forms extends AdCaptchaPlugin {
 
     public function update_controls( Controls_Stack $controls_stack, array $args ) {
 		$control_id   = 'form_fields';
+		var_dump($control_id);
 		$control_data = $this->helper_func_get_control_from_stack($controls_stack, $control_id);
-
+var_dump($control_data);
 		$term = [
 			'name'     => 'field_type',
 			'operator' => '!in',

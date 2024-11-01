@@ -14,30 +14,6 @@ use Elementor\Plugin as ElementorPlugin;
 use WP_Mock;
 use Mockery;
 
-// // Mocking the is_admin function
-// if (!function_exists('is_admin')) {
-//     function is_admin() {
-//         global $is_admin;
-//         return $is_admin;
-//     }
-// }
-
-// // Mocking the add_action function
-// if (!function_exists('add_action')) {
-//     function add_action($hook, $callback, $priority = 10, $accepted_args = 1) {
-//         global $mocked_actions;
-//         $mocked_actions[] = compact('hook', 'callback', 'priority', 'accepted_args');
-//     }
-// }
-
-// // Mocking the add_filter function
-// if (!function_exists('add_filter')) {
-//     function add_filter($hook, $callback, $priority = 10, $accepted_args = 1) {
-//         global $mocked_filters;
-//         $mocked_filters[] = compact('hook', 'callback', 'priority', 'accepted_args');
-//     }
-// }
-
 class MockRecord {
     private $fields = [];
 
@@ -75,24 +51,27 @@ class MockAjaxHandler {
 }
 
 // Mocking the get_unique_name function for update_controls method
-class MockControlsStack
-{
-    private $unique_name;
+// class MockControlsStack
+// {
+//     private $unique_name;
 
-    public function __construct($unique_name)
-    {
-        $this->unique_name = $unique_name;
-    }
+//     public function __construct($unique_name)
+//     {
+//         $this->unique_name = $unique_name;
+//     }
 
-    public function get_unique_name()
-    {
-        return $this->unique_name;
-    }
-}
+//     public function get_unique_name()
+//     {
+//         return $this->unique_name;
+//     }
+// }
 // <<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>
 class ElementorTest extends TestCase
 {
     private $forms;
+    // private $elementorPluginMock;
+    // private $elementorControlsStackMock;
+    // private $formsMock;
 
     protected function setUp(): void
     {
@@ -102,6 +81,18 @@ class ElementorTest extends TestCase
         $mocked_filters = [];
         $is_admin = true; 
         WP_Mock::setUp();
+
+        // $this->elementorPluginMock = $this->getMockBuilder('Elementor\Plugin')
+        //     ->disableOriginalConstructor()
+        //     ->getMock();
+
+        // $this->elementorControlsStackMock = $this->getMockBuilder('Elementor\Controls_Stack')
+        //     ->disableOriginalConstructor()
+        //     ->onlyMethods(['get_unique_name'])
+        //     ->getMock();
+
+        // $this->formsMock = $this->createMock(Forms::class);
+
         $this->forms = new Forms();
        
     }
@@ -380,35 +371,53 @@ class ElementorTest extends TestCase
     
     public function testUpdateControls()
     {
-        // $mockFormsClass = $this->getMockBuilder(Forms::class);
-        // $mockFormsClass->expects($this->once())
-        //                        ->method('helper_func_get_control_from_stack')
-        //                        ->willReturn('hello');
-        // $result = new MockControlsStack($mockFormsClass); 
-        // $this->assertSame('hello', $result->get_unique_name());               
+        // $expectedControlData = [
+        //     'fields' => [
+        //         'width' => [
+        //             'conditions' => ['terms' => []], 
+        //         ],
+        //         'required' => [
+        //             'conditions' => ['terms' => []], 
+        //         ],
+        //     ],
+        // ];
             
-        // $controls_stack = new MockControlsStack('test_unique_name');
-        // $args = ['test_args'];
+        // $this->formsMock->method('helper_func_get_control_from_stack')
+        //         ->willReturn($expectedControlData);
+        // $this->formsMock->method('helper_func_update_control_in_stack')
+        //         ->willReturn(null);
+        // $this->elementorControlsStackMock->method('get_unique_name')
+        //         ->willReturn('test_unique_name');
 
-        // $mockFormsClass->expects($this->once())
-        //                        ->method('helper_func_get_control_from_stack')
-        //                        ->with($controls_stack, $args);
-            
-        // $mockFormsClass->expects($this->once())
-        //                          ->method('helper_func_update_control_in_stack')
-        //                          ->willReturn(null);
+        // $this->formsMock->update_controls($this->elementorControlsStackMock, ['args' => 'test_args']);
 
-        
+        // $term = [
+        //     'name' => 'field_type',
+        //     'operator' => '!in',
+        //     'value' => ['adCAPTCHA'],
+        // ];
 
-        // $this->forms->update_controls($controls_stack, $args);
-        // $mockFormsClass = $this->createMock(Forms::class);
-        // $mockFormsClass->expects($this->once())
-        //     ->method('update_controls')
-        //     ->with('test_unique_name', ['test_args'])
-        //     ->willReturn(null);
-        
-        // $result = new Forms($mockFormsClass);
-        // $this->assertSame(null, $result->update_controls('test_unique_name', ['test_args']));
+        // $this->assertArrayHasKey('width', $expectedControlData['fields'], 'The width field is missing.');
+        // $this->assertArrayHasKey('required', $expectedControlData['fields'], 'The required field is missing.');
+        // $this->assertArrayHasKey('conditions', $expectedControlData['fields']['width'], 'The conditions key is missing.');
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         $this->assertTrue(method_exists($this->forms, 'update_controls'), 'Method update_controls does not exist in Forms class');
     }
