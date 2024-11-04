@@ -1,5 +1,5 @@
 /vendor
-/tests/Plugin
+
 
 # Ignore PHPUnit result cache
 .phpunit.result.cache
