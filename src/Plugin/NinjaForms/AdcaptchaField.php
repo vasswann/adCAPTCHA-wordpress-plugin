@@ -20,11 +20,10 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
 
     private $verify;
 
-    public function __construct() {
-        // parent::__construct();
-        // if (is_subclass_of($this, 'NF_Fields_Recaptcha')) { 
-        //     parent::__construct();
-        // }
+    public function __construct($data = object, $shouldInstantiateParent = true) {
+        if ($data->shouldInstantiateParent) {
+            parent::__construct();
+        }
         $this->_nicename = esc_html__( 'adCAPTCHA', 'adcaptcha' );
         $this->verify = new Verify();
     }
