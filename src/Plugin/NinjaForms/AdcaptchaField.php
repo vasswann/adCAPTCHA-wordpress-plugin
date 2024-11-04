@@ -24,6 +24,10 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
         if ($data->shouldInstantiateParent) {
             parent::__construct();
         }
+        // $data = object should be null
+        // if (is_object($data) && property_exists($data, 'shouldInstantiateParent') && $data->shouldInstantiateParent) {
+        //     parent::__construct();
+        // }
         $this->_nicename = esc_html__( 'adCAPTCHA', 'adcaptcha' );
         $this->verify = new Verify();
     }
