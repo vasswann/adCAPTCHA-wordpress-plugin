@@ -8,6 +8,12 @@ use AdCaptcha\Plugin\AdCaptchaPlugin;
 use WP_Error;
 
 class Comments extends AdCaptchaPlugin {
+    private $verify;
+
+    public function __construct() {
+        parent::__construct();
+        $this->verify = new Verify();
+    }
 
     public function setup() {
         add_action( 'comment_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
@@ -18,8 +24,7 @@ class Comments extends AdCaptchaPlugin {
 
     public function verify( $approved, array $commentdata ) {
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-        $verify = new Verify();
-        $response = $verify->verify_token($successToken);
+        $response = $this->verify->verify_token($successToken);
 
 
         if ( $response === false ) {

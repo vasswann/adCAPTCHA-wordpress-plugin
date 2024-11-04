@@ -48,7 +48,7 @@ class LoginTest extends TestCase {
        global $mocked_actions;
        $this->login->setup();
 
-       $this->assertIsArray($mocked_actions, 'Expected result to be an array');
+       $this->assertNotEmpty($mocked_actions, 'Expected result to be an array');
 
        $found = false;
        foreach($mocked_actions as $action) {
@@ -92,7 +92,7 @@ class LoginTest extends TestCase {
     }
 
     // Mocks the `verify_token` method to return `false`, simulating a failed verification. Calls the `verify` method and ensures it returns a `WP_Error` object. Verifies that the `WP_Error` object contains an error message for 'adcaptcha_error'. Checks that the error code 'adcaptcha_error' is present in the `WP_Error` object. Confirms that the error message matches the expected message: 'Incomplete captcha, Please try again.'
-    public function test_verify_failure() {
+    public function testVerifyFailure() {
         $this->verifyMock->method('verify_token')
             ->willReturn(false);
 
