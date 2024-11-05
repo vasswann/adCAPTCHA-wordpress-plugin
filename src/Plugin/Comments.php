@@ -36,6 +36,6 @@ class Comments extends AdCaptchaPlugin {
 
     // Renders the captcha before the submit button
     public function captcha_trigger_filter($submit_field) {
-        return AdCaptcha::captcha_trigger() . $submit_field;
+        return AdCaptcha::ob_captcha_trigger() . $submit_field;
     }
 }
