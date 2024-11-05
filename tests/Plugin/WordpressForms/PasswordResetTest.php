@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
 use AdCaptcha\Plugin\PasswordReset;
-use WP_Mock;
-use Mockery;
 
 class PasswordResetTest extends TestCase {
     private $passwordReset;
@@ -20,10 +18,8 @@ class PasswordResetTest extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
-        global $mocked_actions, $mocked_filters;
+        global $mocked_actions;
         $mocked_actions = [];
-        $mocked_filters = [];
-        WP_Mock::setUp();
 
         $this->verifyMock = $this->createMock(Verify::class);
         $this->passwordReset = new PasswordReset(); 
@@ -37,7 +33,6 @@ class PasswordResetTest extends TestCase {
     public function tearDown(): void {
         global $mocked_actions;
         $mocked_actions = [];
-        WP_Mock::tearDown();
         parent::tearDown();
     }
 
@@ -45,7 +40,7 @@ class PasswordResetTest extends TestCase {
     public function testSetup() {
         $this->assertTrue(method_exists($this->passwordReset, 'setup'), 'Method setup does not exist');
 
-        global $mocked_actions, $mocked_filters;
+        global $mocked_actions;
         $this->passwordReset->setup();
 
         $this->assertNotEmpty($mocked_actions, 'Expected result to be an array');
