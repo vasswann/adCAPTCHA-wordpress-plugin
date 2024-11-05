@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
 use AdCaptcha\Plugin\Registration;
+use AdCaptcha\Plugin\AdcaptchaPlugin;
 
 class RegistrationTest extends TestCase {
     private $registration;
@@ -54,6 +55,8 @@ class RegistrationTest extends TestCase {
         $this->assertContains(['hook' => 'register_form', 'callback' => [AdCaptcha::class, 'captcha_trigger'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions, 'Expected action not found');
 
         $this->assertContains(['hook' => 'registration_errors', 'callback' => [$this->registration, 'verify'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions, 'Expected action not found');
+
+        $this->assertInstanceof(AdcaptchaPlugin::class, $this->registration , 'Expected an instance of AdCaptchaPlugin');
     }
 
     // Checks that the Registration class has a ‘verify’ method and that it’s callable. Sets an expectation for verify_token to return true once. Creates a WP_Error object for error tracking. Calls verify on Registration and asserts the result is a WP_Error instance with no error codes (indicating verification success).

@@ -11,19 +11,18 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
 use AdCaptcha\Plugin\Comments;
-use WP_Mock;
-use Mockery;
+use AdCaptcha\Plugin\AdcaptchaPlugin;
 
 class CommentsTest extends TestCase {
     private $comments;
     private $verifyMock;
 
+    // Set up method to initialize the test environment, reset global mocked actions and filters, create a mock for the Verify class, instantiate the Comments class, and use reflection to inject the mock into the 'verify' property.
     public function setUp(): void {
         parent::setUp();
         global $mocked_actions, $mocked_filters;
         $mocked_actions = [];
         $mocked_filters = [];
-        WP_Mock::setUp();
 
         $this->verifyMock = $this->createMock(Verify::class);
         $this->comments = new Comments(); 
@@ -36,15 +35,14 @@ class CommentsTest extends TestCase {
         
     }
 
+    // Tear down method to reset the global mocked_actions and mocked_filters arrays, call WP_Mock tearDown for cleanup, and finalize with the parent tearDown method.
     public function tearDown(): void {
         global $mocked_actions, $mocked_filters;
         $mocked_actions = [];
-        WP_Mock::tearDown();
         parent::tearDown();
     }
 
-    // Check if the 'setup' method exists in the $this->comments object. Access global arrays for mocked actions and filters. Call the setup method to initialize actions and filters. Assert that $mocked_actions is not empty. Assert that $mocked_filters is not empty. Check for specific action registration in $mocked_actions and $mocked_filters.
-
+    // Test setup function to ensure the Comments class initializes properly, checks for the existence of the 'setup' method, verifies that mocked_actions and mocked_filters are populated with expected actions and filters, and confirms that the Comments instance is of type AdCaptchaPlugin.
     public function testSetup() {
         $this->assertTrue(method_exists($this->comments, 'setup'), 'Method setup does not exist');
 
@@ -61,6 +59,8 @@ class CommentsTest extends TestCase {
         $this->assertContains(['hook' => 'comment_form_submit_field', 'callback' => [$this->comments, 'captcha_trigger_filter'], 'priority' => 10, 'accepted_args' => 1], $mocked_filters, 'Expected filter not found');
 
         $this->assertContains(['hook' => 'pre_comment_approved', 'callback' => [$this->comments, 'verify'], 'priority' => 20, 'accepted_args' => 2], $mocked_actions, 'Expected action not found');
+
+        $this->assertInstanceof(AdcaptchaPlugin::class, $this->comments , 'Expected an instance of AdCaptchaPlugin');
     }
 
     // Check if the 'verify' method exists in the $this->comments object. Check if the 'verify' method is callable.Expect the 'verify_token' method to be called once and return true. Call the 'verify' method with a new WP_Error instance and comment data. Assert that the result is an instance of WP_Error. Assert that the WP_Error has no error codes

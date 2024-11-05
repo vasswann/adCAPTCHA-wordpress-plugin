@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
 use AdCaptcha\Plugin\Login;
+use AdCaptcha\Plugin\AdCaptchaPlugin;
 use WP_Mock;
 use Mockery;    
 
@@ -42,7 +43,7 @@ class LoginTest extends TestCase {
         parent::tearDown();
     }
 
-    // This test verifies that the `setup` method in the `$this->login` object: Exists and can be called without errors.Registers expected WordPress actions with correct hooks, priorities, and callbacks.Ensures actions are structured correctly, including closures and specific callback references.
+    // Test setup function to ensure the Login class initializes properly, checks for the existence of the 'setup' method, verifies that mocked_actions is populated correctly with expected actions and their properties, and confirms that the Login instance is of type AdCaptchaPlugin.
     public function testSetup() {
        $this->assertTrue(method_exists($this->login, 'setup'), 'Method setup does not exist');
        global $mocked_actions;
@@ -75,7 +76,7 @@ class LoginTest extends TestCase {
 
         $this->assertContains(['hook' => 'wp_authenticate_user', 'callback' => [$this->login, 'verify'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions);
 
-
+       $this->assertInstanceof(AdcaptchaPlugin::class, $this->login , 'Expected an instance of AdCaptchaPlugin');
     }
 
     // Checks that the `verify` method exists on the `$this->login` object and is callable. Mocks the `verify_token` method to always return `true` for this test. Calls the `verify` method and ensures it returns a `WP_Error` object. Verifies that the returned `WP_Error` object has no error codes, indicating success
