@@ -178,14 +178,15 @@ class NinjaFormsTest extends TestCase {
         $this->assertEquals(esc_html__(ADCAPTCHA_ERROR_MESSAGE), $result);
     }
 
-    // public function testValidateWithVerifyTokenReturningTrue()
-    // {
-    //     $this->verifyMock->method('verify_token')
-    //         ->with('valid_token')
-    //         ->willReturn(true);
+    public function testValidateWithVerifyTokenReturningTrue()
+    {
+        $this->verifyMock->method('verify_token')
+            ->with('valid_token')
+            ->willReturn(true);
 
-    //     $field = ['value' => 'valid_token'];
-    //     $result = $this->adcaptchaField->validate($field, []);
-    //     $this->assertNull($result); 
-    // }
+        $field = ['value' => 'valid_token'];
+        $result = $this->adcaptchaField->validate($field, []);
+        $this->assertTrue(is_callable([$this->adcaptchaField, 'validate']), 'Method validate is not callable');
+        $this->assertEquals(NULL, $result);
+    }
 }

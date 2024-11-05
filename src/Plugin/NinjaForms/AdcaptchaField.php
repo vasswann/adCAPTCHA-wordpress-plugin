@@ -31,7 +31,6 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
 
     public function validate( $field, $data ) {
         $value = $field['value'] ?? '';
-
         if ( empty( $value ) ) {
             return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
         }
