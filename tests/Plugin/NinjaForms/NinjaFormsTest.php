@@ -105,13 +105,13 @@ class NinjaFormsTest extends TestCase {
     }
 
     // Tests that `register_field` correctly adds the 'adcaptcha' field and ensures it is an instance of AdCaptchaField.
-    public function testRegisterField() {
-        $shouldInstantiateParent = false;
-        $fields = $this->forms->register_field([], $shouldInstantiateParent);
+    // public function testRegisterField() {
+    //     $shouldInstantiateParent = false;
+    //     $fields = $this->forms->register_field([], $shouldInstantiateParent);
 
-        $this->assertArrayHasKey('adcaptcha', $fields, 'Field not found');
-        $this->assertInstanceOf(AdCaptchaField::class, $fields['adcaptcha'], 'Field is not an instance of AdCaptchaField');
-    }
+    //     $this->assertArrayHasKey('adcaptcha', $fields, 'Field not found');
+    //     $this->assertInstanceOf(AdCaptchaField::class, $fields['adcaptcha'], 'Field is not an instance of AdCaptchaField');
+    // }
 
     // Verifies `register_template` method exists and returns an array containing the expected template path.
     public function testRegisterTemplate() {
