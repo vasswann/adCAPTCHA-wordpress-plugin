@@ -62,9 +62,11 @@ class NinjaFormsTest extends TestCase {
         
         global $mocked_actions, $mocked_filters; 
         $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist');
+        $basedir = dirname(__DIR__, 3);
         WP_Mock::userFunction('plugin_dir_path', [
             'args' => [Mockery::any()], 
-            'return' => '/Applications/XAMPP/xamppfiles/htdocs/testcap/wp-content/plugins/adcaptcha/src/Plugin/NinjaForms/']);
+            'return' => $basedir . '/src/Plugin/NinjaForms'
+            ]);
         
         $this->forms->setup();
 
