@@ -1,10 +1,10 @@
 /vendor
 
-
 # Ignore PHPUnit result cache
 .phpunit.result.cache
 
 /tests/Plugin/Elementor/ExampleCommandTest.php
+
 /src/Plugin/Elementor/ExampleCommand.php
 /src/Plugin/Elementor/ExampleService.php
 /src/Plugin/Elementor/ExampleDependency.php
