@@ -16,12 +16,6 @@ use AdCaptcha\Widget\Verify;
 use WP_Mock;
 use Mockery;
 
-// if(!class_exists('NF_Fields_Recaptcha')) {
-//     class NF_Fields_Recaptcha {
-       
-//     }
-// }
-
 class NinjaFormsTest extends TestCase {
     private $forms;
     private $nfMock;
@@ -41,7 +35,8 @@ class NinjaFormsTest extends TestCase {
        
         $this->verifyMock = $this->createMock(Verify::class);
         
-        $this->adcaptchaField = new AdCaptchaField($this->verifyMock);
+        $adCAPTCHAFieldData = (object) ['shouldInstantiateParent' => false];
+        $this->adcaptchaField = new AdCaptchaField($adCAPTCHAFieldData);
         $this->forms = new Forms(); 
 
         // using reflection to set the verify property to be accessible because verify it is a private property from the AdCaptchaField class
@@ -111,7 +106,8 @@ class NinjaFormsTest extends TestCase {
 
     // Tests that `register_field` correctly adds the 'adcaptcha' field and ensures it is an instance of AdCaptchaField.
     public function testRegisterField() {
-        $fields = $this->forms->register_field([]);
+        $adcaptchaFieldData = (object) ['shouldInstantiateParent' => false];
+        $fields = $this->forms->register_field([], $adcaptchaFieldData);
 
         $this->assertArrayHasKey('adcaptcha', $fields, 'Field not found');
         $this->assertInstanceOf(AdCaptchaField::class, $fields['adcaptcha'], 'Field is not an instance of AdCaptchaField');

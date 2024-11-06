@@ -20,9 +20,12 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
 
     private $verify;
 
-    public function __construct() {
-        // parent::__construct();
-        // if (is_subclass_of($this, 'NF_Fields_Recaptcha')) { 
+    public function __construct($data = object, $shouldInstantiateParent = true) {
+        if ($data->shouldInstantiateParent) {
+            parent::__construct();
+        }
+        // $data = object should be null
+        // if (is_object($data) && property_exists($data, 'shouldInstantiateParent') && $data->shouldInstantiateParent) {
         //     parent::__construct();
         // }
         $this->_nicename = esc_html__( 'adCAPTCHA', 'adcaptcha' );

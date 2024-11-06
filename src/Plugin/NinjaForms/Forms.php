@@ -20,9 +20,9 @@ class Forms extends AdCaptchaPlugin {
 		});
     }
 
-	public function register_field( $fields ): array {
+	public function register_field( $fields, $adCAPTCHAObjectData = object, $shouldInstantiateParent = true ): array {
 		$fields = (array) $fields;
-		$fields['adcaptcha'] = new AdCaptchaField();
+		$fields['adcaptcha'] = new AdCaptchaField($adCAPTCHAObjectData);
 
 		return $fields;
 	}

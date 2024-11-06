@@ -8,6 +8,13 @@ use AdCaptcha\Plugin\AdCaptchaPlugin;
 use WP_Error;
 
 class Login extends AdCaptchaPlugin {
+    private $verify;
+
+    public function __construct() {
+        parent::__construct();
+        $this->verify = new Verify();
+    }
+
 
     public function setup() {
         add_action( 'woocommerce_login_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
@@ -20,7 +27,7 @@ class Login extends AdCaptchaPlugin {
         global $adCAPTCHAWordpressLogin;
         remove_action( 'wp_authenticate_user', [ $adCAPTCHAWordpressLogin, 'verify' ], 10 );
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-        $response = Verify::verify_token($successToken);
+        $response = $this->verify->verify_token($successToken);
 
         if ( $response === false ) {
             $validation_error = new WP_Error('adcaptcha_error', __( 'Incomplete captcha, Please try again.', 'adcaptcha' ));
