@@ -15,6 +15,7 @@ use AdCaptcha\Plugin\Mailchimp\Froms as MailchimpForms;
 use AdCaptcha\Plugin\NinjaForms\Froms as NinjaForms;
 use AdCaptcha\Plugin\WPForms\Froms as WPForms;
 use AdCaptcha\Plugin\Elementor\Forms as Elementor;
+use AdCaptcha\Plugin\FluentForms\Forms as FluentForms;
 
 class Instantiate {
 
@@ -72,7 +73,11 @@ class Instantiate {
             'Elementor_Forms' => [
 				'instance' => Elementor::class,
 				'plugin' => [ 'elementor-pro/elementor-pro.php' ],
-			]
+			],
+            'FluentForms_Forms' => [
+                'instance' => FluentForms::class,
+                'plugin' => [ 'fluentform/fluentform.php' ],
+            ],
         ];
 
         $selected_plugins = get_option('adcaptcha_selected_plugins') ? get_option('adcaptcha_selected_plugins') : array();
