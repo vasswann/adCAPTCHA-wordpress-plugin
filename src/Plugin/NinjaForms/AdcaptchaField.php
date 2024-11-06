@@ -18,9 +18,15 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
 
     protected $_nicename;
 
+    private $verify;
+
     public function __construct() {
-        parent::__construct();
+        // parent::__construct();
+        // if (is_subclass_of($this, 'NF_Fields_Recaptcha')) { 
+        //     parent::__construct();
+        // }
         $this->_nicename = esc_html__( 'adCAPTCHA', 'adcaptcha' );
+        $this->verify = new Verify();
     }
 
 
@@ -31,9 +37,7 @@ class AdCaptchaField extends NF_Fields_Recaptcha {
             return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
         }
 
-        $verify = new Verify();
-        $response = $verify->verify_token($value);
-
+        $response = $this->verify->verify_token($value);
         if ( $response === false ) {
             return esc_html__( ADCAPTCHA_ERROR_MESSAGE );
         }

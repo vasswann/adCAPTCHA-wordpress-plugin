@@ -1,9 +1,9 @@
 <?php
 
-namespace AdCaptcha\Plugin\FluentForms\Forms;
+namespace AdCaptcha\Plugin\FluentForms;
 
-use AdCaptcha\Plugin\FluentForms\AdCaptchaElement\AdCaptchaElement;
-use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
+use AdCaptcha\Plugin\FluentForms\AdCaptchaElement;
+use AdCaptcha\Plugin\AdCaptchaPlugin;
 
 class Forms extends AdCaptchaPlugin {
     /**
