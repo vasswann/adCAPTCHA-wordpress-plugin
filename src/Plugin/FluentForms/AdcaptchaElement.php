@@ -1,6 +1,6 @@
 <?php
 
-namespace AdCaptcha\Plugin\FluentForms\AdCaptchaElement;
+namespace AdCaptcha\Plugin\FluentForms;
 
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
