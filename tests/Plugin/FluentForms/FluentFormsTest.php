@@ -9,7 +9,7 @@ namespace AdCaptcha\Tests\Plugin\FluentForms;
 
 use PHPUnit\Framework\TestCase;
 use AdCaptcha\Plugin\FluentForms\Forms;
-use AdCaptcha\Plugin\FluentForms\AdCaptchaElement;
+use AdCaptcha\Plugin\FluentForms\AdCaptchaElements;
 use AdCaptcha\Plugin\AdCaptchaPlugin;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
@@ -19,7 +19,7 @@ use Mockery;
 class FluentFormsTest extends TestCase {
     private $forms;
     private $mockedClass;
-    private $adCaptchaElement;
+    private $adCaptchaElements;
 
     public function setUp(): void {
         parent::setUp();
@@ -32,7 +32,8 @@ class FluentFormsTest extends TestCase {
             ->getMock();
 
         $this->forms = new Forms();
-        // $this->adCaptchaElement = new AdCaptchaElement();
+
+        $this->adCaptchaElements = new AdCaptchaElements();
     }
 
     public function tearDown(): void {
@@ -100,6 +101,9 @@ class FluentFormsTest extends TestCase {
 
     // public function testConstructor() {
     //     global $mocked_actions;
-    // //     $this->assertTrue(method_exists($this->adCaptchaElement, '__construct'), 'Method __construct does not exist');
+        
+    //     $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 9, 'accepted_args' => 1], $mocked_actions);
+        
+    //     $this->assertTrue(true);
     // }
 }

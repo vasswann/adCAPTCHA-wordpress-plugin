@@ -5,7 +5,7 @@ namespace AdCaptcha\Plugin\FluentForms;
 use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
 
-class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
+class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
 
     /**
      * Constructor
@@ -13,12 +13,12 @@ class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldMan
      * @return void
      */
     public function __construct() {
-        parent::__construct(
-            'adcaptcha_widget',  // Changed to match adCAPTCHA response key
-            'adCAPTCHA',            // Title set to adCAPTCHA
-            [ 'captcha' ],
-            'advanced'
-        );
+            parent::__construct(
+                'adcaptcha_widget',  
+                'adCAPTCHA',            
+                [ 'captcha' ],
+                'advanced'
+            );
 
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
