@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 use AdCaptcha\Plugin\ContactForm7\Forms;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
-use WP_Mock;
 
 if (!function_exists('add_action')) {
     function add_action($hook, $callback, $priority = 10, $accepted_args = 1) {
