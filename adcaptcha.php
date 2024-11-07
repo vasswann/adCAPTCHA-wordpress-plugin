@@ -2,7 +2,7 @@
 /**
  * Plugin Name: adCAPTCHA for WordPress
  * Description: Secure your site. Elevate your brand. Boost Ad Revenue.
- * Version: 1.4.0
+ * Version: 1.4.2
  * Requires at least: 6.4.2
  * Requires PHP: 7.4
  * Author: adCAPTCHA
@@ -41,7 +41,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Plugin/FluentForms/Forms.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION_ADCAPTCHA = '1.4.0';
+const PLUGIN_VERSION_ADCAPTCHA = '1.4.2';
 define('ADCAPTCHA_ERROR_MESSAGE', __( 'Please complete the I am human box.', 'adcaptcha' ));
 
 // Deletes data saved in the wp db on plugin uninstall
