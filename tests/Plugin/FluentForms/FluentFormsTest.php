@@ -23,8 +23,9 @@ class FluentFormsTest extends TestCase {
 
     public function setUp(): void {
         parent::setUp();
-        global $mocked_actions;
+        global $mocked_actions, $mocked_filters;
         $mocked_actions = [];
+        $mocked_filters = [];
         WP_Mock::setUp();
        
         $baseFieldManagerMcok = $this->getMockBuilder('\FluentForm\App\Services\FormBuilder\BaseFieldManager')
@@ -33,12 +34,13 @@ class FluentFormsTest extends TestCase {
 
         $this->forms = new Forms();
 
-        // $this->adCaptchaElements = new AdCaptchaElements();
+        //$this->adCaptchaElements = new AdCaptchaElements();
     }
 
     public function tearDown(): void {
-        global $mocked_actions;
+        global $mocked_actions, $mocked_filters;
         $mocked_actions = [];
+        $mocked_filters = [];
         WP_Mock::tearDown();
         Mockery::close();
         parent::tearDown();
@@ -100,11 +102,84 @@ class FluentFormsTest extends TestCase {
        $this->assertTrue($fluentFormLoadedFound, 'Expected array structure was not found.');
     }
 
-    // public function testConstructor() {
-    //     global $mocked_actions;
+    // Test that the constructor correctly registers actions and filters with the expected hooks, callbacks, priorities, and arguments
+    public function testConstructor() {
+        global $mocked_actions, $mocked_filters;
+        $this->assertTrue(method_exists($this->adCaptchaElements, '__construct'), 'Method __construct does not exist');
+
+        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 9, 'accepted_args' => 1], $mocked_actions);
         
-    //     $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 9, 'accepted_args' => 1], $mocked_actions);
+        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [Verify::class, 'get_success_token'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions);
+
+        $this->assertContains(['hook' => 'fluentform/response_render_', 'callback'=> [$this->adCaptchaElements, 'renderResponse'], 'priority' => 10, 'accepted_args' => 3], $mocked_filters);
+
+        $this->assertContains(['hook' => 'fluentform/validate_input_item_', 'callback'=> [$this->adCaptchaElements, 'verify'], 'priority' => 10, 'accepted_args' => 5], $mocked_filters);
+
+        $this->assertTrue(true);
+    }
+
+    // Test that getComponent method exists, returns an array with expected structure, and matches expected values
+    public function testGetComponent() {
+        $this->assertTrue(method_exists($this->adCaptchaElements, 'getComponent'), 'Method getComponent does not exist');
         
-    //     $this->assertTrue(true);
-    // }
+        $expected = [
+            'index'          => 16,
+            'element'        => $this->key,
+            'attributes'     => [
+                'name' => $this->key,
+            ],
+            'settings'       => [
+                'label'            => '',
+                'validation_rules' => [],
+            ],
+            'editor_options' => [
+                'title'      => $this->title,
+                'icon_class' => 'ff-edit-adcaptcha',
+                'template'   => 'inputHidden',
+            ],
+        ];
+
+        $component = $this->adCaptchaElements->getComponent();
+        $this->assertIsArray($component, 'Expected result to be an array');
+        $this->assertArrayHasKey('index', $component, 'Expected key not found');
+        $this->assertArrayHasKey('element', $component, 'Expected key not found');
+        $this->assertArrayHasKey('attributes', $component, 'Expected key not found');
+        $this->assertArrayHasKey('settings', $component, 'Expected key not found');
+        $this->assertArrayHasKey('editor_options', $component, 'Expected key not found');
+        $this->assertEquals($expected, $component);
+    }
+
+    public function testRender() {
+        WP_Mock::userFunction('fluentform_sanitize_html', [
+            'args' => [Mockery::any()],
+            'return' => Mockery::on(function($html) {
+                return $html;
+            }),
+        ]);
+
+        $this->adCaptchaElements = Mockery::mock(AdCaptchaElements::class);
+
+        $this->adCaptchaElements->shouldReceive('render')
+            ->with(Mockery::any(), Mockery::any())
+            ->andReturn('hello');  
+
+        // $this->adCaptchaElements->shouldReceive('printContent')
+        //     ->with(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
+        //     ->andReturn(true);  
+        
+        $data = [
+            'element' => 'adcaptcha_widget',
+            'settings' => [
+                'label' => 'Test Label',
+                'label_placement' => 'Test top',
+            ]
+        ];
+
+        $form = [];
+
+        $this->assertTrue(method_exists($this->adCaptchaElements, 'render'), 'Method render does not exist');
+
+        $result = $this->adCaptchaElements->render($data, $form);
+        var_dump($result);
+    }
 }
