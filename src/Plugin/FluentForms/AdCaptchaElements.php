@@ -7,19 +7,21 @@ use AdCaptcha\Widget\Verify;
 
 class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
     // possibility to set the key
-    //  protected $key = 'adcaptcha';
+    //  protected $key = 'adCAPTCHA';
     /**
      * Constructor
      *
      * @return void
      */
-    public function __construct() {
-            // parent::__construct(
-            //     'adcaptcha_widget',  
-            //     'adCAPTCHA',            
-            //     [ 'captcha' ],
-            //     'advanced'
-            // );
+    private $verify;
+    public function __construct($shouldInstantiateParent = true) {
+            if ($shouldInstantiateParent === true) {
+                parent::__construct('adcaptcha_widget',  
+                'adCAPTCHA',            
+                [ 'captcha' ],
+                'advanced');
+            }
+            $this->verify = new Verify();
 
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
@@ -85,7 +87,6 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
 
         // Print the final content to Fluent Forms
         $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );
-        var_dump($this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form ));
     }
 
     /**
@@ -112,8 +113,7 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
 	 */
     public function verify( $error_message, $field, $form_data, $fields, $form ) {
         $successToken = $form_data['adcaptcha_widget'];
-        $verify = new Verify();
-        $response = $verify->verify_token($successToken);
+        $response = $this->verify->verify_token($successToken);
 
         if ( $response === false ) {
             $error_message = [ __( 'Incomplete captcha, Please try again.', 'adcaptcha' ) ];

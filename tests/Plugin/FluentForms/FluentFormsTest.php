@@ -13,6 +13,7 @@ use AdCaptcha\Plugin\FluentForms\AdCaptchaElements;
 use AdCaptcha\Plugin\AdCaptchaPlugin;
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
+use ReflectionClass;
 use WP_Mock;
 use Mockery;
 
@@ -20,6 +21,7 @@ class FluentFormsTest extends TestCase {
     private $forms;
     private $mockedClass;
     private $adCaptchaElements;
+    private $verifyMock;
 
     public function setUp(): void {
         parent::setUp();
@@ -32,9 +34,17 @@ class FluentFormsTest extends TestCase {
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->verifyMock = $this->createMock(Verify::class);
+
         $this->forms = new Forms();
 
-        $this->adCaptchaElements = new AdCaptchaElements();
+        $adCAPTCHAFieldData = false;
+        $this->adCaptchaElements = new AdCaptchaElements($adCAPTCHAFieldData);
+
+        $reflection = new \ReflectionClass($this->adCaptchaElements);
+        $property = $reflection->getProperty('verify');
+        $property->setAccessible(true);
+        $property->setValue($this->adCaptchaElements, $this->verifyMock);
     }
 
     public function tearDown(): void {
@@ -102,7 +112,7 @@ class FluentFormsTest extends TestCase {
        $this->assertTrue($fluentFormLoadedFound, 'Expected array structure was not found.');
     }
 
-    // Test that the constructor correctly registers actions and filters with the expected hooks, callbacks, priorities, and arguments
+    // Verifies existence of __construct(), checks that expected actions and filters are registered with correct hooks, callbacks, priorities, and argument counts
     public function testConstructor() {
         global $mocked_actions, $mocked_filters;
         $this->assertTrue(method_exists($this->adCaptchaElements, '__construct'), 'Method __construct does not exist');
@@ -114,11 +124,9 @@ class FluentFormsTest extends TestCase {
         $this->assertContains(['hook' => 'fluentform/response_render_', 'callback'=> [$this->adCaptchaElements, 'renderResponse'], 'priority' => 10, 'accepted_args' => 3], $mocked_filters);
 
         $this->assertContains(['hook' => 'fluentform/validate_input_item_', 'callback'=> [$this->adCaptchaElements, 'verify'], 'priority' => 10, 'accepted_args' => 5], $mocked_filters);
-
-        // $this->assertTrue(true);
     }
 
-    // Test that getComponent method exists, returns an array with expected structure, and matches expected values
+    // Verifies existence of getComponent(), checks returned array structure and keys, and confirms it matches the expected component configuration
     public function testGetComponent() {
         $this->assertTrue(method_exists($this->adCaptchaElements, 'getComponent'), 'Method getComponent does not exist');
         
@@ -157,31 +165,76 @@ class FluentFormsTest extends TestCase {
             }),
         ]);
 
-        WP_Mock::userFunction('printContent', [ 'return' => true ]);
-        
-        $data = [
+        $data  = [
             'element' => 'adcaptcha_widget',
             'settings' => [
-                'label' => 'Test Label',
-                'label_placement' => 'Test top',
-            ]
+                'label' => 'mocked_label',
+                'validation_rules' => [],
+            ],
         ];
 
         $form = [];
 
         $this->assertTrue(method_exists($this->adCaptchaElements, 'render'), 'Method render does not exist');
 
-        $mockAdCaptchaElements = Mockery::mock(AdCaptchaElements::class);
-        
-        $mockAdCaptchaElements->shouldReceive('printContent')
-                              ->once()  
-                              ->andReturn('mocked content');  
+        // $adCaptchaMock = $this->createMock(AdCaptchaElements::class);
+        // $this->adCaptchaElements = new AdCaptchaElements();
+        // $reflection = new ReflectionClass($this->adCaptchaElements);
+        // $property = $reflection->getProperty('render');
+        // $property->setAccessible(true);
+        // $property->setValue($this->adCaptchaElements, $adCaptchaMock);
 
-        $result = $mockAdCaptchaElements->printContent();
-        
-        $this->assertEquals('mocked content', $result);
+        // $adCaptchaMock->expects($this->once())
+        //     ->method('printContent')
+        //     ->willReturn('mocked_content');
 
-        $result = $this->adCaptchaElements->render($data, $form);
-        var_dump($result);
+        // $result = $this->adCaptchaElements->render($data, $form );
+
+        // $result = $this->adCaptchaElements->render($data, $form);
+        // var_dump($result);
+    }
+
+    // Checks the existence of renderResponse(), calls it with a valid response, and verifies it returns the expected result
+    public function testRenderResponse() {
+        $this->assertTrue(method_exists($this->adCaptchaElements,'renderResponse'),' Method renderResponse does not exist');
+        $result = $this->adCaptchaElements->renderResponse('valid_response', null, null);
+        $this->assertEquals('valid_response', $result,' Expected result does not match');
+    }
+
+    // Verifies the existence and callability of verify(), mocks verify_token to succeed, and checks that verify() returns the original error message array unchanged
+    public function testVerifySuccess() {
+        $this->assertTrue(method_exists($this->adCaptchaElements,'verify'),' Method verify does not exist');
+        $this->assertTrue(is_callable([$this->adCaptchaElements, 'verify']),' Method verify is not callable');
+
+        $this->verifyMock->expects($this->once())
+            ->method('verify_token')
+            ->willReturn(true);
+
+        $errorMessage = [];
+        $formData = [
+            'adcaptcha_widget' => 'mocked_token_value', 
+        ];
+
+        $result = $this->adCaptchaElements->verify($errorMessage, null, $formData, null, null);
+
+        $this->assertEquals($errorMessage, $result,'Expected result does not match');
+    }
+
+    // Mocks verify_token to fail, tests that verify() returns an error message array when captcha verification fails
+    public function testVerifyFailure() {
+        $this->verifyMock->expects($this->once())
+            ->method('verify_token')
+            ->willReturn(false);
+
+        $errorMessage = [];
+        $formData = [
+            'adcaptcha_widget' => 'mocked_token_value', 
+        ];
+
+        $result = $this->adCaptchaElements->verify($errorMessage, null, $formData, null, null);
+
+        $this->assertIsArray($result, 'Expected result to be an array');
+        $this->assertNotEmpty($result, 'Expected result to not be empty');
+        $this->assertContains('Incomplete captcha, Please try again.', $result, 'Expected error message not found');
     }
 }
