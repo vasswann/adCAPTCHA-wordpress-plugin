@@ -36,3 +36,7 @@ const AdCaptchaFieldController = Marionette.Object.extend({
   jQuery(document).ready(() => {
     new AdCaptchaFieldController();
   });
+
+  jQuery(document).on('nfFormReady', () => {
+    window.adcap.init();
+  });
