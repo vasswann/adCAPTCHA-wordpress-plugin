@@ -27,13 +27,13 @@ class FluentFormsTest extends TestCase {
         $mocked_actions = [];
         WP_Mock::setUp();
        
-        $baseFieldManagerMcok = $this->getMockBuilder(\FluentForm\App\Services\FormBuilder\BaseFieldManager::class)
+        $baseFieldManagerMcok = $this->getMockBuilder('\FluentForm\App\Services\FormBuilder\BaseFieldManager')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->forms = new Forms();
 
-        $this->adCaptchaElements = new AdCaptchaElements();
+        // $this->adCaptchaElements = new AdCaptchaElements();
     }
 
     public function tearDown(): void {
@@ -50,11 +50,12 @@ class FluentFormsTest extends TestCase {
         $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist');
         $this->assertInstanceOf(AdCaptchaPlugin::class, $this->forms, 'Expected an instance of AdCaptchaPlugin');
 
+        $basedir = dirname(__DIR__, 3);
         WP_Mock::userFunction('plugin_dir_path', [
             'args' => [Mockery::any()], 
-            'return' => '/Applications/XAMPP/xamppfiles/htdocs/testcap/wp-content/plugins/adcaptcha/src/Plugin/FluentForms/']);
+            'return' => $basedir . '/src/Plugin/FluentForms'
+            ]);
 
-       
         $this->forms->setup();
 
         if (function_exists('execute_mocked_hook')) {
