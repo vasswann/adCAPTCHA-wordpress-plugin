@@ -2,23 +2,24 @@
 
 namespace AdCaptcha\Plugin\FluentForms;
 
-use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
-use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Widget\AdCaptcha;
+use AdCaptcha\Widget\Verify;
 
 class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
-
+    // possibility to set the key
+    //  protected $key = 'adcaptcha';
     /**
      * Constructor
      *
      * @return void
      */
     public function __construct() {
-            parent::__construct(
-                'adcaptcha_widget',  
-                'adCAPTCHA',            
-                [ 'captcha' ],
-                'advanced'
-            );
+            // parent::__construct(
+            //     'adcaptcha_widget',  
+            //     'adCAPTCHA',            
+            //     [ 'captcha' ],
+            //     'advanced'
+            // );
 
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
@@ -76,13 +77,16 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
 
         // Use AdCaptcha to build the HTML for the captcha hidden input
         $adcaptcha = AdCaptcha::ob_captcha_trigger();
-
+       
         // Render the final captcha HTML element
         $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
+        var_dump($el);
         $html = "<div class='ff-el-group " . esc_attr( $container_class ) . "' >" . fluentform_sanitize_html( $label ) . "{$el}</div>";
+        var_dump($html);
 
         // Print the final content to Fluent Forms
         $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );
+        var_dump($this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form ));
     }
 
     /**
