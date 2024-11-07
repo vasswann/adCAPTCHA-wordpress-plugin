@@ -4,7 +4,7 @@
  *
  * @package AdCaptcha
  */
-namespace AdCaptcha\Tests;
+namespace AdCaptcha\Tests\Plugin\Elementor;
 
 use PHPUnit\Framework\TestCase;
 use AdCaptcha\Plugin\Elementor\Forms;

@@ -82,7 +82,6 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
         $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
         var_dump($el);
         $html = "<div class='ff-el-group " . esc_attr( $container_class ) . "' >" . fluentform_sanitize_html( $label ) . "{$el}</div>";
-        var_dump($html);
 
         // Print the final content to Fluent Forms
         $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );

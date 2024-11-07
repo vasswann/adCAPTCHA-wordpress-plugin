@@ -34,7 +34,7 @@ class FluentFormsTest extends TestCase {
 
         $this->forms = new Forms();
 
-        //$this->adCaptchaElements = new AdCaptchaElements();
+        $this->adCaptchaElements = new AdCaptchaElements();
     }
 
     public function tearDown(): void {
@@ -115,7 +115,7 @@ class FluentFormsTest extends TestCase {
 
         $this->assertContains(['hook' => 'fluentform/validate_input_item_', 'callback'=> [$this->adCaptchaElements, 'verify'], 'priority' => 10, 'accepted_args' => 5], $mocked_filters);
 
-        $this->assertTrue(true);
+        // $this->assertTrue(true);
     }
 
     // Test that getComponent method exists, returns an array with expected structure, and matches expected values
@@ -157,15 +157,7 @@ class FluentFormsTest extends TestCase {
             }),
         ]);
 
-        $this->adCaptchaElements = Mockery::mock(AdCaptchaElements::class);
-
-        $this->adCaptchaElements->shouldReceive('render')
-            ->with(Mockery::any(), Mockery::any())
-            ->andReturn('hello');  
-
-        // $this->adCaptchaElements->shouldReceive('printContent')
-        //     ->with(Mockery::any(), Mockery::any(), Mockery::any(), Mockery::any())
-        //     ->andReturn(true);  
+        WP_Mock::userFunction('printContent', [ 'return' => true ]);
         
         $data = [
             'element' => 'adcaptcha_widget',
@@ -178,6 +170,16 @@ class FluentFormsTest extends TestCase {
         $form = [];
 
         $this->assertTrue(method_exists($this->adCaptchaElements, 'render'), 'Method render does not exist');
+
+        $mockAdCaptchaElements = Mockery::mock(AdCaptchaElements::class);
+        
+        $mockAdCaptchaElements->shouldReceive('printContent')
+                              ->once()  
+                              ->andReturn('mocked content');  
+
+        $result = $mockAdCaptchaElements->printContent();
+        
+        $this->assertEquals('mocked content', $result);
 
         $result = $this->adCaptchaElements->render($data, $form);
         var_dump($result);
