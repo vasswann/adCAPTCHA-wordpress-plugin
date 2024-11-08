@@ -22,6 +22,8 @@ class FluentFormsTest extends TestCase {
     private $mockedClass;
     private $adCaptchaElements;
     private $verifyMock;
+    private $key = 'adcaptcha_widget';
+    private $title = 'adCAPTCHA';
 
     public function setUp(): void {
         parent::setUp();
@@ -30,9 +32,9 @@ class FluentFormsTest extends TestCase {
         $mocked_filters = [];
         WP_Mock::setUp();
        
-        $baseFieldManagerMcok = $this->getMockBuilder('\FluentForm\App\Services\FormBuilder\BaseFieldManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $baseFieldManagerMock = $this->getMockBuilder('\FluentForm\App\Services\FormBuilder\BaseFieldManager')
+        ->disableOriginalConstructor()
+        ->getMock();
 
         $this->verifyMock = $this->createMock(Verify::class);
 
@@ -113,7 +115,7 @@ class FluentFormsTest extends TestCase {
     }
 
     // Verifies existence of __construct(), checks that expected actions and filters are registered with correct hooks, callbacks, priorities, and argument counts
-    public function testConstructor() {
+    public function testConstructor():void {
         global $mocked_actions, $mocked_filters;
         $this->assertTrue(method_exists($this->adCaptchaElements, '__construct'), 'Method __construct does not exist');
 
@@ -121,9 +123,9 @@ class FluentFormsTest extends TestCase {
         
         $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [Verify::class, 'get_success_token'], 'priority' => 10, 'accepted_args' => 1], $mocked_actions);
 
-        $this->assertContains(['hook' => 'fluentform/response_render_', 'callback'=> [$this->adCaptchaElements, 'renderResponse'], 'priority' => 10, 'accepted_args' => 3], $mocked_filters);
+        $this->assertContains(['hook' => 'fluentform/response_render_adcaptcha_widget', 'callback'=> [$this->adCaptchaElements, 'renderResponse'], 'priority' => 10, 'accepted_args' => 3], $mocked_filters);
 
-        $this->assertContains(['hook' => 'fluentform/validate_input_item_', 'callback'=> [$this->adCaptchaElements, 'verify'], 'priority' => 10, 'accepted_args' => 5], $mocked_filters);
+        $this->assertContains(['hook' => 'fluentform/validate_input_item_adcaptcha_widget', 'callback'=> [$this->adCaptchaElements, 'verify'], 'priority' => 10, 'accepted_args' => 5], $mocked_filters);
     }
 
     // Verifies existence of getComponent(), checks returned array structure and keys, and confirms it matches the expected component configuration
@@ -154,7 +156,7 @@ class FluentFormsTest extends TestCase {
         $this->assertArrayHasKey('attributes', $component, 'Expected key not found');
         $this->assertArrayHasKey('settings', $component, 'Expected key not found');
         $this->assertArrayHasKey('editor_options', $component, 'Expected key not found');
-        $this->assertEquals($expected, $component);
+        $this->assertEquals($expected, $component, 'Expected result does not match');
     }
 
     public function testRender() {
@@ -164,6 +166,18 @@ class FluentFormsTest extends TestCase {
                 return $html;
             }),
         ]);
+
+        $adCaptchaMock = $this->getMockBuilder(AdCaptchaElements::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+            $adCaptchaMock->printContentBaseFieldManager = function($element_name, $html, $data, $form) {
+                // In the closure, you can define how the method should behave in the test
+                $this->assertEquals('adcaptcha_widget', $element_name);
+                $this->assertContains('<div class="ff-el-group">', $html);
+                // More assertions or actions based on the input arguments
+            };
+    
 
         $data  = [
             'element' => 'adcaptcha_widget',
@@ -177,19 +191,8 @@ class FluentFormsTest extends TestCase {
 
         $this->assertTrue(method_exists($this->adCaptchaElements, 'render'), 'Method render does not exist');
 
-        // $adCaptchaMock = $this->createMock(AdCaptchaElements::class);
-        // $this->adCaptchaElements = new AdCaptchaElements();
-        // $reflection = new ReflectionClass($this->adCaptchaElements);
-        // $property = $reflection->getProperty('render');
-        // $property->setAccessible(true);
-        // $property->setValue($this->adCaptchaElements, $adCaptchaMock);
-
-        // $adCaptchaMock->expects($this->once())
-        //     ->method('printContent')
-        //     ->willReturn('mocked_content');
-
         // $result = $this->adCaptchaElements->render($data, $form );
-
+        // var_dump($result);
         // $result = $this->adCaptchaElements->render($data, $form);
         // var_dump($result);
     }
@@ -197,7 +200,7 @@ class FluentFormsTest extends TestCase {
     // Checks the existence of renderResponse(), calls it with a valid response, and verifies it returns the expected result
     public function testRenderResponse() {
         $this->assertTrue(method_exists($this->adCaptchaElements,'renderResponse'),' Method renderResponse does not exist');
-        $result = $this->adCaptchaElements->renderResponse('valid_response', null, null);
+        $result = $this->adCaptchaElements->renderResponse('valid_response', [], null);
         $this->assertEquals('valid_response', $result,' Expected result does not match');
     }
 
