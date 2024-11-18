@@ -9,42 +9,50 @@ class Plugins {
             array(
                 'label' => 'Wordpress',
                 'logo' => 'wordpress_logo.png',
-                'options' => array('Login', 'Register', 'Comments', 'Forgot Password')
+                'options' => array('Login', 'Register', 'Comments', 'Forgot Password'),
+                'message' => ''
             ),
             array(
                 'label' => 'Woocommerce',
                 'logo' => 'woocommerce_logo.png',
-                'options' => array('Login', 'Register', 'Forgot Password')
+                'options' => array('Login', 'Register', 'Forgot Password'),
+                'message' => ''
             ),
             array(
                 'label' => 'ContactForm7',
                 'logo' => 'contactForm7_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/mailchimp')
             ),
             array(
                 'label' => 'Mailchimp',
                 'logo' => 'mailchimp_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/mailchimp')
             ),
             array(
                 'label' => 'NinjaForms',
                 'logo' => 'ninjaForms_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => ''
             ),
             array(
                 'label' => 'WPForms',
                 'logo' => 'wpforms_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => ''
             ),
             array(
                 'label' => 'Elementor',
                 'logo' => 'elementor_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => ''
             ),
             array(
                 'label' => 'FluentForms',
                 'logo' => 'fluent_forms_logo.png',
-                'options' => array('Forms')
+                'options' => array('Forms'),
+                'message' => ''
             ),
         );
 
@@ -97,6 +105,19 @@ class Plugins {
                                                 <div class="checkbox-container">
                                                     <input type="checkbox" id="<?php echo $optionId; ?>" name="selected_plugins[<?php echo $optionId; ?>]" value="<?php echo $optionId; ?>" <?php echo $checked; ?>>
                                                     <label class="checkbox-label" for="<?php echo $option; ?>"><?php echo $option; ?></label><br>
+                                                </div>
+                                                <?php
+                                            }
+                                            if (!empty($plugin['message']) && is_array($plugin['message'])) {
+                                                list($messageText, $linkText, $linkUrl) = $plugin['message'];
+                                                ?>
+                                                <div class="plugin-message">
+                                                    <p>
+                                                        <?php echo esc_html($messageText); ?>
+                                                        <a class="link" href="<?php echo esc_url($linkUrl); ?>" target="_blank" rel="noopener noreferrer">
+                                                            <?php echo esc_html($linkText); ?>
+                                                        </a>
+                                                    </p>
                                                 </div>
                                                 <?php
                                             }
