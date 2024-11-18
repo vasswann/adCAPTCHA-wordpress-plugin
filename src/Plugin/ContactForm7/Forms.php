@@ -7,7 +7,6 @@ use AdCaptcha\Widget\Verify\Verify;
 use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
 class Forms extends AdCaptchaPlugin {
-
     public function setup() {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ], 9 );
@@ -42,15 +41,25 @@ class Forms extends AdCaptchaPlugin {
         return $spam;
     }
 
-    // Renders the captcha before the submit button
     public function captcha_trigger_filter(string $elements) {
-        return preg_replace(
-            '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
-            AdCaptcha::ob_captcha_trigger() . '$1',
-            $elements
-        );
-    }
+        // Check if the elements contain a div with data-adcaptcha attribute
+        if (strpos($elements, 'data-adcaptcha') !== false) {
+            // If found, add a hidden input field and return the elements
+            return preg_replace(
+                '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
+                '<input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">' . '$1',
+                $elements
+            );
+        }
 
+    // If not found, add the default captcha trigger before the submit button
+    return preg_replace(
+        '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
+        AdCaptcha::ob_captcha_trigger() . '$1',
+        $elements
+    );
+    }
+         
     public function add_adcaptcha_response_field($fields) {
         return array_merge( $fields, array(
             '_wpcf7_adcaptcha_response' => '',
