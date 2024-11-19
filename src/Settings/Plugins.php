@@ -22,13 +22,13 @@ class Plugins {
                 'label' => 'ContactForm7',
                 'logo' => 'contactForm7_logo.png',
                 'options' => array('Forms'),
-                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/mailchimp')
+                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/contactform7')
             ),
             array(
                 'label' => 'Mailchimp',
                 'logo' => 'mailchimp_logo.png',
                 'options' => array('Forms'),
-                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/mailchimp')
+                'message' => array('For manual integration, see the', 'documentation.', 'https://docs.adcaptcha.com/wordpress/contactform7')
             ),
             array(
                 'label' => 'NinjaForms',
