@@ -42,9 +42,7 @@ class Forms extends AdCaptchaPlugin {
     }
 
     public function captcha_trigger_filter(string $elements) {
-        // Check if the elements contain a div with data-adcaptcha attribute
         if (strpos($elements, 'data-adcaptcha') !== false) {
-            // If found, add a hidden input field and return the elements
             return preg_replace(
                 '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
                 '<input type="hidden" class="adcaptcha_successToken" name="adcaptcha_successToken">' . '$1',
@@ -52,7 +50,6 @@ class Forms extends AdCaptchaPlugin {
             );
         }
 
-    // If not found, add the default captcha trigger before the submit button
     return preg_replace(
         '/(<(input|button).*?type=(["\']?)submit(["\']?))/',
         AdCaptcha::ob_captcha_trigger() . '$1',
