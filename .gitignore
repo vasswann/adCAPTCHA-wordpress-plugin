@@ -1,6 +1,3 @@
 /vendor
-
-# Ignore PHPUnit result cache
 .phpunit.result.cache
-
 .DS_Store

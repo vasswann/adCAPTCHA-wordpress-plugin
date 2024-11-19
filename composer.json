@@ -1,5 +1,5 @@
 {
-    "name": "adcaptcha/testforms", 
+    "name": "adcaptcha/wordpressintegration", 
     "description": "A PHPunit test to testing Plugin forms",
     "type": "library",
     "license": "MIT",
@@ -15,8 +15,8 @@
   },
     "authors": [
         {
-            "name": "adCAPTCHA developer team",
-            "email": "support@adCAPTCHA.com"
+            "name": "adCAPTCHA development team",
+            "email": "support@adcaptcha.com"
         }
     ],
     "minimum-stability": "dev",  

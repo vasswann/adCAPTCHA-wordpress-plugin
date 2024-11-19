@@ -13,8 +13,8 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
      * @return void
      */
     private $verify;
-    private $keyTest = 'adcaptcha_widget';
-    private $titleTest = 'adCAPTCHA';
+    private $widgetKey = 'adcaptcha_widget';
+    private $widgetTitle = 'adCAPTCHA';
     public $printContentBaseFieldManager;
 
     public function __construct($shouldInstantiateParent = true) {
@@ -24,26 +24,19 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
                 [ 'captcha' ],
                 'advanced');
 
-                $this->keyTest = $this->key;
-                $this->titleTest = $this->key;
+                $this->widgetKey = $this->key;
+                $this->widgetTitle = $this->key;
 
                 $this->printContentBaseFieldManager = function ($element_name, $html, $data, $form) {
                     $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );
                 };
             } 
-            // if( !$shouldInstantiateParent === true) {
-            //     var_dump('hello from false');
-            //     $this->printContentBaseFieldManager = function ($element_name, $html, $data, $form ):void {
-            //         echo 'Class not found';
-            //     };
-            // }
             $this->verify = new Verify();
 
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ], 9 );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
-        // Updated filters to use adCAPTCHA
-        add_filter( 'fluentform/response_render_' . $this->keyTest, [ $this, 'renderResponse' ], 10, 3 );
-        add_filter( 'fluentform/validate_input_item_' . $this->keyTest, [ $this, 'verify' ], 10, 5 );
+        add_filter( 'fluentform/response_render_' . $this->widgetKey, [ $this, 'renderResponse' ], 10, 3 );
+        add_filter( 'fluentform/validate_input_item_' . $this->widgetKey, [ $this, 'verify' ], 10, 5 );
     }
 
     /**
@@ -54,16 +47,16 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
     public function getComponent() {
         return [
             'index'          => 16,
-            'element'        => $this->keyTest,
+            'element'        => $this->widgetKey,
             'attributes'     => [
-                'name' => $this->keyTest,
+                'name' => $this->widgetKey,
             ],
             'settings'       => [
                 'label'            => '',
                 'validation_rules' => [],
             ],
             'editor_options' => [
-                'title'      => $this->titleTest,
+                'title'      => $this->widgetTitle,
                 'icon_class' => 'ff-edit-adcaptcha',
                 'template'   => 'inputHidden',
             ],
@@ -80,28 +73,21 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
     public function render( $data, $form ) {
         $element_name = $data['element'];
         $settings = $data['settings'];
-
-        // Handle optional label for captcha field
         $label = '';
         if ( ! empty( $settings['label'] ) ) {
             $label = "<div class='ff-el-input--label'><label>" . $settings['label'] . '</label></div>';
         }
-
-        // Optional container class for label placement
         $container_class = '';
         if ( ! empty( $settings['label_placement'] ) ) {
             $container_class = 'ff-el-form-' . $settings['label_placement'];
         }
-
-        // Use AdCaptcha to build the HTML for the captcha hidden input
         $adcaptcha = AdCaptcha::ob_captcha_trigger();
-       
-        // Render the final captcha HTML element
+   
         $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
         var_dump($el);
         $html = "<div class='ff-el-group " . esc_attr( $container_class ) . "' >" . fluentform_sanitize_html( $label ) . "{$el}</div>";
 
-        // Print the final content to Fluent Forms
+      
         $this->printContentBaseFieldManager( $element_name, $html, $data, $form );
     }
 
@@ -114,7 +100,7 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
      * @return string
      */
     public function renderResponse( $response, $field, $form_id ) {
-        return $response;  // No changes needed, the response is returned as-is
+        return $response;  
     }
 
 	/**
