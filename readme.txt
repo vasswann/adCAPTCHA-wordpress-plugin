@@ -4,7 +4,7 @@ Contributors: adCAPTCHA
 Tags: spam, anti-spam, block bots, security, adCAPTCHA
 Requires at least: 6.0
 Tested up to: 6.5.2
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -127,3 +127,7 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 
 = 1.4.2 =
 - Minor bug fix
+
+= 1.4.3 =
+- Minor update
+- Added option to manually integrate adCAPTCHA into Contact Form 7
