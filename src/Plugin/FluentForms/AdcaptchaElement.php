@@ -1,9 +1,9 @@
 <?php
 
-namespace AdCaptcha\Plugin\FluentForms\AdCaptchaElement;
+namespace AdCaptcha\Plugin\FluentForms;
 
-use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
-use AdCaptcha\Widget\Verify\Verify;
+use AdCaptcha\Widget\AdCaptcha;
+use AdCaptcha\Widget\Verify;
 
 class AdCaptchaElement extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
 

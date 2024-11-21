@@ -1,11 +1,18 @@
 {
     "name": "adcaptcha/plugin",
-    "description": "AdCaptcha Plugin",
-    "type": "project",
+    "description": "adcaptcha wordpress plugin",
+    "type": "wordpress-plugin",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-        "AdCaptcha\\": "src/"
+            "AdCaptcha\\": "src/"
         }
     },
+    "authors": [
+        {
+            "name": "adCAPTCHA"
+        }
+    ],
+    "minimum-stability": "dev",
     "require": {}
 }

@@ -17,6 +17,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 // require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
 // require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
@@ -38,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // require_once plugin_dir_path(__FILE__) . 'src/Plugin/WPForms/Forms.php';
 // require_once plugin_dir_path(__FILE__) . 'src/Plugin/Elementor/Forms.php';
 // require_once plugin_dir_path(__FILE__) . 'src/Plugin/FluentForms/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+
 
 use AdCaptcha\Instantiate;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace AdCaptcha\Plugin\ContactFrom7\Froms;
+namespace AdCaptcha\Plugin\ContactForm7;
 
-use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
-use AdCaptcha\Widget\Verify\Verify;
-use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
+use AdCaptcha\Widget\AdCaptcha;
+use AdCaptcha\Widget\Verify;
+use AdCaptcha\Plugin\AdCaptchaPlugin;
 
 class Forms extends AdCaptchaPlugin {
 
