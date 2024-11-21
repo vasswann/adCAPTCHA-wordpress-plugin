@@ -1,0 +1,11 @@
+{
+    "name": "adcaptcha/plugin",
+    "description": "AdCaptcha Plugin",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+        "AdCaptcha\\": "src/"
+        }
+    },
+    "require": {}
+}
