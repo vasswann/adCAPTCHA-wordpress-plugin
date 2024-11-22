@@ -10,6 +10,7 @@ use AdCaptcha\Plugin\Comments\Comments;
 use AdCaptcha\Plugin\Woocommerce\Login\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Registration\Registration as WoocommerceRegistration;
+use AdCaptcha\Plugin\Woocommerce\Checkout\Checkout as WoocommerceCheckout;
 use AdCaptcha\Plugin\ContactFrom7\Froms\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Froms\Forms as MailchimpForms;
 use AdCaptcha\Plugin\NinjaForms\Froms\Forms as NinjaForms;
@@ -52,6 +53,10 @@ class Instantiate {
             ],
             'Woocommerce_Register' => [
                 'instance' => WoocommerceRegistration::class,
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
+            'Woocommerce_Checkout' => [
+                'instance' => WoocommerceCheckout::class,
                 'plugin' => [ 'woocommerce/woocommerce.php' ],
             ],
             'ContactForm7_Forms' => [
