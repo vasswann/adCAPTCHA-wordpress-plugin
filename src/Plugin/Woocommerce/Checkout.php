@@ -16,11 +16,7 @@ class Checkout extends AdCaptchaPlugin {
         add_action( 'woocommerce_checkout_process', [ $this, 'verify' ] );
     }
 
-    public function verify( $error ) {
-        if ( $error ) {
-            return;
-        }
-
+    public function verify() {
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $response = Verify::verify_token($successToken);
 
