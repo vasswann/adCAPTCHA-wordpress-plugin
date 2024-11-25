@@ -130,4 +130,4 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 - Minor bug fix
 
 = 1.5.0 =
-- Feature: Support Woocommerce checkout
+- Feature: Support Woocommerce checkout (Shortcodes)
