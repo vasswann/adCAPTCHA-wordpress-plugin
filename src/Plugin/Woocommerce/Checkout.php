@@ -17,11 +17,15 @@ class Checkout extends AdCaptchaPlugin {
     }
 
     public function verify( $error ) {
+        if ( $error ) {
+            return;
+        }
+
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $response = Verify::verify_token($successToken);
 
         if ( !$response ) {
-            wc_add_notice( __( 'Incomplete captcha, Please try again', 'adcaptcha' ), 'error' );
+            wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );        
         }
     }
 
@@ -29,9 +33,16 @@ class Checkout extends AdCaptchaPlugin {
         wp_register_script('adcaptcha-wc-init-trigger', null);
         wp_add_inline_script('adcaptcha-wc-init-trigger', '
             const initTrigger = ($) => {
+                function resetTrigger() {
+                    window.adcap.init();
+                }
+
+                $(document.body).on("checkout_error", resetTrigger);
+
                 $(document.body).on("updated_checkout", function () {
                     if (window.adcap) {
                         window.adcap.init();
+                        resetTrigger();
                     }
                 });
             };
