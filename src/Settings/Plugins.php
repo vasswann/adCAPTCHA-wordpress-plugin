@@ -14,7 +14,7 @@ class Plugins {
             array(
                 'label' => 'Woocommerce',
                 'logo' => 'woocommerce_logo.png',
-                'options' => array('Login', 'Register', 'Forgot Password')
+                'options' => array('Login', 'Register', 'Forgot Password', 'Checkout')
             ),
             array(
                 'label' => 'ContactForm7',
