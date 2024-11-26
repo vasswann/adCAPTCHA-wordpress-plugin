@@ -2,7 +2,7 @@
 
 namespace AdCaptcha;
 
-use AdCaptcha\Settings;
+use AdCaptcha\Settings\Settings;
 use AdCaptcha\Plugin\Login;
 use AdCaptcha\Plugin\Registration;
 use AdCaptcha\Plugin\PasswordReset;

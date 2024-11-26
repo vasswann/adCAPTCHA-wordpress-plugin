@@ -4,7 +4,7 @@ namespace AdCaptcha\Plugin\NinjaForms;
 use NF_Fields_Recaptcha;
 use AdCaptcha\Widget\Verify;
 
-class AdCaptchaField extends NF_Fields_Recaptcha {
+class AdcaptchaField extends NF_Fields_Recaptcha {
 
     protected $_name = 'adcaptcha';
 

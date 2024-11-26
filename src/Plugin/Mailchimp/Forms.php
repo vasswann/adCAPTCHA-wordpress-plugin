@@ -85,7 +85,7 @@ class Forms extends AdCaptchaPlugin {
     }
 
     public function form_preview_setup_triggers() {
-        wp_register_script('adcaptcha-mc4wp-preview-script', null);
+        wp_register_script('adcaptcha-mc4wp-preview-script', '');
         wp_add_inline_script('adcaptcha-mc4wp-preview-script', 'window.onload = function() {
             if (adminpage === "mc4wp_page_mailchimp-for-wp-forms") {
                 document.getElementById("mc4wp-form-content").addEventListener("change", function() {

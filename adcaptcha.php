@@ -17,28 +17,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
-require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
-require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
-require_once plugin_dir_path(__FILE__) . 'src/Settings/General.php';
-require_once plugin_dir_path(__FILE__) . 'src/Settings/Plugins.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/AdCaptchaPlugin.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Login.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Registration.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/PasswordReset.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Comments.php';
-require_once plugin_dir_path(__FILE__) . 'src/Widget/AdCaptcha.php';
-require_once plugin_dir_path(__FILE__) . 'src/Widget/Verify.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Login.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/PasswordReset.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Registration.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Woocommerce/Checkout.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/ContactForm7/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Mailchimp/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/NinjaForms/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/WPForms/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/Elementor/Forms.php';
-require_once plugin_dir_path(__FILE__) . 'src/Plugin/FluentForms/Forms.php';
+require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 use AdCaptcha\Instantiate;
 

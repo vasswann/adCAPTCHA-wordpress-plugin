@@ -1,28 +1,29 @@
 {
-    "name": "adcaptcha/wordpressintegration", 
-    "description": "A PHPunit test to testing Plugin forms",
-    "type": "library",
+    "name": "adcaptcha/plugin",
+    "description": "adcaptcha wordpress plugin",
+    "type": "wordpress-plugin",
     "license": "MIT",
     "autoload": {
-      "psr-4": {
-          "AdCaptcha\\": "src/"
-      }
-  },
-  "autoload-dev": {
-      "psr-4": {
-          "AdCaptcha\\Tests\\": "tests/"
-      }
-  },
+        "psr-4": {
+            "AdCaptcha\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AdCaptcha\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "adCAPTCHA development team",
             "email": "support@adcaptcha.com"
         }
     ],
-    "minimum-stability": "dev",  
+    "minimum-stability": "dev",
+    "require": {},
     "require-dev": {
         "phpunit/phpunit": "^11.4.1",
         "10up/wp_mock": "^0.4.2",
         "mockery/mockery": "1.7.x-dev"
     }
-  }
+}
