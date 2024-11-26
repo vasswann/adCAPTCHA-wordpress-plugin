@@ -54,6 +54,10 @@ class Instantiate {
                 'instance' => WoocommerceRegistration::class,
                 'plugin' => [ 'woocommerce/woocommerce.php' ],
             ],
+            'Woocommerce_Checkout' => [
+                'instance' => WoocommerceCheckout::class,
+                'plugin' => [ 'woocommerce/woocommerce.php' ],
+            ],
             'ContactForm7_Forms' => [
                 'instance' => ContactForm7::class,
                 'plugin' => [ 'contact-form-7/wp-contact-form-7.php' ],

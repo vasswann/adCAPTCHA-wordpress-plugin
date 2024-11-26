@@ -8,6 +8,12 @@ use AdCaptcha\Plugin\AdCaptchaPlugin;
 use WP_Error;
 
 class PasswordReset extends AdCaptchaPlugin {
+    private $verify;
+
+    public function __construct() {
+        parent::__construct();
+        $this->verify = new Verify();
+    }
 
     public function setup() {
         add_action( 'woocommerce_lostpassword_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
@@ -24,7 +30,7 @@ class PasswordReset extends AdCaptchaPlugin {
 
     public function verify( $error ) {
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-        $response = Verify::verify_token($successToken);
+        $response = $this->verify->verify_token($successToken);
 
         if ( !$response ) {
             $error = new WP_Error('adcaptcha_error', __( 'Incomplete captcha, Please try again.', 'adcaptcha' ) );

@@ -26,6 +26,7 @@
 * Comments
 * Forgot Password
 * Register
+* Checkout
 
 ### ContactForm7
 

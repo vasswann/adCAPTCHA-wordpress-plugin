@@ -8,11 +8,22 @@
             "AdCaptcha\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AdCaptcha\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
-            "name": "adCAPTCHA"
+            "name": "adCAPTCHA development team",
+            "email": "support@adcaptcha.com"
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^11.4.1",
+        "10up/wp_mock": "^0.4.2",
+        "mockery/mockery": "1.7.x-dev"
+    }
 }

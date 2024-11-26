@@ -1,6 +1,6 @@
 <?php
 
-namespace AdCaptcha\Settings;
+namespace AdCaptcha;
 
 class Settings {
     public function setup() {
@@ -70,6 +70,6 @@ class Settings {
     }
 
     public function change_admin_footer_version() {
-        return 'Version 1.4.2';
+        return 'Version 1.5.0';
     }
 }
