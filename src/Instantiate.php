@@ -10,6 +10,7 @@ use AdCaptcha\Plugin\Comments;
 use AdCaptcha\Plugin\Woocommerce\Login as WoocommerceLogin;
 use AdCaptcha\Plugin\Woocommerce\PasswordReset as WoocommercePasswordReset;
 use AdCaptcha\Plugin\Woocommerce\Registration as WoocommerceRegistration;
+use AdCaptcha\Plugin\Woocommerce\Checkout as WoocommerceCheckout;
 use AdCaptcha\Plugin\ContactForm7\Forms as ContactForm7;
 use AdCaptcha\Plugin\Mailchimp\Forms as MailchimpForms;
 use AdCaptcha\Plugin\NinjaForms\Forms as NinjaForms;

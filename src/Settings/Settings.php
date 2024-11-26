@@ -1,6 +1,6 @@
 <?php
 
-namespace AdCaptcha;
+namespace AdCaptcha\Settings;
 
 class Settings {
     public function setup() {
