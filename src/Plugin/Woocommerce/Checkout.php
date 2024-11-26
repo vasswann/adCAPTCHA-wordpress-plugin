@@ -8,6 +8,8 @@ use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
 class Checkout extends AdCaptchaPlugin {
 
+    private $verifiedAT = false;
+
     public function setup() {   
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
@@ -17,28 +19,27 @@ class Checkout extends AdCaptchaPlugin {
     }
 
     public function verify() {
+        if ( !$this->verifiedAT ) {
+            return;
+        }
+
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $response = Verify::verify_token($successToken);
 
         if ( !$response ) {
             wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );        
         }
+
+        $this->verifiedAT = true;
     }
 
     public function init_trigger() {
         wp_register_script('adcaptcha-wc-init-trigger', null);
         wp_add_inline_script('adcaptcha-wc-init-trigger', '
             const initTrigger = ($) => {
-                function resetTrigger() {
-                    window.adcap.init();
-                }
-
-                $(document.body).on("checkout_error", resetTrigger);
-
                 $(document.body).on("updated_checkout", function () {
                     if (window.adcap) {
                         window.adcap.init();
-                        resetTrigger();
                     }
                 });
             };
