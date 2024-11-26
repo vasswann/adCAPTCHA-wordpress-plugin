@@ -16,7 +16,7 @@
  * @copyright 2024 adCAPTCHA. All rights reserved.
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; 
 require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 use AdCaptcha\Instantiate;

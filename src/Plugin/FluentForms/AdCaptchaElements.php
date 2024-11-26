@@ -4,6 +4,7 @@ namespace AdCaptcha\Plugin\FluentForms;
 
 use AdCaptcha\Widget\AdCaptcha;
 use AdCaptcha\Widget\Verify;
+use PhpParser\Error;
 
 class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldManager {
     /**
