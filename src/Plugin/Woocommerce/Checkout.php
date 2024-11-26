@@ -18,7 +18,9 @@ class Checkout extends AdCaptchaPlugin {
 
     public function verify( $error ) {
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
-        $response = Verify::verify_token($successToken);
+
+        $verify = new Verify();
+        $response = $verify->verify_token($successToken);
 
         if ( !$response ) {
             wc_add_notice( __( 'Incomplete captcha, Please try again', 'adcaptcha' ), 'error' );

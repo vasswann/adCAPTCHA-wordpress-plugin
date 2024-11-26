@@ -15,7 +15,6 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
     private $verify;
     private $widgetKey = 'adcaptcha_widget';
     private $widgetTitle = 'adCAPTCHA';
-    public $printContentBaseFieldManager;
 
     public function __construct($shouldInstantiateParent = true) {
             if ($shouldInstantiateParent === true) {
@@ -26,10 +25,6 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
 
                 $this->widgetKey = $this->key;
                 $this->widgetTitle = $this->key;
-
-                $this->printContentBaseFieldManager = function ($element_name, $html, $data, $form) {
-                    $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );
-                };
             } 
             $this->verify = new Verify();
 
@@ -84,11 +79,10 @@ class AdCaptchaElements extends \FluentForm\App\Services\FormBuilder\BaseFieldMa
         $adcaptcha = AdCaptcha::ob_captcha_trigger();
    
         $el = "<div class='ff-el-input--content'>{$adcaptcha}<input type='hidden' class='adcaptcha_successToken' name='adcaptcha_widget'></div>";
-        var_dump($el);
+
         $html = "<div class='ff-el-group " . esc_attr( $container_class ) . "' >" . fluentform_sanitize_html( $label ) . "{$el}</div>";
 
-      
-        $this->printContentBaseFieldManager( $element_name, $html, $data, $form );
+        $this->printContent( 'fluentform/rendering_field_html_' . $element_name, $html, $data, $form );
     }
 
     /**
