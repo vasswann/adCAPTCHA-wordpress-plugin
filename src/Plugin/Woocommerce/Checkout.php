@@ -8,18 +8,32 @@ use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
 class Checkout extends AdCaptchaPlugin {
 
-    private $verifiedAT = false;
+    private $hasVerified = null;
 
-    public function setup() {   
+    public function setup() { 
+        error_log('Checkout setup');
+
+        $this->hasVerified = get_option('wc_adcaptcha_is_verified');
+
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'init_trigger' ] );
         add_action( 'woocommerce_review_order_before_submit', [ AdCaptcha::class, 'captcha_trigger' ] );
+        add_action('woocommerce_payment_complete', [ $this, 'reset_hasVerified' ]);
         add_action( 'woocommerce_checkout_process', [ $this, 'verify' ] );
     }
 
     public function verify() {
-        if ( !$this->verifiedAT ) {
+        error_log('time: ' . $this->hasVerified);
+
+        if ( $this->hasVerified && strtotime($this->hasVerified) < time() ) {
+            $this->reset_hasVerified();
+        }
+
+        error_log('time: ' . $this->hasVerified);
+
+        if ( $this->hasVerified && strtotime($this->hasVerified) > time() ) {
+            error_log('Already verified');
             return;
         }
 
@@ -27,10 +41,14 @@ class Checkout extends AdCaptchaPlugin {
         $response = Verify::verify_token($successToken);
 
         if ( !$response ) {
-            wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );        
+            wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );    
         }
 
-        $this->verifiedAT = true;
+        update_option('wc_adcaptcha_is_verified', date('Y-m-d H:i:s', strtotime('+10 minutes')));
+    }
+
+    public function reset_hasVerified() {
+        update_option('wc_adcaptcha_is_verified', '');
     }
 
     public function init_trigger() {
@@ -40,6 +58,8 @@ class Checkout extends AdCaptchaPlugin {
                 $(document.body).on("updated_checkout", function () {
                     if (window.adcap) {
                         window.adcap.init();
+
+                        ' . ($this->hasVerified ? ' window.adcap.setVerificationState(true);' : '' ) . '
                     }
                 });
             };
