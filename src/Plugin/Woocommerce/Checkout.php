@@ -11,7 +11,6 @@ class Checkout extends AdCaptchaPlugin {
     private $hasVerified = null;
 
     public function setup() { 
-        error_log('Checkout setup');
 
         $this->hasVerified = get_option('wc_adcaptcha_is_verified');
 
@@ -24,16 +23,11 @@ class Checkout extends AdCaptchaPlugin {
     }
 
     public function verify() {
-        error_log('time: ' . $this->hasVerified);
-
         if ( $this->hasVerified && strtotime($this->hasVerified) < time() ) {
             $this->reset_hasVerified();
         }
 
-        error_log('time: ' . $this->hasVerified);
-
         if ( $this->hasVerified && strtotime($this->hasVerified) > time() ) {
-            error_log('Already verified');
             return;
         }
 
