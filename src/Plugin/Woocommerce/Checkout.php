@@ -6,14 +6,11 @@ use AdCaptcha\Widget\AdCaptcha\AdCaptcha;
 use AdCaptcha\Widget\Verify\Verify;
 use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 
+use DateTime;
+
 class Checkout extends AdCaptchaPlugin {
 
-    private $hasVerified = null;
-
     public function setup() { 
-
-        $this->hasVerified = get_option('wc_adcaptcha_is_verified');
-
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'init_trigger' ] );
@@ -23,11 +20,14 @@ class Checkout extends AdCaptchaPlugin {
     }
 
     public function verify() {
-        if ( $this->hasVerified && strtotime($this->hasVerified) < time() ) {
+        $session = WC()->session;
+        $hasVerified = $session->get('hasVerified');
+
+        if ( $hasVerified && strtotime($hasVerified) < time() ) {
             $this->reset_hasVerified();
         }
 
-        if ( $this->hasVerified && strtotime($this->hasVerified) > time() ) {
+        if ( $hasVerified && strtotime($hasVerified) > time() ) {
             return;
         }
 
@@ -35,14 +35,19 @@ class Checkout extends AdCaptchaPlugin {
         $response = Verify::verify_token($successToken);
 
         if ( !$response ) {
-            wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );    
+            wc_add_notice( __( 'Incomplete captcha, Please try again.', 'adcaptcha' ), 'error' );
+            return;
         }
 
-        update_option('wc_adcaptcha_is_verified', date('Y-m-d H:i:s', strtotime('+10 minutes')));
+        // Add 10 minutes to the current date and time
+        $date = new DateTime();
+        $date->modify('+10 minutes');
+        $formatted_date = $date->format('Y-m-d H:i:s');
+        $session->set('hasVerified', $formatted_date);
     }
 
     public function reset_hasVerified() {
-        update_option('wc_adcaptcha_is_verified', '');
+        WC()->session->set('hasVerified', null);
     }
 
     public function init_trigger() {
@@ -53,7 +58,7 @@ class Checkout extends AdCaptchaPlugin {
                     if (window.adcap) {
                         window.adcap.init();
 
-                        ' . ($this->hasVerified ? ' window.adcap.setVerificationState(true);' : '' ) . '
+                        ' . (WC()->session->get('hasVerified') ? ' window.adcap.setVerificationState(true);' : '' ) . '
                     }
                 });
             };
