@@ -11,8 +11,6 @@ use DateTime;
 class Checkout extends AdCaptchaPlugin {
 
     public function setup() { 
-        error_log('Checkout setup');
-
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'init_trigger' ] );
@@ -22,8 +20,6 @@ class Checkout extends AdCaptchaPlugin {
     }
 
     public function verify() {
-        error_log('verify method called');
-
         $session = WC()->session;
         $hasVerified = $session->get('hasVerified');
 
@@ -31,10 +27,7 @@ class Checkout extends AdCaptchaPlugin {
             $this->reset_hasVerified();
         }
 
-        error_log('time: ' . $hasVerified);
-
         if ( $hasVerified && strtotime($hasVerified) > time() ) {
-            error_log('Already verified');
             return;
         }
 
@@ -51,13 +44,10 @@ class Checkout extends AdCaptchaPlugin {
         $date->modify('+10 minutes');
         $formatted_date = $date->format('Y-m-d H:i:s');
         $session->set('hasVerified', $formatted_date);
-
-        error_log('Verification successful, updated hasVerified to: ' . $formatted_date);
     }
 
     public function reset_hasVerified() {
         WC()->session->set('hasVerified', null);
-        error_log('Resetting hasVerified: ' . WC()->session->get('hasVerified'));
     }
 
     public function init_trigger() {
