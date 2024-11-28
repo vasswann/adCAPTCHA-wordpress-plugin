@@ -14,7 +14,9 @@ class Checkout extends AdCaptchaPlugin {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'init_trigger' ] );
-        add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ] );
+        if (get_option('adcaptcha_wc_checkout_optional_trigger')) {
+            add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ] );
+        }
         add_action( 'woocommerce_review_order_before_submit', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action('woocommerce_payment_complete', [ $this, 'reset_hasVerified' ]);
         add_action( 'woocommerce_checkout_process', [ $this, 'verify' ] );

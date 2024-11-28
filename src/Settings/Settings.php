@@ -27,7 +27,7 @@ class Settings {
     public function render_adcaptcha_options_page() {
         $tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
         $tab = isset( $tab ) ? $tab : 'general';
-        if (!isset($tab) || ($tab !== 'general' && $tab !== 'plugins')) {
+        if (!isset($tab) || ($tab !== 'general' && $tab !== 'plugins' && $tab !== 'advance')) {
             $tab = 'general';
         }
 
@@ -47,6 +47,12 @@ class Settings {
                             if ( $tab === 'plugins' ) :
                         ?>
                     nav-tab-active<?php endif; ?>">Plugins</a>
+                    <a href="?page=adcaptcha&tab=advance" class="nav-tab
+                        <?php
+                            if ( $tab === 'advance' ) :
+                        ?>
+                    nav-tab-active<?php endif; ?>">Advance</a>
+                </nav>
             </div>
             <?php
                 switch ($tab) {
@@ -56,7 +62,10 @@ class Settings {
                         break;
                     case 'plugins':
                         $pluginsSettings = new \AdCaptcha\Settings\Plugins\Plugins();
-                        $pluginsSettings->render_Plugins_settings();
+                        $pluginsSettings->render_plugins_settings();
+                    case 'advance':
+                        $advanceSettings = new \AdCaptcha\Settings\Advance\Advance();
+                        $advanceSettings->render_advance_settings();
                         break;
                 }
             ?>

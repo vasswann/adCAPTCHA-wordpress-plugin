@@ -4,7 +4,7 @@ namespace AdCaptcha\Settings\Plugins;
 
 class Plugins {
      
-    public function render_Plugins_settings() {
+    public function render_plugins_settings() {
         $plugins = array(
             array(
                 'label' => 'Wordpress',
