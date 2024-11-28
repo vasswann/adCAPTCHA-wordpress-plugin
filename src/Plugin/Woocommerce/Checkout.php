@@ -14,6 +14,9 @@ class Checkout extends AdCaptchaPlugin {
         add_action( 'wp_enqueue_scripts', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'wp_enqueue_scripts', [ Verify::class, 'get_success_token' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'init_trigger' ] );
+        if (get_option('adcaptcha_wc_checkout_optional_trigger')) {
+            add_action( 'wp_enqueue_scripts', [ $this, 'block_submission' ] );
+        }
         add_action( 'woocommerce_review_order_before_submit', [ AdCaptcha::class, 'captcha_trigger' ] );
         add_action('woocommerce_payment_complete', [ $this, 'reset_hasVerified' ]);
         add_action( 'woocommerce_checkout_process', [ $this, 'verify' ] );
@@ -56,7 +59,20 @@ class Checkout extends AdCaptchaPlugin {
             const initTrigger = ($) => {
                 $(document.body).on("updated_checkout", function () {
                     if (window.adcap) {
-                        window.adcap.init();
+                        window.adcap.init({onComplete: () => {
+                            const event = new CustomEvent("adcaptcha_onSuccess", {
+                                detail: { successToken: window.adcap.successToken },
+                            });
+                            document.dispatchEvent(event);  
+
+                            if (window.adcap.tmp && window.adcap.tmp.didSubmitTrigger) {
+                                const checkoutForm = $("form.checkout");
+                                if (checkoutForm.length) {
+                                    checkoutForm.submit();
+                                }
+                                window.adcap.tmp = { didSubmitTrigger: false };
+                            }
+                        }});
 
                         ' . (WC()->session->get('hasVerified') ? ' window.adcap.setVerificationState(true);' : '' ) . '
                     }
@@ -66,5 +82,27 @@ class Checkout extends AdCaptchaPlugin {
             jQuery(document).ready(initTrigger);
         ');
         wp_enqueue_script('adcaptcha-wc-init-trigger');
+    }
+
+    public function block_submission() {
+        $script = '
+        jQuery(document).ready(function($) {
+            var checkoutForm = $("form.checkout");
+            if (checkoutForm.length) {
+                checkoutForm.on("submit", function(event) {
+                    if (!window.adcap.successToken) {
+                        event.preventDefault();
+    
+                        if (window.adcap) {
+                            window.adcap.tmp = { didSubmitTrigger: true };
+                            window.adcap.handleTriggerClick("' . esc_js(get_option('adcaptcha_placement_id')) . '");
+                        }
+                    }
+                });
+            }
+        });
+    ';
+    
+        wp_add_inline_script('adcaptcha-script', $script);
     }
 }
