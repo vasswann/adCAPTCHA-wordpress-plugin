@@ -51,7 +51,7 @@ class Settings {
                         <?php
                             if ( $tab === 'advance' ) :
                         ?>
-                    nav-tab-active<?php endif; ?>">Advance</a>
+                    nav-tab-active<?php endif; ?>">Advanced</a>
                 </nav>
             </div>
             <?php

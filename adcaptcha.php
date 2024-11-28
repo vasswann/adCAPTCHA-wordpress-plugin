@@ -22,7 +22,7 @@ require_once plugin_dir_path(__FILE__) . 'src/Instantiate.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Settings.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/General.php';
 require_once plugin_dir_path(__FILE__) . 'src/Settings/Plugins.php';
-require_once plugin_dir_path(__FILE__) . 'src/Settings/Advance.php';
+require_once plugin_dir_path(__FILE__) . 'src/Settings/Advanced.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/AdCaptchaPlugin.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Login.php';
 require_once plugin_dir_path(__FILE__) . 'src/Plugin/Registration.php';
