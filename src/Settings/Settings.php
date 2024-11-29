@@ -63,6 +63,7 @@ class Settings {
                     case 'plugins':
                         $pluginsSettings = new \AdCaptcha\Settings\Plugins\Plugins();
                         $pluginsSettings->render_plugins_settings();
+                        break;
                     case 'advance':
                         $advanceSettings = new \AdCaptcha\Settings\Advance\Advance();
                         $advanceSettings->render_advance_settings();
@@ -79,6 +80,6 @@ class Settings {
     }
 
     public function change_admin_footer_version() {
-        return 'Version 1.5.3';
+        return 'Version 1.5.4';
     }
 }
