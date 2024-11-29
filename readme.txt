@@ -141,5 +141,5 @@ During verification, the adCAPTCHA service may briefly receive the user's IP add
 = 1.5.3 =
 - Added advanced settings which includes a Woocommerce checkout feature, to trigger adCAPTCHA from the place order button.
 
-= 1.5.3 =
+= 1.5.4 =
 - Minor bug fix for wordpress comments form
