@@ -8,24 +8,32 @@ use AdCaptcha\AdCaptchaPlugin\AdCaptchaPlugin;
 use WP_Error;
 
 class Comments extends AdCaptchaPlugin {
+    private $verified = false;
 
     public function setup() {
+        global $adCAPTCHAWordpressComments;
+        $adCAPTCHAWordpressComments = $this;
         add_action( 'comment_form', [ AdCaptcha::class, 'enqueue_scripts' ] );
         add_action( 'comment_form', [ Verify::class, 'get_success_token' ] );
         add_filter( 'comment_form_submit_field', [ $this, 'captcha_trigger_filter' ] );
-        add_action( 'pre_comment_approved', [ $this, 'verify' ], 20, 2 );
+        add_filter( 'pre_comment_approved', [ $adCAPTCHAWordpressComments, 'verify' ], 20, 2 );
     }
 
     public function verify( $approved, array $commentdata ) {
+        if ( $this->verified ) {
+            return $approved;
+        }
+
         $successToken = sanitize_text_field(wp_unslash($_POST['adcaptcha_successToken']));
         $verify = new Verify();
         $response = $verify->verify_token($successToken);
 
-
         if ( $response === false ) {
             $approved = new WP_Error( 'adcaptcha_error', __( 'Incomplete captcha, Please try again', 'adcaptcha' ), 400 );
+            return $approved;
         }
 
+        $this->verified = true;
         return $approved;
     }
 
