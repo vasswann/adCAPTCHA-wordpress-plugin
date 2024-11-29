@@ -66,7 +66,7 @@ class Settings {
                         $pluginsSettings->render_Plugins_settings();
                         break;
                     case 'advance':
-                        $advanceSettings = new \AdCaptcha\Settings\Advance();
+                        $advanceSettings = new \AdCaptcha\Settings\Advanced();
                         $advanceSettings->render_advance_settings();
                         break;
                 }
