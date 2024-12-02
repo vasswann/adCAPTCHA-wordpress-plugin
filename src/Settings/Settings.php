@@ -27,7 +27,7 @@ class Settings {
     public function render_adcaptcha_options_page() {
         $tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
         $tab = isset( $tab ) ? $tab : 'general';
-        if (!isset($tab) || ($tab !== 'general' && $tab !== 'plugins')) {
+        if (!isset($tab) || ($tab !== 'general' && $tab !== 'plugins' && $tab !== 'advance')) {
             $tab = 'general';
         }
 
@@ -47,6 +47,12 @@ class Settings {
                             if ( $tab === 'plugins' ) :
                         ?>
                     nav-tab-active<?php endif; ?>">Plugins</a>
+                    <a href="?page=adcaptcha&tab=advance" class="nav-tab
+                        <?php
+                            if ( $tab === 'advance' ) :
+                        ?>
+                    nav-tab-active<?php endif; ?>">Advanced</a>
+                </nav>
             </div>
             <?php
                 switch ($tab) {
@@ -55,8 +61,13 @@ class Settings {
                         $generalSettings->render_general_settings();
                         break;
                     case 'plugins':
+
                         $pluginsSettings = new \AdCaptcha\Settings\Plugins();
                         $pluginsSettings->render_Plugins_settings();
+                        break;
+                    case 'advance':
+                        $advanceSettings = new \AdCaptcha\Settings\Advanced();
+                        $advanceSettings->render_advance_settings();
                         break;
                 }
             ?>
@@ -70,6 +81,6 @@ class Settings {
     }
 
     public function change_admin_footer_version() {
-        return 'Version 1.5.0';
+        return 'Version 1.5.4';
     }
 }
