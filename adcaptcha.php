@@ -21,7 +21,7 @@ require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
 use AdCaptcha\Instantiate;
 
-const PLUGIN_VERSION_ADCAPTCHA = '1.5.4';
+const PLUGIN_VERSION_ADCAPTCHA = '1.5.5';
 define('ADCAPTCHA_ERROR_MESSAGE', __( 'Please complete the I am human box.', 'adcaptcha' ));
 
 // Deletes data saved in the wp db on plugin uninstall
