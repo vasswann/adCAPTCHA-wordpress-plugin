@@ -22,10 +22,10 @@ jobs:
     - name: Dump autoload files
       run: composer dump-autoload
 
-    - name: Run Tests
-      run: composer test
-
     - name: Check Autoload
       run: |
         cat vendor/composer/autoload_psr4.php
         php -r "require 'vendor/autoload.php'; echo class_exists('AdCaptcha\\Plugin\\NinjaForms\\AdCaptchaField') ? 'Loaded' : 'Not Loaded';"
+
+    - name: Run Tests
+      run: composer test
