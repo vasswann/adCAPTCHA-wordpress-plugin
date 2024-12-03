@@ -12,6 +12,5 @@ jobs:
 
     - name: Set up PHP
       uses: php-actions/composer@v6
-
-    - name: Run PHP Unit Tests
-      uses: php-actions/phpunit@v3
+      with: 
+        command: composer test
