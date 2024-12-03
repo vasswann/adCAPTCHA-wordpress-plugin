@@ -12,4 +12,10 @@
         <ini name="mockery.disable" value="true"/>
         <ini name="memory_limit" value="512M"/>  
     </php>
+
+    <testsuites>
+        <testsuite name="Plugin Test Suite">
+            <directory>tests/Plugin</directory> 
+        </testsuite>
+    </testsuites>
 </phpunit>
