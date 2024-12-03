@@ -3,7 +3,7 @@
     "description": "adcaptcha wordpress plugin",
     "type": "wordpress-plugin",
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit tests/plugin"
     },
     "license": "MIT",
     "autoload": {
