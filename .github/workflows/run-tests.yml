@@ -20,4 +20,4 @@ jobs:
       run: composer install
 
     - name: Run Tests
-      run: composer test
+      run: vendor/bin/phpunit tests/plugin
