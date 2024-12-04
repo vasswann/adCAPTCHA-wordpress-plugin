@@ -17,15 +17,19 @@ jobs:
         php-version: '8.2'
     
     - name: Install Dependencies
-      run: composer install --no-interaction --prefer-dist --no-progress
+      run: composer install 
 
-    - name: Dump autoload files
-      run: composer dump-autoload
+    - name: Rebuild Composer Autoload
+      run: composer dump-autoload -o
+
+    - name: Check File Existence
+      run: |
+        [ -f src/Plugin/NinjaForms/AdCaptchaField.php ] && echo "File exists: src/Plugin/NinjaForms/AdCaptchaField.php" || echo "File not found: src/Plugin/NinjaForms/AdCaptchaField.php"
 
     - name: Check Autoload
       run: |
         cat vendor/composer/autoload_psr4.php
-        php -r "require 'vendor/autoload.php'; echo class_exists('AdCaptcha\\Plugin\\NinjaForms\\AdCaptchaField') ? 'Loaded' : 'Not Loaded';"
+        php -r "require 'vendor/autoload.php'; echo class_exists('AdCaptcha\\Plugin\\FluentForms\\Forms') ? 'Loaded' : 'Not Loaded';"
 
     - name: Run Tests
       run: composer test
