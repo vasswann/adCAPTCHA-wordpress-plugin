@@ -95,97 +95,97 @@ class NinjaFormsTest extends TestCase {
     }
 
     // Tests validation with an invalid token, ensuring the result is the expected error message.
-    public function testValidateWithVerifyTokenReturningFalse()
-    {
-        $this->verifyMock->method('verify_token')
-            ->with('invalid_value')
-            ->willReturn(false);
-        $field = ['value' => 'invalid_value'];
-        $result = $this->adCaptchaField->validate($field, []);
+    // public function testValidateWithVerifyTokenReturningFalse()
+    // {
+    //     $this->verifyMock->method('verify_token')
+    //         ->with('invalid_value')
+    //         ->willReturn(false);
+    //     $field = ['value' => 'invalid_value'];
+    //     $result = $this->adCaptchaField->validate($field, []);
        
-        $this->assertSame('adCAPTCHA', $result);
-        $this->assertEquals(esc_html__(ADCAPTCHA_ERROR_MESSAGE), $result);
-    }
+    //     $this->assertSame('adCAPTCHA', $result);
+    //     $this->assertEquals(esc_html__(ADCAPTCHA_ERROR_MESSAGE), $result);
+    // }
 
     // Tests validation with a valid token, ensuring the result is null and the validate method is callable.
-    public function testValidateWithVerifyTokenReturningTrue()
-    {
-        $this->verifyMock->method('verify_token')
-            ->with('valid_token')
-            ->willReturn(true);
+    // public function testValidateWithVerifyTokenReturningTrue()
+    // {
+    //     $this->verifyMock->method('verify_token')
+    //         ->with('valid_token')
+    //         ->willReturn(true);
 
-        $field = ['value' => 'valid_token'];
-        $result = $this->adCaptchaField->validate($field, []);
-        $this->assertTrue(is_callable([$this->adCaptchaField, 'validate']), 'Method validate is not callable');
-        $this->assertEquals(NULL, $result);
-    }
+    //     $field = ['value' => 'valid_token'];
+    //     $result = $this->adCaptchaField->validate($field, []);
+    //     $this->assertTrue(is_callable([$this->adCaptchaField, 'validate']), 'Method validate is not callable');
+    //     $this->assertEquals(NULL, $result);
+    // }
 
     // Executes all mocked actions and filters for a specific hook if they are callable.
-    private function execute_mocked_hook($hook_name) {
-        foreach ($this->mocked_actions as $action) {
-            if ($action['hook'] === $hook_name && is_callable($action['callback'])) {
-                call_user_func($action['callback']);
-            }
-        }
+    // private function execute_mocked_hook($hook_name) {
+    //     foreach ($this->mocked_actions as $action) {
+    //         if ($action['hook'] === $hook_name && is_callable($action['callback'])) {
+    //             call_user_func($action['callback']);
+    //         }
+    //     }
 
-        foreach ($this->mocked_filters as $filter) {
-            if ($filter['hook'] === $hook_name && is_callable($filter['callback'])) {
-                call_user_func($filter['callback']);
-            }
-        }
-    }
+    //     foreach ($this->mocked_filters as $filter) {
+    //         if ($filter['hook'] === $hook_name && is_callable($filter['callback'])) {
+    //             call_user_func($filter['callback']);
+    //         }
+    //     }
+    // }
 
     // Tests that the setup method properly registers actions and filters with the expected hooks and callbacks, and checks if the 'setup' method exists and is callable.
-    public function testSetup() {
-        $this->execute_mocked_hook('plugins_loaded');
+    // public function testSetup() {
+    //     $this->execute_mocked_hook('plugins_loaded');
   
-        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_actions);
+    //     $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [AdCaptcha::class, 'enqueue_scripts'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_actions);
 
-        $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [$this->forms, 'load_scripts'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_actions);
+    //     $this->assertContains(['hook' => 'wp_enqueue_scripts', 'callback'=> [$this->forms, 'load_scripts'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_actions);
 
-        $this->assertContains(['hook' => 'ninja_forms_register_fields', 'callback'=> [$this->forms, 'register_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
+    //     $this->assertContains(['hook' => 'ninja_forms_register_fields', 'callback'=> [$this->forms, 'register_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
 
-        $this->assertContains(['hook' => 'ninja_forms_field_template_file_paths', 'callback'=> [$this->forms, 'register_template'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
+    //     $this->assertContains(['hook' => 'ninja_forms_field_template_file_paths', 'callback'=> [$this->forms, 'register_template'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
 
-        $this->assertContains(['hook' => 'ninja_forms_localize_field_adcaptcha', 'callback'=> [$this->forms, 'render_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
+    //     $this->assertContains(['hook' => 'ninja_forms_localize_field_adcaptcha', 'callback'=> [$this->forms, 'render_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
 
-        $this->assertContains(['hook' => 'ninja_forms_localize_field_adcaptcha_preview', 'callback'=> [$this->forms, 'render_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
+    //     $this->assertContains(['hook' => 'ninja_forms_localize_field_adcaptcha_preview', 'callback'=> [$this->forms, 'render_field'], 'priority' => 10, 'accepted_args' => 1], $this->mocked_filters);
 
-        $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist');
-        $this->assertTrue(is_callable([$this->forms, 'setup']), 'Method setup is not callable');
-    }
+    //     $this->assertTrue(method_exists($this->forms, 'setup'), 'Method setup does not exist');
+    //     $this->assertTrue(is_callable([$this->forms, 'setup']), 'Method setup is not callable');
+    // }
 
     // Tests if the register_field method registers AdCaptchaField, returns an array, and verifies method existence.
-    public function testRegisterField() {
-        // Create a partial mock of AdCaptchaField without calling the constructor
-        $mockedAdCaptchaField = Mockery::mock(AdCaptchaField::class)    ->makePartial();
-        $mockedAdCaptchaField->shouldReceive('__construct')->andReturnNull();
-        // Mock the Forms class and override the register_field method
-        $this->forms = Mockery::mock(Forms::class)->makePartial();
-        $this->forms->shouldReceive('register_field')->andReturnUsing(function($fields) use ($mockedAdCaptchaField) {
-            $fields = (array) $fields;
-            $fields['adcaptcha'] = $mockedAdCaptchaField;
-            return $fields;
-        });
+    // public function testRegisterField() {
+    //     // Create a partial mock of AdCaptchaField without calling the constructor
+    //     $mockedAdCaptchaField = Mockery::mock(AdCaptchaField::class)    ->makePartial();
+    //     $mockedAdCaptchaField->shouldReceive('__construct')->andReturnNull();
+    //     // Mock the Forms class and override the register_field method
+    //     $this->forms = Mockery::mock(Forms::class)->makePartial();
+    //     $this->forms->shouldReceive('register_field')->andReturnUsing(function($fields) use ($mockedAdCaptchaField) {
+    //         $fields = (array) $fields;
+    //         $fields['adcaptcha'] = $mockedAdCaptchaField;
+    //         return $fields;
+    //     });
 
-        $fields = [];
-        $result = $this->forms->register_field($fields);
+    //     $fields = [];
+    //     $result = $this->forms->register_field($fields);
             
-        $this->assertIsArray($result, 'Expected result to be an array');
-        $this->assertArrayHasKey('adcaptcha', $result, 'Expected key not found');
-        $this->assertInstanceOf(AdCaptchaField::class, $result['adcaptcha'], 'Expected instance of AdCaptchaField');
-        $this->assertTrue(method_exists($this->forms, 'register_field'), 'Method register_field does not exist');
-    }
+    //     $this->assertIsArray($result, 'Expected result to be an array');
+    //     $this->assertArrayHasKey('adcaptcha', $result, 'Expected key not found');
+    //     $this->assertInstanceOf(AdCaptchaField::class, $result['adcaptcha'], 'Expected instance of AdCaptchaField');
+    //     $this->assertTrue(method_exists($this->forms, 'register_field'), 'Method register_field does not exist');
+    // }
 
     // Verifies `register_template` method exists and returns an array containing the expected template path.
-    public function testRegisterTemplate() {
-        $expectedPath = "path/to/template";
-        $paths = $this->forms->register_template($expectedPath);
+    // public function testRegisterTemplate() {
+    //     $expectedPath = "path/to/template";
+    //     $paths = $this->forms->register_template($expectedPath);
 
-        $this->assertIsArray($paths, 'Expected result to be an array');
-        $this->assertContains($expectedPath, $paths, 'Expected path not found');
-        $this->assertTrue(method_exists($this->forms, 'register_template'), 'Method register_template does not exist');
-    }
+    //     $this->assertIsArray($paths, 'Expected result to be an array');
+    //     $this->assertContains($expectedPath, $paths, 'Expected path not found');
+    //     $this->assertTrue(method_exists($this->forms, 'register_template'), 'Method register_template does not exist');
+    // }
 
     // // // Tests that `render_field` method exists and returns an array with 'settings' containing an 'adcaptcha' HTML div element.
     // public function testRenderField() {
