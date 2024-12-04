@@ -43,7 +43,8 @@ class NinjaFormsTest extends TestCase {
         }
 
         Functions\when('esc_html__')->justReturn('adCAPTCHA');
-        
+        Functions\when('esc_attr')->justReturn('test_value');
+        Functions\when('get_option')->justReturn('your_placement_id_value');
         $this->adCaptchaField = new AdcaptchaField(false);
         $this->verifyMock = $this->createMock(Verify::class);
 
@@ -187,13 +188,39 @@ class NinjaFormsTest extends TestCase {
         $this->assertTrue(method_exists($this->forms, 'register_template'), 'Method register_template does not exist');
     }
 
-    // // // Tests that `render_field` method exists and returns an array with 'settings' containing an 'adcaptcha' HTML div element.
-    // public function testRenderField() {
-    //     $field = $this->forms->render_field([]);
+    // // Tests that `render_field` method exists and returns an array with 'settings' containing an 'adcaptcha' HTML div element.
+    public function testRenderField() {
+        $field = $this->forms->render_field([]);
+      
+        $this->assertArrayHasKey('settings', $field);
+        $this->assertArrayHasKey('adcaptcha', $field['settings']);
+        $this->assertStringContainsString('<div', $field['settings']['adcaptcha']);
+        $this->assertTrue(method_exists($this->forms, 'render_field'), 'Method render_field does not exist');
+    }
 
-    //     // $this->assertArrayHasKey('settings', $field);
-    //     // $this->assertArrayHasKey('adcaptcha', $field['settings']);
-    //     // $this->assertStringContainsString('<div', $field['settings']['adcaptcha']);
-    //     // $this->assertTrue(method_exists($this->forms, 'render_field'), 'Method render_field does not exist');
-    // }
+    // Tests that the `load_scripts` method correctly enqueues the AdCaptcha script with the expected parameters and that the `PLUGIN_VERSION_ADCAPTCHA` constant is defined.
+    public function testLoadScripts() {
+        if (!defined('PLUGIN_VERSION_ADCAPTCHA')) {
+            define('PLUGIN_VERSION_ADCAPTCHA', '1.0.0');
+        }
+    
+        Functions\when('plugins_url')
+            ->justReturn('path/to/script/AdCaptchaFieldController.js');
+    
+        Functions\expect('wp_enqueue_script')
+            ->with(
+                'adcaptcha-ninjaforms',
+                'path/to/script/AdCaptchaFieldController.js',
+                ['nf-front-end'],
+                PLUGIN_VERSION_ADCAPTCHA,
+                true
+            )
+            ->once(); 
+    
+        $this->forms->load_scripts();
+    
+        $this->assertTrue(defined('PLUGIN_VERSION_ADCAPTCHA'), 'PLUGIN_VERSION_ADCAPTCHA is not defined');
+
+        $this->assertTrue(method_exists($this->forms, 'load_scripts'), 'Method load_scripts does not exist');
+    }
 }

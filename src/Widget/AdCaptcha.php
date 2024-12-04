@@ -43,7 +43,7 @@ class AdCaptcha {
     public static function ob_captcha_trigger() {
 		ob_start();
         self::captcha_trigger();
-
+        
         return ob_get_clean();
     }
 
