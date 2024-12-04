@@ -15,5 +15,5 @@ if (class_exists('\Brain\Monkey')) {
 }
 
 // Debugging (remove in production/testing CI once verified)
-var_dump(getcwd());
-var_dump(realpath(__DIR__ . '/../vendor/autoload.php'));
+// var_dump(getcwd());
+// var_dump(realpath(__DIR__ . '/../vendor/autoload.php'));
